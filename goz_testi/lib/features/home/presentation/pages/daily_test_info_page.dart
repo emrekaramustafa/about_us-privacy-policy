@@ -9,6 +9,7 @@ import 'package:goz_testi/core/services/ad_service.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Daily Test Info Page
 /// 
@@ -48,6 +49,21 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
   }
 
   Future<void> _watchAd() async {
+    // Check if user has remaining credits
+    final remaining = await _storageService.getRemainingTestCredits();
+    if (remaining <= 0) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.dailyTestQuotaReached),
+            backgroundColor: AppColors.errorRed,
+          ),
+        );
+      }
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     // Try to load ad if not ready
@@ -61,16 +77,18 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
         // Grant +1 test credit
         await _storageService.addExtraTestCredit();
         
-        // Refresh daily count
+        // Refresh daily count and remaining credits
         ref.invalidate(dailyTestCountProvider);
+        ref.invalidate(remainingTestCreditsProvider);
         
         if (mounted) {
           setState(() => _isLoading = false);
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('+1 test hakkı kazandınız!'),
+            SnackBar(
+              content: Text(l10n.adRewardEarned),
               backgroundColor: AppColors.successGreen,
-              duration: Duration(seconds: 2),
+              duration: const Duration(seconds: 2),
             ),
           );
         }
@@ -84,9 +102,10 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
 
     if (!success && mounted) {
       setState(() => _isLoading = false);
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Reklam gösterilemedi. Lütfen tekrar deneyin.'),
+        SnackBar(
+          content: Text(l10n.adFailed),
           backgroundColor: AppColors.errorRed,
         ),
       );
@@ -119,6 +138,8 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -132,7 +153,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Günlük Test Bilgisi',
+          l10n.dailyTestInfo,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -168,13 +189,12 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                 // Title
                 Consumer(
                   builder: (context, ref, child) {
-                    final dailyCountAsync = ref.watch(dailyTestCountProvider);
+                    final remainingAsync = ref.watch(remainingTestCreditsProvider);
                     
-                    return dailyCountAsync.when(
-                      data: (count) {
-                        final remaining = (3 - count).clamp(0, 3);
+                    return remainingAsync.when(
+                      data: (remaining) {
                         return Text(
-                          'Bugün reklamsız yapabileceğin test sayısı: $remaining',
+                          l10n.adFreeTestsToday(remaining),
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
                             fontSize: 24,
@@ -184,7 +204,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                         );
                       },
                       loading: () => Text(
-                        'Bugün reklamsız yapabileceğin test sayısı: 3',
+                        l10n.adFreeTestsToday(3),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           fontSize: 24,
@@ -193,7 +213,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                         ),
                       ),
                       error: (_, __) => Text(
-                        'Bugün reklamsız yapabileceğin test sayısı: 3',
+                        l10n.adFreeTestsToday(3),
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           fontSize: 24,
@@ -209,13 +229,13 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                 // Description (Clickable)
                 Consumer(
                   builder: (context, ref, child) {
-                    final dailyCountAsync = ref.watch(dailyTestCountProvider);
+                    final remainingAsync = ref.watch(remainingTestCreditsProvider);
                     
-                    return dailyCountAsync.when(
-                      data: (count) {
-                        final remaining = 3 - count;
+                    return remainingAsync.when(
+                      data: (remaining) {
+                        final canWatchAd = remaining > 0;
                         return InkWell(
-                          onTap: _watchAd,
+                          onTap: canWatchAd ? _watchAd : null,
                           borderRadius: BorderRadius.circular(8),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -234,13 +254,17 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'Video izle, +1 test hakkı kazan.',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.medicalBlue,
+                                    Flexible(
+                                      child: Text(
+                                        l10n.watchAdForExtraTest,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.medicalBlue,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     const SizedBox(width: 8),
@@ -253,12 +277,16 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'Kalan hak: $remaining',
+                                  canWatchAd 
+                                    ? l10n.testCreditsRemaining(remaining)
+                                    : l10n.dailyTestQuotaReached,
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.inter(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: AppColors.medicalBlue.withOpacity(0.8),
+                                    color: canWatchAd 
+                                      ? AppColors.medicalBlue.withOpacity(0.8)
+                                      : AppColors.errorRed,
                                   ),
                                 ),
                               ],
@@ -295,7 +323,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Bilgi',
+                            l10n.about,
                             style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -306,7 +334,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Reklamsız test haklarınız her gün yenilenir. Reklam izleyerek sınırsız test ve egzersiz yapabilirsiniz.',
+                        l10n.dailyTestLimitDesc,
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -321,7 +349,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                 
                 // Watch Ad Button
                 AppButton(
-                  text: _isLoading ? 'Reklam Yükleniyor...' : 'Reklam İzle (+1 Test)',
+                  text: _isLoading ? l10n.adLoading : l10n.watchAdForExtraTest,
                   icon: _isLoading ? null : LucideIcons.playCircle,
                   onPressed: _isLoading ? null : _watchAd,
                   width: double.infinity,
@@ -332,7 +360,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                 
                 // Continue Button
                 AppButton(
-                  text: 'Devam Et',
+                  text: l10n.continueFree,
                   icon: LucideIcons.arrowRight,
                   onPressed: _continue,
                   width: double.infinity,
@@ -347,29 +375,61 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                     color: AppColors.premiumGold,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: TextButton(
-                    onPressed: () {
-                      context.pop();
-                      context.push(AppRoutes.paywall);
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final productAsync = ref.watch(premiumProductProvider);
+                      
+                      return TextButton(
+                        onPressed: () {
+                          context.pop();
+                          context.push(AppRoutes.paywall);
+                        },
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 16,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: productAsync.when(
+                          data: (product) {
+                            final price = product?.price ?? '₺79.99';
+                            return Text(
+                              l10n.premiumLifetimePrice(price),
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.inter(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            );
+                          },
+                          loading: () => const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          ),
+                          error: (_, __) => Text(
+                            l10n.premiumLifetimePrice('₺79.99'),
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      );
                     },
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 16,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: Text(
-                      'Premium Ol - Ömür Boyu Sadece ₺79.99',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -395,7 +455,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Premium avantajları:',
+                            l10n.premiumAdvantages,
                             style: GoogleFonts.inter(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
@@ -405,13 +465,13 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildPremiumAdvantage('• Sınırsız test ve egzersiz'),
+                      _buildPremiumAdvantage('• ${l10n.unlimitedTests}'),
                       const SizedBox(height: 8),
-                      _buildPremiumAdvantage('• Detaylı görme analizi'),
+                      _buildPremiumAdvantage('• ${l10n.detailedAnalysis}'),
                       const SizedBox(height: 8),
-                      _buildPremiumAdvantage('• Geçmiş kayıtlarınız'),
+                      _buildPremiumAdvantage('• ${l10n.historyTracking}'),
                       const SizedBox(height: 8),
-                      _buildPremiumAdvantage('• Reklamsız kullanım'),
+                      _buildPremiumAdvantage('• ${l10n.adFreeExperience}'),
                     ],
                   ),
                 ),

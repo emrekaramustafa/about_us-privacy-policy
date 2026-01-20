@@ -14,9 +14,23 @@ class AdService {
   bool _isRewardedAdReady = false;
 
   // Test Ad Unit IDs (replace with real IDs in production)
-  static const String _rewardedAdUnitId = kDebugMode
-      ? 'ca-app-pub-3940256099942544/5224354917' // Test ID
-      : 'YOUR_REWARDED_AD_UNIT_ID'; // Production ID
+  // Android Test ID: ca-app-pub-3940256099942544/5224354917
+  // iOS Test ID: ca-app-pub-3940256099942544/1712485313
+  
+  String get _rewardedAdUnitId {
+    if (kDebugMode) {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        return 'ca-app-pub-3940256099942544/1712485313';
+      }
+      return 'ca-app-pub-3940256099942544/5224354917';
+    }
+
+    // Production IDs
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return 'ca-app-pub-6401639781794250/4036226500'; // iOS ID
+    }
+    return 'ca-app-pub-6401639781794250/5699009570'; // Android ID
+  }
 
   /// Initialize AdMob
   Future<void> initialize() async {

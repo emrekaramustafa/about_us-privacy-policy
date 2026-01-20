@@ -8,6 +8,7 @@ import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/core/services/notification_service.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Test History Page
 /// Displays all test results with statistics and trends
@@ -57,6 +58,8 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -73,10 +76,10 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
         ),
         title: Text(
           _currentView == HistoryViewType.menu
-              ? 'Geçmiş'
+              ? l10n.history
               : _currentView == HistoryViewType.tests
-                  ? 'Geçmiş Testler'
-                  : 'Geçmiş Egzersizler',
+                  ? l10n.testHistory
+                  : l10n.exerciseHistory,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -116,6 +119,8 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildMenuView() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -124,8 +129,8 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
           const SizedBox(height: 20),
           _buildMenuCard(
             icon: LucideIcons.clipboardCheck,
-            title: 'Geçmiş Testler',
-            subtitle: 'Tüm test sonuçlarınızı görüntüleyin',
+            title: l10n.testHistory,
+            subtitle: l10n.viewAllTestResults,
             gradient: LinearGradient(
               colors: [AppColors.medicalBlue, AppColors.medicalTeal],
             ),
@@ -136,8 +141,8 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
           const SizedBox(height: 16),
           _buildMenuCard(
             icon: LucideIcons.activity,
-            title: 'Geçmiş Egzersizler',
-            subtitle: 'Egzersiz geçmişinizi takvimde görüntüleyin',
+            title: l10n.exerciseHistory,
+            subtitle: l10n.viewExerciseHistoryCalendar,
             gradient: LinearGradient(
               colors: [AppColors.medicalTeal, AppColors.medicalBlue],
             ),
@@ -222,6 +227,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildTestsView() {
+    final l10n = AppLocalizations.of(context)!;
     final history = ref.watch(testHistoryProvider);
     
     return history.isEmpty
@@ -303,7 +309,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _getMonthName(currentMonth.month) + ' ${currentMonth.year}',
+                _getMonthName(currentMonth.month, AppLocalizations.of(context)!) + ' ${currentMonth.year}',
                 style: GoogleFonts.inter(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -321,21 +327,35 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
           ),
           const SizedBox(height: 20),
           // Weekday headers
-          Row(
-            children: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz']
-                .map((day) => Expanded(
-                      child: Center(
-                        child: Text(
-                          day,
-                          style: GoogleFonts.inter(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textSecondary,
+          Builder(
+            builder: (context) {
+              final l10n = AppLocalizations.of(context)!;
+              final weekdays = [
+                l10n.weekdayMonday,
+                l10n.weekdayTuesday,
+                l10n.weekdayWednesday,
+                l10n.weekdayThursday,
+                l10n.weekdayFriday,
+                l10n.weekdaySaturday,
+                l10n.weekdaySunday,
+              ];
+              return Row(
+                children: weekdays
+                    .map((day) => Expanded(
+                          child: Center(
+                            child: Text(
+                              day,
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ))
-                .toList(),
+                        ))
+                    .toList(),
+              );
+            },
           ),
           const SizedBox(height: 8),
           // Calendar grid
@@ -432,7 +452,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
               ),
               const SizedBox(width: 8),
               Text(
-                'Egzersiz yapılan günler',
+                AppLocalizations.of(context)!.exerciseDaysCompleted,
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   color: AppColors.textSecondary,
@@ -446,6 +466,8 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildEmptyState() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -467,7 +489,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Henüz test geçmişi yok',
+              l10n.noTestsYet,
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -476,7 +498,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Test yaptıkça sonuçlarınız burada görünecek',
+              l10n.testResultsWillAppearHere,
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: AppColors.textSecondary,
@@ -487,7 +509,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             ElevatedButton.icon(
               onPressed: () => context.go(AppRoutes.home),
               icon: const Icon(LucideIcons.eye),
-              label: const Text('Test Yap'),
+              label: Text(AppLocalizations.of(context)!.startTest),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.medicalBlue,
                 foregroundColor: Colors.white,
@@ -501,6 +523,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildStatisticsCard() {
+    final l10n = AppLocalizations.of(context)!;
     final stats = _statistics!;
     final totalTests = stats['totalTests'] as int;
     final averageScore = stats['averageScore'] as double;
@@ -527,7 +550,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'İstatistikler',
+            l10n.statistics,
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -539,7 +562,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             children: [
               Expanded(
                 child: _buildStatItem(
-                  'Toplam Test',
+                  l10n.totalTests,
                   totalTests.toString(),
                   LucideIcons.clipboardCheck,
                 ),
@@ -547,7 +570,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
               const SizedBox(width: 16),
               Expanded(
                 child: _buildStatItem(
-                  'Ortalama',
+                  l10n.averageScore,
                   '${averageScore.toStringAsFixed(0)}%',
                   LucideIcons.trendingUp,
                 ),
@@ -559,7 +582,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             const Divider(color: Colors.white30),
             const SizedBox(height: 8),
             Text(
-              'Test Türlerine Göre',
+              l10n.testTypesByType,
               style: GoogleFonts.inter(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -578,7 +601,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    '${_getTestName(entry.key)}: ${entry.value}',
+                    '${_getTestName(entry.key, l10n)}: ${entry.value}',
                     style: GoogleFonts.inter(
                       fontSize: 11,
                       color: Colors.white,
@@ -627,6 +650,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildHistoryList(List<TestResult> history) {
+    final l10n = AppLocalizations.of(context)!;
     // Group by date
     final groupedHistory = <DateTime, List<TestResult>>{};
     for (final result in history) {
@@ -638,7 +662,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Geçmiş',
+          l10n.history,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -662,6 +686,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildDateHeader(DateTime date) {
+    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
@@ -669,13 +694,13 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
     
     String dateText;
     if (dateOnly == today) {
-      dateText = 'Bugün';
+      dateText = l10n.today;
     } else if (dateOnly == yesterday) {
-      dateText = 'Dün';
+      dateText = l10n.yesterday;
     } else {
       // Use simple format to avoid locale issues
       final day = date.day;
-      final month = _getMonthName(date.month);
+      final month = _getMonthName(date.month, l10n);
       final year = date.year;
       dateText = '$day $month $year';
     }
@@ -694,6 +719,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
   }
 
   Widget _buildHistoryItem(TestResult result) {
+    final l10n = AppLocalizations.of(context)!;
     final color = _getStatusColor(result.percentage);
     final hour = result.dateTime.hour.toString().padLeft(2, '0');
     final minute = result.dateTime.minute.toString().padLeft(2, '0');
@@ -735,7 +761,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  result.testName,
+                  _getTestName(result.testType, l10n),
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -808,48 +834,50 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
     }
   }
 
-  String _getTestName(String testType) {
+  String _getTestName(String testType, AppLocalizations l10n) {
     switch (testType) {
       case 'visual_acuity':
-        return 'Görme Keskinliği';
+        return l10n.visualAcuityTitle;
       case 'color_vision':
-        return 'Renk Körlüğü';
+        return l10n.colorVisionTitle;
       case 'astigmatism':
-        return 'Astigmat';
+        return l10n.astigmatismTitle;
       case 'stereopsis':
       case 'binocular_vision':
-        return 'Vergence Testi';
+        return l10n.stereopsisTitle;
       case 'near_vision':
-        return 'Yakın Görme';
+        return l10n.nearVisionTitle;
       case 'macular':
-        return 'Makula';
+        return l10n.macularTitle;
       case 'peripheral_vision':
-        return 'Periferik';
+        return l10n.peripheralVisionTitle;
       case 'eye_movement':
-        return 'Hareket Takip';
+        return l10n.eyeMovementTitle;
       default:
         return 'Test';
     }
   }
 
   void _showClearHistoryDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
-          'Geçmişi Temizle',
+          l10n.clearHistory,
           style: GoogleFonts.inter(fontWeight: FontWeight.w700),
         ),
         content: Text(
-          'Tüm test geçmişini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+          l10n.confirmClearHistory,
           style: GoogleFonts.inter(),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'İptal',
+              l10n.cancel,
               style: GoogleFonts.inter(color: AppColors.textSecondary),
             ),
           ),
@@ -860,13 +888,14 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
               await ref.read(testHistoryProvider.notifier).refresh();
               setState(() => _statistics = null);
               if (mounted) {
+                final l10n = AppLocalizations.of(context)!;
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Geçmiş temizlendi')),
+                  SnackBar(content: Text(l10n.success)),
                 );
               }
             },
             child: Text(
-              'Temizle',
+              l10n.clear,
               style: GoogleFonts.inter(color: AppColors.errorRed),
             ),
           ),
@@ -875,21 +904,34 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
     );
   }
 
-  String _getMonthName(int month) {
-    const months = [
-      'Ocak',
-      'Şubat',
-      'Mart',
-      'Nisan',
-      'Mayıs',
-      'Haziran',
-      'Temmuz',
-      'Ağustos',
-      'Eylül',
-      'Ekim',
-      'Kasım',
-      'Aralık',
-    ];
-    return months[month - 1];
+  String _getMonthName(int month, AppLocalizations l10n) {
+    switch (month) {
+      case 1:
+        return l10n.monthJanuary;
+      case 2:
+        return l10n.monthFebruary;
+      case 3:
+        return l10n.monthMarch;
+      case 4:
+        return l10n.monthApril;
+      case 5:
+        return l10n.monthMay;
+      case 6:
+        return l10n.monthJune;
+      case 7:
+        return l10n.monthJuly;
+      case 8:
+        return l10n.monthAugust;
+      case 9:
+        return l10n.monthSeptember;
+      case 10:
+        return l10n.monthOctober;
+      case 11:
+        return l10n.monthNovember;
+      case 12:
+        return l10n.monthDecember;
+      default:
+        return '';
+    }
   }
 }

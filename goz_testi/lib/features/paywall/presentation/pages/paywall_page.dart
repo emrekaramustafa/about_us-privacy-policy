@@ -8,6 +8,7 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/services/purchase_service.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Paywall Page
 /// 
@@ -29,28 +30,31 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
   bool _isLoading = false;
   bool _showScrollIndicator = true;
 
-  final List<_PremiumFeature> _features = [
-    _PremiumFeature(
-      icon: LucideIcons.unlock,
-      title: 'Tüm testleri sınırsız yap',
-      description: 'Görme durumunu farklı zamanlarda ölç',
-    ),
-    _PremiumFeature(
-      icon: LucideIcons.fileText,
-      title: 'Detaylı raporlar & karşılaştırmalar',
-      description: 'Önceki sonuçlarla farkları gör',
-    ),
-    _PremiumFeature(
-      icon: LucideIcons.activity,
-      title: 'Egzersiz geçmişi & takip',
-      description: 'Günlük egzersizlerini kaydet ve ilerlemeyi gör',
-    ),
-    _PremiumFeature(
-      icon: LucideIcons.ban,
-      title: 'Reklamsız, kesintisiz deneyim',
-      description: 'Testlere daha rahat odaklan',
-    ),
-  ];
+  List<_PremiumFeature> _getFeatures(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      _PremiumFeature(
+        icon: LucideIcons.unlock,
+        title: l10n.premiumFeature1Title,
+        description: l10n.premiumFeature1Desc,
+      ),
+      _PremiumFeature(
+        icon: LucideIcons.fileText,
+        title: l10n.premiumFeature2Title,
+        description: l10n.premiumFeature2Desc,
+      ),
+      _PremiumFeature(
+        icon: LucideIcons.activity,
+        title: l10n.premiumFeature3Title,
+        description: l10n.premiumFeature3Desc,
+      ),
+      _PremiumFeature(
+        icon: LucideIcons.ban,
+        title: l10n.premiumFeature4Title,
+        description: l10n.premiumFeature4Desc,
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -99,9 +103,10 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
       if (!success) {
         if (mounted) {
           setState(() => _isLoading = false);
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Premium aktif edilemedi. Lütfen tekrar deneyin.'),
+              content: Text(l10n.premiumActivationFailed),
               backgroundColor: AppColors.errorRed,
               behavior: SnackBarBehavior.floating,
             ),
@@ -129,9 +134,10 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Hata: ${e.toString()}'),
+            content: Text(l10n.errorOccurred(e.toString())),
             backgroundColor: AppColors.errorRed,
             behavior: SnackBarBehavior.floating,
           ),
@@ -159,7 +165,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      '🎉 Premium Aktif!',
+                      AppLocalizations.of(context)!.premiumActive,
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -171,7 +177,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
               ),
               const SizedBox(height: 12),
               Text(
-                'Artık tüm premium özelliklerden faydalanabilirsiniz:',
+                AppLocalizations.of(context)!.premiumActiveDesc,
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -179,10 +185,10 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                 ),
               ),
               const SizedBox(height: 8),
-              _buildBenefitItem('✓ Sınırsız test ve egzersiz'),
-              _buildBenefitItem('✓ Detaylı görme analizi'),
-              _buildBenefitItem('✓ Geçmiş kayıtlarınız'),
-              _buildBenefitItem('✓ Reklamsız kullanım'),
+              _buildBenefitItem(AppLocalizations.of(context)!.premiumBenefit1),
+              _buildBenefitItem(AppLocalizations.of(context)!.premiumBenefit2),
+              _buildBenefitItem(AppLocalizations.of(context)!.premiumBenefit3),
+              _buildBenefitItem(AppLocalizations.of(context)!.premiumBenefit4),
             ],
           ),
         ),
@@ -242,7 +248,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
           setState(() => _isLoading = false);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Geri yüklenecek satın alma bulunamadı.'),
+              content: Text(AppLocalizations.of(context)!.noRestoreFound),
               behavior: SnackBarBehavior.floating,
             ),
           );
@@ -251,9 +257,10 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
     } catch (e) {
       if (mounted) {
         setState(() => _isLoading = false);
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Hata: ${e.toString()}'),
+            content: Text(l10n.errorOccurred(e.toString())),
             backgroundColor: AppColors.errorRed,
             behavior: SnackBarBehavior.floating,
           ),
@@ -294,7 +301,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                   TextButton(
                     onPressed: _isLoading ? null : _onRestore,
                     child: Text(
-                      'Satın Alımı Geri Yükle',
+                      AppLocalizations.of(context)!.restore,
                       style: GoogleFonts.inter(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w500,
@@ -329,7 +336,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                         child: Column(
                           children: [
                             Text(
-                              'Göz Sağlığını Takip Et',
+                              AppLocalizations.of(context)!.trackEyeHealth,
                               style: GoogleFonts.inter(
                                 fontSize: 32,
                                 fontWeight: FontWeight.w700,
@@ -340,7 +347,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                             ),
                             const SizedBox(height: 12),
                             Text(
-                              'Testlerini karşılaştır, günlük egzersizlerini yap, reklamsız, kesintisiz kullan',
+                              AppLocalizations.of(context)!.trackEyeHealthDesc,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 color: AppColors.textSecondary,
@@ -356,8 +363,8 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                     const SizedBox(height: 40),
                     
                     // Features List
-                    ...List.generate(_features.length, (index) {
-                      final feature = _features[index];
+                    ...List.generate(_getFeatures(context).length, (index) {
+                      final feature = _getFeatures(context)[index];
                       final delay = 0.1 * index;
                       
                       return FadeTransition(
@@ -422,7 +429,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                'Tek Seferlik Ödeme',
+                                AppLocalizations.of(context)!.oneTimePayment,
                                 style: GoogleFonts.inter(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -435,36 +442,115 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '₺',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white.withOpacity(0.8),
-                                  ),
-                                ),
-                                Text(
-                                  '79',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 64,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                    height: 1,
-                                  ),
-                                ),
-                                Text(
-                                  '.99',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white.withOpacity(0.8),
-                                  ),
+                                Consumer(
+                                  builder: (context, ref, child) {
+                                    final productAsync = ref.watch(premiumProductProvider);
+                                    
+                                    return productAsync.when(
+                                      data: (product) {
+                                        final price = product?.price ?? '₺79.99';
+                                        
+                                        // Try to parse currency symbol and amount
+                                        // This is a simple parser, might need adjustment based on format
+                                        String symbol = '₺';
+                                        String amount = '79';
+                                        String decimals = '.99';
+                                        
+                                        if (product != null) {
+                                          // Simple logic: if it contains a currency symbol like $ or €, use it
+                                          // Otherwise default to local format
+                                          // For now, just display the full price string nicely formatted if possible
+                                          // or fall back to the simple display
+                                          
+                                          // Return the full price string for now to be safe with different currencies
+                                          return Text(
+                                            price,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 48,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              height: 1,
+                                            ),
+                                          );
+                                        }
+                                        
+                                        return Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              symbol,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white.withOpacity(0.8),
+                                              ),
+                                            ),
+                                            Text(
+                                              amount,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 64,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                                height: 1,
+                                              ),
+                                            ),
+                                            Text(
+                                              decimals,
+                                              style: GoogleFonts.inter(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white.withOpacity(0.8),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      loading: () => const SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 3,
+                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                        ),
+                                      ),
+                                      error: (_, __) => Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '₺',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white.withOpacity(0.8),
+                                            ),
+                                          ),
+                                          Text(
+                                            '79',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 64,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white,
+                                              height: 1,
+                                            ),
+                                          ),
+                                          Text(
+                                            '.99',
+                                            style: GoogleFonts.inter(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white.withOpacity(0.8),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Ömür boyu erişim',
+                              AppLocalizations.of(context)!.lifetimeAccessDesc,
                               style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
@@ -473,7 +559,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Tek sefer öde • Güncellemeler dahil',
+                              AppLocalizations.of(context)!.singlePaymentNote,
                               style: GoogleFonts.inter(
                                 fontSize: 12,
                                 color: Colors.white.withOpacity(0.8),
@@ -505,7 +591,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                                         ),
                                       )
                                     : Text(
-                                        'Premium ile Devam Et',
+                                        AppLocalizations.of(context)!.continueWithPremium,
                                         style: GoogleFonts.inter(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
@@ -528,7 +614,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                         curve: const Interval(0.7, 1.0),
                       ),
                       child: Text(
-                        'Bu uygulama tıbbi teşhis koymaz. Testler bilgilendirme ve takip amaçlıdır.',
+                        AppLocalizations.of(context)!.paywallDisclaimer,
                         style: GoogleFonts.inter(
                           fontSize: 12,
                           color: AppColors.textTertiary,
@@ -575,7 +661,7 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Aşağı kaydır',
+                                    AppLocalizations.of(context)!.scrollDown,
                                     style: GoogleFonts.inter(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,

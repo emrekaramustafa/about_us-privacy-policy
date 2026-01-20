@@ -1,16 +1,16 @@
 import 'dart:async';
-import 'dart:ui';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import 'package:goz_testi/core/theme/app_theme.dart';
 import 'package:goz_testi/core/router/app_router.dart';
+import 'package:goz_testi/core/providers/locale_provider.dart';
 import 'package:goz_testi/core/services/notification_service.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/core/services/ad_service.dart';
 import 'package:goz_testi/core/services/purchase_service.dart';
-import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -58,13 +58,6 @@ void _initializeServicesInBackground() {
   StorageService().resetDailyCountsIfNeeded().catchError((e) {
     debugPrint('Storage init error: $e');
   });
-  
-  // Reset premium for testing
-  SharedPreferences.getInstance().then((prefs) {
-    prefs.setBool('is_premium', false);
-  }).catchError((e) {
-    debugPrint('Prefs error: $e');
-  });
 }
 
 /// Main Application Widget
@@ -74,12 +67,45 @@ class GozTestiApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    final locale = ref.watch(localeProvider);
     
     return MaterialApp.router(
-      title: 'Göz Testi',
+      title: 'Eye Test',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routerConfig: router,
+      
+      // Use selected locale or fall back to system locale
+      locale: locale,
+      
+      // Localization delegates
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: SupportedLocales.all,
+      
+      // Locale resolution callback
+      localeResolutionCallback: (deviceLocale, supportedLocales) {
+        // If user has selected a locale, use it
+        if (locale != null) {
+          return locale;
+        }
+        
+        // Try to match device locale
+        if (deviceLocale != null) {
+          for (final supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == deviceLocale.languageCode) {
+              return supportedLocale;
+            }
+          }
+        }
+        
+        // Default to English
+        return SupportedLocales.english;
+      },
     );
   }
 }

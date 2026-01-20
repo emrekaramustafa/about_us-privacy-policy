@@ -1,0 +1,1222 @@
+{
+  "@@locale": "en",
+  
+  "appName": "Eye Test",
+  "appTagline": "Smart Tests for Your Eye Health",
+  
+  "splashSubtitle": "Eye tests and daily exercises",
+  
+  "disclaimerTitle": "Important Notice",
+  "disclaimerContent": "This app is for informational and entertainment purposes only.\n\n⚠️ This app DOES NOT provide medical diagnosis.\n\n• Results do not replace professional eye examination.\n• If you experience any vision problems, please consult an eye doctor.\n• Test results may be affected by screen size, brightness, and environmental conditions.\n\nBy using this app, you agree to the above conditions.",
+  "acceptAndContinue": "Accept and Continue",
+  "medicalWarning": "Medical Warning",
+  "informationalPurpose": "For Informational Purposes",
+  "informationalPurposeDesc": "This app is for educational and awareness purposes only.",
+  "professionalExamination": "Professional Examination",
+  "professionalExaminationDesc": "Visit your eye doctor for regular eye examinations.",
+  "readAndAccept": "I have read and accept the above warnings",
+  "scrollDown": "Scroll down",
+  
+  "homeTitle": "Eye Health",
+  "homeSubtitle": "Tests, exercises, additional info, detailed results",
+  "freeLabel": "Free",
+  "premiumLabel": "Premium",
+  "settings": "Settings",
+  
+  "eyeExercises": "Eye Exercises",
+  "eyeExercisesDesc": "Relax your eyes with daily eye exercises",
+  "eyeTests": "Eye Tests",
+  "eyeTestsDesc": "Evaluate your eye health with 8 different eye tests",
+  "didYouKnow": "Did You Know?",
+  "didYouKnowDesc": "Discover interesting facts about eyes",
+  "goPremium": "Go Premium",
+  "goPremiumDesc": "Access all tests and get detailed reports",
+  "testHistory": "Exercise and Test History",
+  "testHistoryDesc": "View all your test results and exercise history",
+  
+  "visualAcuityTitle": "Visual Acuity",
+  "visualAcuityDesc": "Snellen E Test",
+  "colorVisionTitle": "Color Blindness",
+  "colorVisionDesc": "Ishihara Test",
+  "astigmatismTitle": "Astigmatism Test",
+  "astigmatismDesc": "Line Diagram",
+  "stereopsisTitle": "Vergence Test",
+  "stereopsisDesc": "Convergence/Divergence Test",
+  "nearVisionTitle": "Near Vision",
+  "nearVisionDesc": "Near Reading Test",
+  "macularTitle": "Macular Test",
+  "macularDesc": "Amsler Grid Test",
+  "peripheralVisionTitle": "Peripheral Vision",
+  "peripheralVisionDesc": "Side Vision Test",
+  "eyeMovementTitle": "Movement Tracking",
+  "eyeMovementDesc": "Tracking Test",
+  "contrastTitle": "Contrast Sensitivity",
+  "contrastDesc": "Contrast Perception Test",
+  
+  "testInstructions": "Test Instructions",
+  "startTest": "Start Test",
+  "nextQuestion": "Next",
+  "finishTest": "Finish Test",
+  "skipQuestion": "Skip",
+  "cannotSee": "Cannot See",
+  "notSure": "Not Sure",
+  
+  "visualAcuityInstructions": "• Hold the phone at eye level.\n• Recommended distance: arm's length (40 cm).\n• Select the direction of the letter E.\n• Press 'Cannot See' if you cannot see it.",
+  "closeRightEye": "Please close your right eye",
+  "closeLeftEye": "Please close your left eye",
+  "holdAtArmLength": "Hold the device at arm's length",
+  "startTestWhenReady": "You can start the test when you close your eye and hold the device at arm's length.",
+  "armLengthDistance": "Arm's Length (40 cm)",
+  "okay": "OK",
+  "markTheLetterYouSee": "Mark the letter you see",
+  
+  "colorVisionInstructions": "• Enter the number you see inside the circle.\n• Leave blank if you cannot see anything.\n• Set screen brightness to maximum.",
+  "enterNumber": "Enter the number you see",
+  "noNumberVisible": "Cannot See Number",
+  "whatNumberDoYouSee": "What number do you see?",
+  
+  "astigmatismInstructions": "• Look at the diagram with one eye.\n• Close your other eye.\n• Do all lines appear equal?",
+  "allLinesEqual": "All Lines Equal",
+  "someLinesdarker": "Some Lines Darker",
+  "whichEye": "Which eye are you looking with?",
+  "leftEye": "Left Eye",
+  "rightEye": "Right Eye",
+  "rightEyeTest": "Right Eye Test",
+  "leftEyeTest": "Left Eye Test",
+  "howDoLinesLook": "How do the lines look?",
+  
+  "nearVisionInstructions": "• Hold the device at reading distance (25-30 cm).\n• Read the text without squinting.",
+  "bookReadingDistance": "Book Reading Distance (25-30 cm)",
+  "canYouReadThis": "Can you read this text?",
+  "yesReadable": "Yes, I can read",
+  "noNotReadable": "No, I cannot read",
+  
+  "macularInstructions": "• Focus on the center point.\n• Check if lines appear wavy or distorted.",
+  "focusOnCenter": "Focus on the center point",
+  "linesAppearStraight": "Lines appear straight",
+  "linesAppearWavy": "Lines appear wavy/distorted",
+  
+  "peripheralInstructions": "• Keep your eyes on the red dot.\n• Indicate when you see an object appear in your peripheral vision.",
+  "keepFocusOnRedDot": "Keep your focus on the red dot",
+  "tapWhenYouSee": "Tap when you see an object",
+  
+  "eyeMovementInstructions": "• Follow the moving ball with your eyes.\n• Try not to move your head.",
+  "followTheBall": "Follow the ball with your eyes",
+  
+  "vergenceInstructions": "• Focus on the target.\n• Notice if you see double or blurred images.",
+  "focusOnTarget": "Focus on the target",
+  "seeDouble": "I see double",
+  "seeSingle": "I see single/clear",
+  
+  "resultsTitle": "Test Results",
+  "yourScore": "Your Score",
+  "shareResults": "Share Results",
+  "downloadPdf": "Download PDF",
+  "retakeTest": "Retake Test",
+  "nextTest": "Next Test",
+  "backToHome": "Back to Home",
+  "seeDoctor": "Consult an Eye Doctor",
+  "testCompleted": "Test Completed",
+  "exerciseCompleted": "Exercise Completed",
+  
+  "excellent": "Excellent",
+  "good": "Good",
+  "normal": "Normal",
+  "belowNormal": "Below Normal",
+  "needsAttention": "Needs Attention",
+  
+  "resultExcellent": "Your results are excellent! Continue to take care of your eye health.",
+  "resultGood": "Good results. Regular eye check-ups are recommended.",
+  "resultNormal": "Normal results. Keep monitoring your eye health.",
+  "resultBelowNormal": "Some areas need attention. Consider consulting an eye specialist.",
+  "resultNeedsAttention": "We recommend consulting an eye doctor for a professional examination.",
+  
+  "paywallTitle": "Go Premium",
+  "paywallSubtitle": "Access all tests and get detailed reports",
+  "unlockAllTests": "Unlock All Tests",
+  "getDetailedReports": "Get Detailed Reports",
+  "trackProgress": "Track Your Progress",
+  "oneTimePurchase": "One-Time Purchase",
+  "lifetimeAccess": "Lifetime Access",
+  "onlyPrice": "Only {price}",
+  "@onlyPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "restore": "Restore Purchase",
+  "continueFree": "Continue Free",
+  "premiumAdvantages": "Premium Advantages",
+  "unlimitedTests": "Unlimited tests and exercises",
+  "detailedAnalysis": "Detailed vision analysis",
+  "historyTracking": "History tracking",
+  "adFreeExperience": "Ad-free experience",
+  
+  "watchAdForTest": "Watch ad, earn +1 test credit. Remaining: {count}",
+  "@watchAdForTest": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "watchVideo": "Watch Video",
+  "earnExtraTest": "Earn +1 Test Credit",
+  "dailyTestLimit": "Daily Test Limit",
+  "dailyTestLimitDesc": "Free users can take 3 tests per day. Watch ads or go premium for more.",
+  "testCreditsRemaining": "Test credits remaining: {count}",
+  "@testCreditsRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "adLoading": "Loading ad...",
+  "adFailed": "Could not show ad. Please try again.",
+  "adRewardEarned": "+1 test credit earned!",
+  "adLoadFailed": "Could not load ad. Please try again later.",
+  "dailyTestQuotaReached": "Daily Test Quota Reached",
+  "dailyTestQuotaReachedDesc": "You have used your 3 ad-free tests today. You can watch ads or go Premium to take more tests.",
+  "watchAdOrPremium": "Watch Ad / Premium",
+  "premiumActivationFailed": "Could not activate Premium. Please try again.",
+  "errorOccurred": "Error: {error}",
+  "@errorOccurred": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "noRestoreFound": "No purchases found to restore.",
+  "dailyTestLimit": "Daily Test Limit",
+  "dailyTestLimitDesc": "You have completed 3 tests today. Choose an option to take more tests:",
+  "watchAd": "Watch Ad",
+  "earnTestCredit": "Earn +1 test credit",
+  "goPremium": "Go Premium",
+  "unlimitedTestsAndAnalysis": "Unlimited tests and detailed analysis",
+  "later": "Later",
+  "backToHome": "Back to home",
+  
+  "premiumFeature1Title": "Unlimited tests",
+  "premiumFeature1Desc": "Measure your vision at different times",
+  "premiumFeature2Title": "Detailed reports & comparisons",
+  "premiumFeature2Desc": "See differences with previous results",
+  "premiumFeature3Title": "Exercise history & tracking",
+  "premiumFeature3Desc": "Save your daily exercises and see progress",
+  "premiumFeature4Title": "Ad-free, uninterrupted experience",
+  "premiumFeature4Desc": "Focus more comfortably on tests",
+  
+  "premiumActive": "🎉 Premium Active!",
+  "premiumActiveDesc": "You can now enjoy all premium features:",
+  "premiumBenefit1": "✓ Unlimited tests and exercises",
+  "premiumBenefit2": "✓ Detailed vision analysis",
+  "premiumBenefit3": "✓ Your history records",
+  "premiumBenefit4": "✓ Ad-free usage",
+  
+  "trackEyeHealth": "Track Your Eye Health",
+  "trackEyeHealthDesc": "Compare your tests, do daily exercises, use ad-free and uninterrupted",
+  "oneTimePayment": "One-Time Payment",
+  "lifetimeAccessDesc": "Lifetime access",
+  "singlePaymentNote": "Pay once • Updates included",
+  "continueWithPremium": "Continue with Premium",
+  "paywallDisclaimer": "This app does not provide medical diagnosis. Tests are for informational and tracking purposes.",
+  
+  "settingsTitle": "Settings",
+  "language": "Language",
+  "notifications": "Notifications",
+  "dailyReminder": "Daily Reminder",
+  "privacy": "Privacy Policy",
+  "terms": "Terms of Service",
+  "about": "About",
+  "version": "Version",
+  "rateApp": "Rate App",
+  "howWouldYouRateUs": "How would you rate our app?",
+  "thankYouForFeedback": "Thank you for your feedback!",
+  "submit": "Submit",
+  "shareApp": "Share App",
+  "contactUs": "Contact Us",
+  
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+  
+  "errorGeneric": "An error occurred",
+  "tryAgain": "Try Again",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "save": "Save",
+  "delete": "Delete",
+  "close": "Close",
+  "loading": "Loading...",
+  "success": "Success",
+  "comingSoon": "Coming Soon",
+  
+  "noHistory": "No test history yet",
+  "startFirstTest": "Start your first test!",
+  "clearHistory": "Clear History",
+  "confirmClearHistory": "Are you sure you want to clear all test history?",
+  "clear": "Clear",
+  "statistics": "Statistics",
+  "testTypesByType": "By Test Types",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "exerciseDaysCompleted": "Days with exercises",
+  "weekdayMonday": "Mon",
+  "weekdayTuesday": "Tue",
+  "weekdayWednesday": "Wed",
+  "weekdayThursday": "Thu",
+  "weekdayFriday": "Fri",
+  "weekdaySaturday": "Sat",
+  "weekdaySunday": "Sun",
+  "monthJanuary": "January",
+  "monthFebruary": "February",
+  "monthMarch": "March",
+  "monthApril": "April",
+  "monthMay": "May",
+  "monthJune": "June",
+  "monthJuly": "July",
+  "monthAugust": "August",
+  "monthSeptember": "September",
+  "monthOctober": "October",
+  "monthNovember": "November",
+  "monthDecember": "December",
+  
+  "exerciseBlinking": "Blinking",
+  "exerciseFocusShift": "Focus Shifting",
+  "exercisePalming": "Palming",
+  "exerciseCircularMovement": "Circular Movement",
+  "exerciseNearFar": "Near-Far Focus",
+  "exerciseFigureEight": "Figure Eight",
+  
+  "seconds": "seconds",
+  "minutes": "minutes",
+  "duration": "Duration",
+  "repetitions": "Repetitions",
+  
+  "selectProfile": "Select Profile",
+  "officeWorker": "Office Worker",
+  "student": "Student",
+  "driver": "Driver",
+  "senior": "Senior",
+  "general": "General",
+  
+  "testAdTitle": "TEST AD",
+  "testAdDesc": "This is a test ad",
+  "closeableIn": "Closeable in {seconds} seconds",
+  "@closeableIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "completeAndGetReward": "Complete and Get Reward",
+  "waiting": "Waiting... ({seconds})",
+  "@waiting": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "soundEffects": "Sound Effects",
+  "soundEffectsDesc": "Turn button click sounds on/off",
+  "notificationTime": "Notification Time",
+  "brightnessWarning": "Brightness Warning",
+  "brightnessWarningDesc": "Screen brightness warning before test",
+  "testSection": "Test",
+  
+  "dailyTestInfo": "Daily Test Information",
+  "adFreeTestsToday": "Number of ad-free tests you can take today: {count}",
+  "@adFreeTestsToday": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "watchAdForExtraTest": "Watch Ad for Extra Test",
+  "watchAdForExtraTestDesc": "Watch a short ad to get +1 test credit",
+  "premiumUnlimited": "Premium - Unlimited Tests",
+  "premiumUnlimitedDesc": "Unlimited tests and exercises. Detailed reports. History tracking. Ad-free experience.",
+  "premiumLifetimePrice": "Premium - Lifetime Access Only {price}",
+  "@premiumLifetimePrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "history": "History",
+  "testHistory": "Test History",
+  "exerciseHistory": "Exercise History",
+  "viewAllTestResults": "View all your test results",
+  "viewExerciseHistoryCalendar": "View your exercise history in calendar",
+  "noTestsYet": "No tests completed yet",
+  "noExercisesYet": "No exercises completed yet",
+  "totalTests": "Total Tests",
+  "averageScore": "Average Score",
+  "lastTestDate": "Last Test Date",
+  "testType": "Test Type",
+  "testDate": "Date",
+  "testScore": "Score",
+  "viewDetails": "View Details",
+  
+  "exerciseInfoTitle": "Eye Exercises",
+  "exerciseInfoSubtitle": "Daily exercises to relax and strengthen your eyes",
+  "exerciseInfoDesc": "Regular eye exercises can help reduce eye strain, improve focus, and maintain healthy vision. Choose a profile that matches your lifestyle to get personalized exercise recommendations.",
+  "startExercises": "Start Exercises",
+  "selectProfile": "Select Profile",
+  "profileDesc": "Choose a profile to get personalized exercise recommendations",
+  
+  "question": "Question",
+  "ofText": "of",
+  "leftEye": "Left Eye",
+  "rightEye": "Right Eye",
+  "testInfo": "Test Information",
+  "testInfoDesc": "This test will evaluate your visual acuity. Follow the instructions carefully.",
+  "questionNumber": "Question {current} of {total}",
+  "questionsDuringTest": "{count} questions will be asked during the test.",
+  "@questionsDuringTest": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "startButton": "Start",
+  "@questionNumber": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "selectDirection": "Select the direction",
+  "selectLetter": "Select the letter",
+  "enterNumber": "Enter the number",
+  "selectAnswer": "Select your answer",
+  
+  "resultSummary": "Result Summary",
+  "leftEyeScore": "Left Eye Score",
+  "rightEyeScore": "Right Eye Score",
+  "overallScore": "Overall Score",
+  "percentage": "{value}%",
+  "@percentage": {
+    "placeholders": {
+      "value": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "exerciseName": "Exercise Name",
+  "exerciseDescription": "Description",
+  "exerciseDuration": "Duration",
+  "exerciseRepetitions": "Repetitions",
+  "startExercise": "Start Exercise",
+  "nextExercise": "Next Exercise",
+  "completeExercise": "Complete Exercise",
+  "exerciseProgress": "Exercise {current} of {total}",
+  "@exerciseProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "repetitionProgress": "Repetition {current} of {total}",
+  "@repetitionProgress": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "timeRemaining": "Time Remaining",
+  "completed": "Completed",
+  
+  "factTitle": "Did You Know?",
+  "factSubtitle": "Interesting facts about eyes",
+  "swipeToSeeMore": "Swipe to see more facts",
+  "fact": "Fact",
+  "nextFact": "Next Fact",
+  "previousFact": "Previous Fact",
+  
+  "testResultsWillAppearHere": "Your test results will appear here as you complete tests",
+  
+  "privacyPolicyTitle": "Privacy Policy",
+  "privacyPolicySubtitle": "Learn how your data is protected",
+  "privacySection1Title": "1. Data Collection",
+  "privacySection1Content": "Our app may collect the following data to provide and improve our services:\n\n• Test results and history (stored on your device)\n• Usage statistics (anonymous)\n• Device information (operating system, model)\n• Application performance data\n\nPersonal identification information (name, email, phone) is not collected.",
+  "privacySection2Title": "2. Data Usage",
+  "privacySection2Content": "Collected data is used for the following purposes:\n\n• Viewing and comparing your test results\n• Improving application performance\n• Debugging and resolving technical issues\n• Enhancing user experience\n\nYour data is not shared with third parties for advertising purposes.",
+  "privacySection3Title": "3. Data Storage",
+  "privacySection3Content": "• Test results and history are stored locally on your device\n• If you delete the app, all your data will be deleted\n• No cloud synchronization is performed\n• Your data is stored securely encrypted",
+  "privacySection4Title": "4. Third-Party Services",
+  "privacySection4Content": "Our app may use the following third-party services:\n\n• Google AdMob: For ad display\n• Google Play Services: For in-app purchases\n• Firebase Analytics: For usage statistics (anonymous)\n\nThese services are subject to their own privacy policies.",
+  "privacySection5Title": "5. Children's Privacy",
+  "privacySection5Content": "Our app does not knowingly collect personal information from children under 13. If we discover that we have collected personal information from a child, we will immediately delete that information.",
+  "privacySection6Title": "6. Your Rights",
+  "privacySection6Content": "You have the following rights regarding your data:\n\n• Access to your data\n• Correction of your data\n• Deletion of your data\n• Data portability\n• Right to object\n\nYou can delete your data from the app settings to exercise these rights.",
+  "privacySection7Title": "7. Changes",
+  "privacySection7Content": "We may update our privacy policy from time to time. In case of significant changes, a notification will be sent within the app. Last update date: {year}",
+  "@privacySection7Content": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "privacySection8Title": "8. Contact",
+  "privacySection8Content": "If you have questions about our privacy policy, please contact us through the \"About\" section in the app.",
+  "privacyImportantNote": "Important Note",
+  "privacyDisclaimer": "This privacy policy describes the app's data collection and usage practices. By using the app, you agree to this policy.",
+  
+  "termsOfServiceTitle": "Terms of Service",
+  "termsOfServiceSubtitle": "Service terms and conditions",
+  "termsSection1Title": "1. Use of Service",
+  "termsSection1Content": "This app is for informational and educational purposes. By using the app, you agree that:\n\n• The app is for informational purposes only\n• Test results do not replace professional eye examination\n• You will use the app in compliance with laws\n• You will not misuse the app",
+  "termsSection2Title": "2. Not Medical Advice",
+  "termsSection2Content": "IMPORTANT: This app does not provide medical advice, diagnosis, or treatment.\n\n• Test results are for informational purposes only\n• If you experience any vision problems, please consult an eye doctor\n• Test results may be affected by screen size, brightness, and environmental conditions\n• Do not make medical decisions based on app results",
+  "termsSection3Title": "3. User Responsibilities",
+  "termsSection3Content": "As a user, you are responsible for:\n\n• Conducting tests under proper conditions\n• Not misinterpreting test results\n• Using the app in compliance with laws\n• Not using the app to harm third parties",
+  "termsSection4Title": "4. Intellectual Property",
+  "termsSection4Content": "• All app content is protected by copyright\n• You may not copy, distribute, or modify the content\n• May not be used for commercial purposes\n• Brand names and logos belong to their owners",
+  "termsSection5Title": "5. Service Changes",
+  "termsSection5Content": "• We reserve the right to change app content and features at any time\n• Notifications will be sent for significant changes\n• We reserve the right to temporarily or permanently suspend the service\n• Keep the app updated to stay informed of changes",
+  "termsSection6Title": "6. Disclaimer",
+  "termsSection6Content": "The app is provided \"as is\". We are not responsible for:\n\n• Accuracy or reliability of test results\n• Any damage arising from app use\n• Data loss or device damage\n• Interruption of third-party services\n• App errors or technical issues",
+  "termsSection7Title": "7. Paid Services",
+  "termsSection7Content": "• In-app purchases (Premium) are non-refundable\n• Purchases are subject to Google Play Store or App Store policies\n• Refund requests are evaluated according to relevant store policies\n• Premium features may be changed or removed",
+  "termsSection8Title": "8. Termination",
+  "termsSection8Content": "We may terminate your service in the following cases:\n\n• When you violate the terms\n• When you engage in illegal activities\n• When you harm other users\n• When you misuse the app\n\nYour data may be deleted upon termination.",
+  "termsSection9Title": "9. Changes",
+  "termsSection9Content": "We may update the terms of service from time to time. Notifications will be sent in the app for significant changes. It is recommended that you check the terms regularly. Last update date: {year}",
+  "@termsSection9Content": {
+    "placeholders": {
+      "year": {
+        "type": "int"
+      }
+    }
+  },
+  "termsSection10Title": "10. Contact and Complaints",
+  "termsSection10Content": "If you have questions or complaints about the terms of service, please contact us through the \"About\" section in the app.",
+  "termsImportantWarning": "Important Warning",
+  "termsDisclaimer": "By using this app, you agree to the above terms of service. If you do not agree to the terms, please do not use the app.",
+  
+  "testAbout": "About the Test",
+  "testInstructions": "Test Instructions",
+  "continueText": "Continue",
+  "startTest": "Start Test",
+  
+  "visualAcuityInfoTitle": "What is Visual Acuity Test?",
+  "visualAcuityInfoDesc": "Visual acuity test measures how clearly you can see. This test is based on the Snellen letter chart used in standard eye examinations.",
+  "visualAcuityInfoTip": "A healthy individual should be able to see all letters clearly throughout the test. If letters appear blurry or you are unsure, select the \"I'm Not Sure\" option.",
+  "visualAcuityInfoWarning": "During the test, each eye will be evaluated separately. You need to complete the test by closing one eye.",
+  "visualAcuityLeftEyeTitle": "Left Eye Test",
+  "visualAcuityLeftEyeInstruction": "Please close your RIGHT eye and hold the device at arm's length.",
+  "visualAcuityLeftEyeSubInstruction": "10 questions will be asked during the test.",
+  "visualAcuityRightEyeTitle": "Right Eye Test",
+  "visualAcuityRightEyeInstruction": "Please close your LEFT eye and hold the device at arm's length.",
+  "visualAcuityRightEyeSubInstruction": "10 questions will be asked during the test.",
+  "visualAcuityDistanceDialogTitle": "Arm's Length",
+  "visualAcuityDistanceDialogContent": "You can start the test when you close your right eye and bring the device to arm's length.",
+  "visualAcuityDistanceDialogContentLeft": "You can start the test when you close your left eye and bring the device to arm's length.",
+  "visualAcuityDistanceDialogContentBoth": "You can start the test when you keep both eyes open and bring the device to arm's length.",
+  "visualAcuityQuestionText": "Point to the letter you see",
+  
+  "colorVisionInfoTitle": "What is Color Blindness Test?",
+  "colorVisionInfoDesc": "This test evaluates three different types of color blindness:\n\n• Deuteranopia (Green Color Blindness)\n• Protanopia (Red Color Blindness)\n• Tritanopia (Blue Color Blindness)",
+  "colorVisionInfoTip": "A healthy individual should be able to see the numbers inside colored circles clearly. In ring tests, they should be able to distinguish different colors. If you are unsure, select the \"I'm Not Sure\" option.",
+  "colorVisionInstruction1": "Set screen brightness to maximum.",
+  "colorVisionInstruction2": "In number plates: Find the number inside the circle.",
+  "colorVisionInstruction3": "In ring tests: Evaluate whether you can see different colors.",
+  "colorVisionPlate": "Plate {current} / {total}",
+  "@colorVisionPlate": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "colorVisionWhichNumber": "Which number do you see?",
+  "colorVisionRingQuestion": "Do you see a ring of different color inside the circle?",
+  "yes": "Yes",
+  "no": "No",
+  
+  "astigmatismInfoTitle": "What is Astigmatism Test?",
+  "astigmatismInfoDesc": "Astigmatism is a vision disorder caused by the irregular shape of the cornea or lens of the eye. In this case, light cannot focus properly on the eye and images may appear blurry or distorted.",
+  "astigmatismInfoTip": "A healthy individual should be able to see all radial lines with equal clarity. If some lines appear darker, blurry, or different, this may be a sign of astigmatism.",
+  "astigmatismInstruction1": "Close one eye",
+  "astigmatismInstruction2": "Focus on the dot in the center of the diagram",
+  "astigmatismInstruction3": "Evaluate whether all lines are equal",
+  "astigmatismInstruction4": "Touch the lines that appear darker",
+  "astigmatismInstructionInfo": "Each eye will be tested separately.",
+  "astigmatismSelectDarkerLines": "Please touch the lines that appear darker",
+  "astigmatismBothEyesInstruction": "Keep both eyes open and look",
+  "astigmatismAllLinesEqual": "All Lines Equal",
+  "astigmatismSomeLinesDarker": "Some Lines Darker",
+  "astigmatismDiagnosisNormal": "No signs of astigmatism",
+  "astigmatismDiagnosisMild": "There may be mild astigmatism. Consult an eye doctor.",
+  "astigmatismDiagnosisModerate": "There may be astigmatism. Consult an eye doctor.",
+  "astigmatismDiagnosisSevere": "There are clear signs of astigmatism. Consult an eye doctor.",
+  "astigmatismLinesSelected": "{count} line selected",
+  "@astigmatismLinesSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closeRightEyeInstruction": "Close your left eye and look with your right eye",
+  "closeLeftEyeInstruction": "Close your right eye and look with your left eye",
+  "bothEyesLabel": "Both Eyes",
+  
+  "nearVisionInfoTitle": "What is Near Vision Test?",
+  "nearVisionInfoDesc": "Near vision test measures how well you can see books, phones, or objects at close range. This test helps evaluate conditions such as presbyopia (age-related near vision problems).",
+  "nearVisionInfoTip": "A healthy individual should be able to read small text at close range clearly. During the test, the text will gradually become smaller.",
+  "nearVisionDistanceDialogTitle": "Book Reading Distance",
+  "nearVisionDistanceDialogContent": "You can start the test when you bring the device to book reading distance (25-30 cm).",
+  "nearVisionInstruction1": "Hold the phone at approximately 40 cm distance",
+  "nearVisionInstruction2": "Read the word on the screen",
+  "nearVisionInstruction3": "Select the word you see from the options",
+  "nearVisionInstruction4": "The texts will gradually get smaller",
+  "nearVisionQuestion": "Which word do you see?",
+  "nearVisionDiagnosisNormal": "Your near vision appears normal",
+  "nearVisionDiagnosisMild": "There may be a mild near vision problem",
+  "nearVisionDiagnosisSevere": "There is a near vision problem. Consult an eye doctor.",
+  "nearVisionWord1": "BOOK",
+  "nearVisionWord2": "TEXT",
+  "nearVisionWord3": "READ",
+  "nearVisionWord4": "PASSAGE",
+  "nearVisionWord5": "LINE",
+  "nearVisionWord6": "WORD",
+  "nearVisionWord7": "SENTENCE",
+  "nearVisionWord8": "PARAGRAPH",
+  "nearVisionWord9": "LETTER",
+  "nearVisionWord10": "TERM",
+  
+  "peripheralVisionInfoTitle": "What is Peripheral Vision Test?",
+  "peripheralVisionInfoDesc": "Peripheral vision is the ability to see outside the central field of vision. This test helps detect conditions such as glaucoma and retinal problems.",
+  "peripheralVisionInfoTip": "Focus on the center point and try to see the hollow shape at the edges. Do not move your head or eyes.",
+  "peripheralVisionInstruction1": "Focus on the center point",
+  "peripheralVisionInstruction2": "Do not move your head or eyes",
+  "peripheralVisionInstruction3": "Indicate whether you see the shapes on the sides",
+  "peripheralVisionInstruction4": "Select the empty shape",
+  "peripheralVisionQuestion": "Look at the center and select the empty shape",
+  
+  "eyeMovementInfoTitle": "What is Eye Movement Test?",
+  "eyeMovementInfoDesc": "Smooth pursuit test measures the eyes' ability to track moving objects. This test helps evaluate eye muscle coordination and neurological problems.",
+  "eyeMovementInfoTip": "A healthy individual should be able to track a moving object with their eyes only, without moving their head.",
+  "eyeMovementInstruction1": "Keep both eyes open",
+  "eyeMovementInstruction2": "Track the moving ball with your eyes only",
+  "eyeMovementInstruction3": "Do not move your head",
+  "eyeMovementInstruction4": "Indicate whether you can track the ball",
+  "eyeMovementQuestion": "Could you track the ball?",
+  "eyeMovementCanFollow": "Yes, I can follow",
+  "eyeMovementCannotFollow": "No, I cannot follow",
+  "eyeMovementDiagnosisNormal": "Your eye movement tracking ability appears normal",
+  "eyeMovementDiagnosisMild": "There may be a mild eye movement problem",
+  "eyeMovementDiagnosisLow": "There is an eye movement problem. Consult an eye doctor.",
+  
+  "vergenceInfoTitle": "What is Vergence Test?",
+  "vergenceInfoDesc": "Vergence Test measures your eyes' ability to converge (bring closer) and diverge (move apart). This test detects double vision (diplopia) and eye muscle coordination problems.",
+  "vergenceInfoTip": "During the test, you will bring an object closer and move it away. You will indicate whether there is double vision.",
+  "vergenceInfoSectionTitle": "Professional Binocular Vision Test",
+  "vergenceInstruction1": "Focus on the object on the screen",
+  "vergenceInstruction2": "Bring the object closer or move it further away",
+  "vergenceInstruction3": "Indicate if there is double vision (diplopia)",
+  "vergenceInstruction4": "Keep both eyes open",
+  "vergenceQuestionConverge": "Bring the object closer (toward your nose)",
+  "vergenceQuestionDiverge": "Move the object further away",
+  "vergenceQuestionFinal": "Final convergence test",
+  "vergenceDiplopiaQuestion": "Do you see the object double?",
+  "vergenceDiagnosisNormal": "Your convergence and divergence abilities appear normal",
+  "vergenceDiagnosisMild": "There may be a mild vergence problem - Consult an eye doctor",
+  "vergenceDiagnosisSevere": "There is a vergence problem - Definitely consult an eye doctor",
+  
+  "macularInfoTitle": "What is Macular Test?",
+  "macularInfoDesc": "The Amsler Grid test helps detect macular problems such as macular degeneration (yellow spot disease). This test identifies distortions, warps, or missing areas in the central field of vision.",
+  "macularInfoTip": "A healthy individual should be able to see the grid lines straight and the central point at the intersection clearly. If there are distortions, blurriness, or missing areas in the lines, consult an eye doctor.",
+  "macularInstruction1": "Close one eye",
+  "macularInstruction2": "Focus on the dot in the center of the grid",
+  "macularInstruction3": "Check if all lines are straight and equal",
+  "macularInstruction4": "Is there distortion, blurriness, or missing areas?",
+  "macularStep": "Step {current} / {total}",
+  "@macularStep": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "macularAllLinesNormal": "All Lines Normal",
+  "macularHasIssues": "Distortion/Blurriness/Missing Areas",
+  "macularDiagnosisBothNormal": "Macular appearance is normal in both eyes",
+  "macularDiagnosisOneEye": "{eye} eye may show macular abnormalities. Consult an eye doctor.",
+  "@macularDiagnosisOneEye": {
+    "placeholders": {
+      "eye": {
+        "type": "String"
+      }
+    }
+  },
+  "macularDiagnosisBothAbnormal": "Both eyes may show macular abnormalities. Consult an eye doctor urgently.",
+  "contrastInfoTitle": "What is Contrast Sensitivity Test?",
+  "contrastInfoDesc": "Contrast sensitivity is the ability to distinguish objects of different brightness. This test measures how well you can see low-contrast letters.",
+  "contrastInfoTip": "A healthy individual should be able to see low-contrast letters as well. During the test, the letters will gradually become less contrasty.",
+  "contrastInstruction1": "Focus on the letter in the center of the screen",
+  "contrastInstruction2": "Set screen brightness to maximum",
+  "contrastInstruction3": "Select the letter you see from the options",
+  "contrastInstruction4": "Letters will gradually become less contrasty",
+  "contrastQuestion": "Which letter do you see?",
+  "contrastDiagnosisNormal": "Your contrast sensitivity appears normal",
+  "contrastDiagnosisMild": "There may be a slight contrast sensitivity deficiency",
+  "contrastDiagnosisLow": "Contrast sensitivity is low. Consult an eye doctor.",
+  "peripheralDiagnosisNormal": "Your peripheral vision appears normal",
+  "peripheralDiagnosisMild": "There may be a mild peripheral vision problem",
+  "peripheralDiagnosisLow": "There is a peripheral vision problem. Consult an eye doctor.",
+  "eyeMovementDiagnosisNormal": "Your eye movement tracking ability appears normal",
+  "eyeMovementDiagnosisMild": "There may be a mild eye movement problem",
+  "eyeMovementDiagnosisLow": "There is an eye movement problem. Consult an eye doctor.",
+  "stereopsisDiagnosisNormal": "Your visual tracking ability appears normal",
+  "stereopsisDiagnosisMild": "There may be a mild visual tracking problem",
+  "stereopsisDiagnosisLow": "There is a visual tracking problem. Consult an eye doctor.",
+  "stereopsisInfoTitle": "What is Visual Tracking Test?",
+  "stereopsisInfoDesc": "This test measures your ability to track a moving object and determine which drawing it is under. It evaluates your visual attention, tracking, and concentration skills.",
+  "stereopsisInfoTip": "Carefully track the ball as it moves. When the movement stops, select which drawing it is under.",
+  "stereopsisInstruction1": "Carefully track the ball's movement",
+  "stereopsisInstruction2": "The ball will move under 3 shapes (Hat, Star, Heart)",
+  "stereopsisInstruction3": "When the movement stops, select which drawing the ball is under",
+  "stereopsisInstruction4": "As the test progresses, the ball will move faster",
+  "stereopsisQuestion": "Which drawing is the ball under?",
+  "stereopsisTracking": "Track the ball...",
+  "leftEyeLabel": "Left Eye",
+  "rightEyeLabel": "Right Eye",
+  
+  "exerciseTitle": "Eye Exercises",
+  "exerciseBenefit1Title": "Reduces Eye Fatigue",
+  "exerciseBenefit1Desc": "Alleviates eye fatigue caused by screen use",
+  "exerciseBenefit2Title": "Improves Focus",
+  "exerciseBenefit2Desc": "Strengthens eye muscles to enhance focus ability",
+  "exerciseBenefit3Title": "Increases Eye Coordination",
+  "exerciseBenefit3Desc": "Improves coordination by regulating eye movements",
+  "exerciseBenefit4Title": "Protects Eye Health",
+  "exerciseBenefit4Desc": "Protect your eye health with regular exercise",
+  "exerciseBenefit5Title": "Rests the Eyes",
+  "exerciseBenefit5Desc": "Rest your eyes by adding to your daily routine",
+  "exerciseStart": "Start",
+  "exerciseScrollDown": "Scroll down",
+  
+  "exerciseProfileSelect": "Select Profile",
+  "exerciseProfileSelectDesc": "Choose the exercise program that suits you",
+  "exerciseProfileChild": "Child (Family)",
+  "exerciseProfileChildSubtitle": "Ages 5-12",
+  "exerciseProfileAdult": "Adult",
+  "exerciseProfileAdultSubtitle": "Suitable for all ages.",
+  "exerciseProfileOffice": "Office Worker",
+  "exerciseProfileInfo": "Specially prepared exercise programs for each profile",
+  "exerciseProfileChildFull": "Child (Family) - Ages 5-12",
+  "exerciseProfileAdultFull": "Adult (Suitable for all ages.)",
+  
+  "exerciseDailyReminder": "Daily Reminder",
+  "exerciseDailyReminderDesc": "Would you like to receive a daily eye exercise reminder once a day?",
+  "exerciseNo": "No",
+  "exerciseYes": "Yes",
+  
+  "exerciseTodayExercises": "Today's Exercises",
+  "exerciseSteps": "{count} steps",
+  "@exerciseSteps": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseStartExercises": "Start Exercises",
+  "exerciseNumber": "Exercise {current} / {total}",
+  "@exerciseNumber": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseComplete": "Complete",
+  "exerciseDone": "Done ({current}/{total})",
+  "@exerciseDone": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "exerciseReady": "Ready",
+  "exerciseStarting": "Starting",
+  "exerciseCompleted": "Completed",
+  "exerciseNext": "Next",
+  "exerciseFinish": "Finish",
+  "exerciseExit": "Exit",
+  
+  "exerciseCompletionTitleAdult": "✔ Today's exercises completed",
+  "exerciseCompletionTitleChild": "🎉 Great Job!",
+  "exerciseCompletionMessageAdult": "You rested your eyes\nYou refreshed your focus",
+  "exerciseCompletionMessageChild": "You completed today's eye exercises 👏",
+  "exerciseCompletionSubtitleAdult": "Once a day is enough",
+  "exerciseCompletionSubtitleChild": "Your eyes thank you",
+  "exerciseBackToHome": "Back to Home",
+  "exerciseRepeat": "Repeat Exercises",
+  
+  "exerciseChild1Title": "Butterfly Eyes",
+  "exerciseChild1Desc": "Let's flap like a butterfly!\nSlowly open and close your eyes. 👁️",
+  "exerciseChild1Benefit": "Moisturizes and relaxes the eyes",
+  "exerciseChild2Title": "Near–Far Game",
+  "exerciseChild2Desc": "Look at your finger. 👆\nNow look at the end of the room. 🌳\nLet's do it again!",
+  "exerciseChild2Benefit": "Improves focusing ability",
+  "exerciseChild3Title": "Magic Eight",
+  "exerciseChild3Desc": "Draw an eight in the air with your eyes.\nVery slowly and calmly. ✨",
+  "exerciseChild3Benefit": "Strengthens eye coordination",
+  "exerciseChild4Title": "Look Left–Right",
+  "exerciseChild4Desc": "Keep your head still!\nJust look left and right with your eyes.",
+  "exerciseChild4Benefit": "Stretches and strengthens eye muscles",
+  "exerciseChild5Title": "Eye Elevator",
+  "exerciseChild5Desc": "The elevator is going up. ⬆️\nNow it's going down. ⬇️",
+  "exerciseChild5Benefit": "Improves vertical eye movements",
+  "exerciseChild6Title": "Drawing Circles",
+  "exerciseChild6Desc": "Draw a big circle with your eyes.\nNow the other way!",
+  "exerciseChild6Benefit": "Relaxes and soothes eye muscles",
+  "exerciseChild7Title": "Turtle Rest",
+  "exerciseChild7Desc": "Pull in like a turtle.\nClose your eyes and rest.",
+  "exerciseChild7Benefit": "Rests the eyes and reduces fatigue",
+  "exerciseChild8Title": "Count Clouds",
+  "exerciseChild8Desc": "Look at the ceiling.\nCount the clouds and breathe slowly.",
+  "exerciseChild8Benefit": "Improves focus on distant objects",
+  "exerciseChild9Title": "Fast & Slow",
+  "exerciseChild9Desc": "Blink five times fast. ⚡\nBlink five times slow. 🐢",
+  "exerciseChild9Benefit": "Regulates blinking reflex",
+  "exerciseChild10Title": "Happy Eyes",
+  "exerciseChild10Desc": "Close your eyes.\nSmile big. 😄",
+  "exerciseChild10Benefit": "Relaxes the eyes and gives a feeling of happiness",
+  
+  "exerciseAdult1Title": "Conscious Blinking",
+  "exerciseAdult1Desc": "Slowly close your eyes, wait one second, open. Repeat this five times.",
+  "exerciseAdult1Benefit": "Moisturizes the eyes and prevents dryness",
+  "exerciseAdult3Title": "Near–Far Focus",
+  "exerciseAdult3Desc": "Look at your finger for ten seconds. Now look at a distant point for twenty seconds. Repeat this three times.",
+  "exerciseAdult3Benefit": "Strengthens focus muscles, reduces near vision fatigue",
+  "exerciseAdult4Title": "Finger Tracking",
+  "exerciseAdult4Desc": "Slowly bring your index finger held at arm's length closer until it touches your nose. Slowly move it away. Do this ten times.",
+  "exerciseAdult4Benefit": "Improves eye coordination, provides awareness of strabismus",
+  "exerciseAdult5Title": "Up–Down Scanning",
+  "exerciseAdult5Desc": "Just look up and down with your eyes. Repeat this ten times.",
+  "exerciseAdult5Benefit": "Stretches eye muscles, increases vertical movement ability",
+  "exerciseAdult6Title": "Left–Right Scanning",
+  "exerciseAdult6Desc": "Keep your head still. Look left and right with your eyes, repeat this five times each.",
+  "exerciseAdult6Benefit": "Improves horizontal eye movements, can increase reading speed",
+  "exerciseAdult7Title": "Circular Eye Movement",
+  "exerciseAdult7Desc": "Close your eyes. Draw a large circle clockwise, do this five times. Then draw in the opposite direction.",
+  "exerciseAdult7Benefit": "Relaxes eye muscles, increases blood circulation",
+  "exerciseAdult8Title": "Imaginary Eight",
+  "exerciseAdult8Desc": "Close your eyes and slowly draw the infinity symbol.",
+  "exerciseAdult8Benefit": "Improves eye coordination, strengthens eye muscles",
+  "exerciseAdult9Title": "Peripheral Vision Awareness",
+  "exerciseAdult9Desc": "Don't move your head.\nNotice the edges with your eyes.",
+  "exerciseAdult9Benefit": "Develops peripheral vision, increases environmental awareness",
+  "exerciseAdult10Title": "Palming",
+  "exerciseAdult10Desc": "Warm your palms by rubbing them together and close your eyes without pressing. Do this for about a minute.",
+  "exerciseAdult10Benefit": "Deeply rests the eyes, reduces eye fatigue",
+  "exerciseAdult11Title": "Eyes Closed Breathing",
+  "exerciseAdult11Desc": "Close your eyes.\nTake three deep breaths.\nTry not to think about anything.",
+  "exerciseAdult11Benefit": "Calms the mind, relaxes eye muscles",
+  "exerciseAdult12Title": "Neck–Eye Reset",
+  "exerciseAdult12Desc": "Drop your shoulders.\nClose your eyes.\nMassage your temples with your index fingers.\nContinue until you feel relaxed.",
+  "exerciseAdult12Benefit": "Relieves headaches, reduces neck and eye tension",
+  
+  "exerciseOffice1Title": "20-20-20 Rule",
+  "exerciseOffice1Desc": "Every 20 minutes\nLook away for 20 seconds",
+  "exerciseOffice1Benefit": "Prevents screen fatigue, relaxes eye muscles",
+  "exerciseOffice2Title": "Blinking",
+  "exerciseOffice2Desc": "Blinking decreases while looking at screen\nBlink consciously",
+  "exerciseOffice2Benefit": "Prevents eye dryness, moisturizes the eyes",
+  "exerciseOffice3Title": "Eye Exercise",
+  "exerciseOffice3Desc": "Move away from screen\nDraw an eight with your eyes",
+  "exerciseOffice3Benefit": "Improves eye coordination, reduces fatigue",
+  "exerciseOffice4Title": "Horizontal Gaze",
+  "exerciseOffice4Desc": "Take your eyes off the screen\nLook left and right",
+  "exerciseOffice4Benefit": "Improves horizontal eye movements",
+  "exerciseOffice5Title": "Vertical Gaze",
+  "exerciseOffice5Desc": "Move your eyes up and down\nReduces screen fatigue",
+  "exerciseOffice5Benefit": "Improves vertical eye movements, reduces screen fatigue",
+  "exerciseOffice6Title": "Circular Movement",
+  "exerciseOffice6Desc": "Draw circles with your eyes\nIncreases blood circulation",
+  "exerciseOffice6Benefit": "Relaxes eye muscles, increases blood circulation",
+  "exerciseOffice7Title": "Palming",
+  "exerciseOffice7Desc": "Close your eyes\nCover with your palms and rest",
+  "exerciseOffice7Benefit": "Deeply rests the eyes",
+  "exerciseOffice8Title": "Distant Gaze",
+  "exerciseOffice8Desc": "Look out the window\nFocus on distant objects",
+  "exerciseOffice8Benefit": "Improves focus on distant objects",
+  "exerciseOffice9Title": "Fast Blinking",
+  "exerciseOffice9Desc": "Moisturize your eyes\nBlink quickly",
+  "exerciseOffice9Benefit": "Quickly moisturizes the eyes",
+  "exerciseOffice10Title": "Eye Massage",
+  "exerciseOffice10Desc": "Close your eyes\nRelax and breathe",
+  "exerciseOffice10Benefit": "Relaxes the eyes and reduces stress",
+  "repetitionText": "repetitions",
+  "secondText": "seconds",
+  "remainingText": "remaining",
+  
+  "resultStatusPerfect": "Perfect Vision",
+  "resultStatusVeryGood": "Very Good Vision",
+  "resultStatusGood": "Good Vision",
+  "resultStatusSeeDoctor": "See an Eye Doctor",
+  "resultStatusNeedGlasses": "Glasses/Lenses Required",
+  "resultStatusUrgent": "Schedule Appointment Immediately",
+  "resultStatusColorPassed": "Test Passed Successfully",
+  "resultStatusColorSuspicion": "Color Blindness Suspicion",
+  "resultRecommendationGeneral": "These results are for informational purposes only. Please consult an eye doctor for a definitive diagnosis.",
+  "resultRecommendationColorNormal": "Your color vision appears normal. Consult your eye doctor for regular checkups.",
+  "resultRecommendationColorSuspicion": "There is a suspicion of color blindness. Please see your doctor.",
+  "resultSubtitleVisualAcuity": "Visual Acuity Analysis",
+  "resultSubtitleColorVision": "Color Blindness Test Result",
+  "resultSubtitleGeneral": "Test Result",
+  "resultImportantWarning": "Important Warning",
+  "resultRecommendation": "Recommendation",
+  "resultMedicalDisclaimer": "These results are for informational purposes only and do not constitute a medical diagnosis. Please consult a qualified eye care professional for a comprehensive examination.",
+  "resultDetailedAnalysis": "Detailed Analysis",
+  "resultViewDetailedAnalysis": "View Detailed Analysis",
+  "resultDetailedAnalysisLocked": "To view detailed analysis",
+  "resultWatchAd": "Watch Ad",
+  "resultHomeMenu": "Home Menu",
+  "resultComparisonPrevious": "Comparison with Previous Test",
+  "resultComparisonText": "Previous: %{previous} → Now: %{current} ({difference}%)",
+  "@resultComparisonText": {
+    "placeholders": {
+      "previous": {
+        "type": "int"
+      },
+      "current": {
+        "type": "int"
+      },
+      "difference": {
+        "type": "String"
+      }
+    }
+  },
+  "resultAverageLast7": "Average of Last 7 Tests",
+  "resultDetailedRecommendations": "Detailed Recommendations",
+  "resultDetailedColorPerfect": "You have excellent color vision. You can maintain this condition with regular checkups.",
+  "resultDetailedColorNormal": "Your color vision is at a normal level. However, if you have difficulty distinguishing some colors, it is recommended that you consult an eye doctor.",
+  "resultDetailedColorDeficiency": "There may be a deficiency in color vision. Be sure to consult an eye doctor and have a detailed examination.",
+  "resultDetailedAcuityVeryGood": "Your visual acuity is at a very good level. You can maintain this condition with regular eye examinations.",
+  "resultDetailedAcuityModerate": "Your visual acuity is at a moderate level. It is recommended that you consult an eye doctor for a more detailed evaluation.",
+  "resultDetailedAcuityLow": "Your visual acuity is at a low level. You need to urgently consult an eye doctor and have an examination.",
+  "resultCorrectAnswers": "{correct} / {total} Correct",
+  "@resultCorrectAnswers": {
+    "placeholders": {
+      "correct": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "resultSnellen": "Snellen: {value}",
+  "@resultSnellen": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "detailedAnalysisTitle": "Detailed Analysis",
+  "detailedAnalysisResult": "Result: %{percentage}",
+  "@detailedAnalysisResult": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "detailedAnalysisCurrentStatus": "Current Status",
+  "detailedAnalysisPossibleProblems": "Possible Problems",
+  "detailedAnalysisPossibleConsequences": "Possible Consequences and Effects",
+  "detailedAnalysisTreatmentOptions": "Treatment and Solution Recommendations",
+  "detailedAnalysisManagement": "Management and Support",
+  "detailedAnalysisRecommendations": "Recommendations",
+  "detailedAnalysisWarning": "Important Warning",
+  "detailedAnalysisWarningText": "These results are for informational purposes only and do not replace a definitive diagnosis. If you are experiencing any vision problems, be sure to consult an eye doctor.",
+  "detailedAnalysisDailyLife": "Daily Life",
+  "detailedAnalysisWorkLife": "Work Life",
+  "detailedAnalysisHealth": "Health",
+  "detailedAnalysisEducation": "Education",
+  "detailedAnalysisVisualAcuityAssessment": "Visual Acuity Assessment",
+  "detailedAnalysisVisualAcuityStatus": "Your visual acuity is at {percentage}%. This value is evaluated in the {severity} category.",
+  "@detailedAnalysisVisualAcuityStatus": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      },
+      "severity": {
+        "type": "String"
+      }
+    }
+  },
+  "detailedAnalysisSeverityNormal": "Normal",
+  "detailedAnalysisSeverityMild": "Mild Low",
+  "detailedAnalysisSeverityModerate": "Moderate Low",
+  "detailedAnalysisSeveritySevere": "Severe Low",
+  "detailedAnalysisMyopia": "Myopia (Cannot See Far)",
+  "detailedAnalysisMyopiaDesc": "The condition of not being able to see distant objects clearly. It is usually caused by the eyeball being longer than normal or the cornea being too curved.",
+  "detailedAnalysisMyopiaSymptom1": "Blurred vision of distant objects",
+  "detailedAnalysisMyopiaSymptom2": "Squinting",
+  "detailedAnalysisMyopiaSymptom3": "Headache",
+  "detailedAnalysisMyopiaSymptom4": "Eye strain",
+  "detailedAnalysisHypermetropia": "Hypermetropia (Cannot See Near)",
+  "detailedAnalysisHypermetropiaDesc": "The condition of not being able to see close objects clearly. It is caused by the eyeball being shorter than normal or the cornea being flat.",
+  "detailedAnalysisHypermetropiaSymptom1": "Blurred vision of close objects",
+  "detailedAnalysisHypermetropiaSymptom2": "Reading difficulty",
+  "detailedAnalysisHypermetropiaSymptom3": "Eye strain",
+  "detailedAnalysisHypermetropiaSymptom4": "Headache",
+  "detailedAnalysisPresbyopia": "Presbyopia (Age-Related Near Vision Problem)",
+  "detailedAnalysisPresbyopiaDesc": "Decrease in near vision ability after age 40. It is caused by the loss of flexibility of the eye lens.",
+  "detailedAnalysisPresbyopiaSymptom1": "Near reading difficulty",
+  "detailedAnalysisPresbyopiaSymptom2": "Reading with arms extended",
+  "detailedAnalysisPresbyopiaSymptom3": "Need for light",
+  "detailedAnalysisDailyLifeConsequence1": "Difficulty while driving",
+  "detailedAnalysisDailyLifeConsequence2": "Reading and writing problems",
+  "detailedAnalysisDailyLifeConsequence3": "Fatigue when using screens",
+  "detailedAnalysisDailyLifeConsequence4": "Difficulty in social activities",
+  "detailedAnalysisWorkLifeConsequence1": "Difficulty using computers",
+  "detailedAnalysisWorkLifeConsequence2": "Risk of errors in detailed work",
+  "detailedAnalysisWorkLifeConsequence3": "Productivity loss",
+  "detailedAnalysisWorkLifeConsequence4": "Eye strain",
+  "detailedAnalysisHealthConsequence1": "Chronic headaches",
+  "detailedAnalysisHealthConsequence2": "Eye strain",
+  "detailedAnalysisHealthConsequence3": "Dry eyes",
+  "detailedAnalysisHealthConsequence4": "Risk of strabismus (in children)",
+  "detailedAnalysisSolutionGlasses": "Glasses Use",
+  "detailedAnalysisSolutionGlassesDesc": "The most common and effective solution. Use the glasses prescribed by your eye doctor regularly.",
+  "detailedAnalysisSolutionContacts": "Contact Lenses",
+  "detailedAnalysisSolutionContactsDesc": "Alternative for those who do not want to wear glasses. Can be used with your eye doctor's recommendation.",
+  "detailedAnalysisSolutionLaser": "Laser Surgery",
+  "detailedAnalysisSolutionLaserDesc": "Permanent solution for suitable candidates. Your doctor will decide after a detailed examination.",
+  "detailedAnalysisSolutionExercises": "Eye Exercises",
+  "detailedAnalysisSolutionExercisesDesc": "In some cases, it can improve vision quality by strengthening eye muscles.",
+  "detailedAnalysisColorVisionAssessment": "Color Vision Assessment",
+  "detailedAnalysisColorVisionNormal": "Your color vision is at a normal level. You can distinguish all colors correctly.",
+  "detailedAnalysisColorVisionDeficiency": "A deficiency in your color vision has been detected. This condition is evaluated as {severity} level color blindness.",
+  "@detailedAnalysisColorVisionDeficiency": {
+    "placeholders": {
+      "severity": {
+        "type": "String"
+      }
+    }
+  },
+  "detailedAnalysisSeverityMildShort": "Mild",
+  "detailedAnalysisSeverityModerateShort": "Moderate",
+  "detailedAnalysisSeveritySevereShort": "Severe",
+  "detailedAnalysisColorBlindnessTypes": "Types of Color Blindness",
+  "detailedAnalysisDeuteranopia": "Deuteranopia (Green Color Blindness)",
+  "detailedAnalysisDeuteranopiaDesc": "The condition of not being able to distinguish green colors. It is the most common type of color blindness.",
+  "detailedAnalysisDeuteranopiaSymptom": "Inability to distinguish green and red tones",
+  "detailedAnalysisProtanopia": "Protanopia (Red Color Blindness)",
+  "detailedAnalysisProtanopiaDesc": "The condition of not being able to distinguish red colors. It is the second most common type.",
+  "detailedAnalysisProtanopiaSymptom": "Inability to distinguish red and green tones",
+  "detailedAnalysisTritanopia": "Tritanopia (Blue-Yellow Color Blindness)",
+  "detailedAnalysisTritanopiaDesc": "The condition of not being able to distinguish blue and yellow colors. It is rarer.",
+  "detailedAnalysisTritanopiaSymptom": "Inability to distinguish blue and yellow tones",
+  "detailedAnalysisAchromatopsia": "Achromatopsia (Complete Color Blindness)",
+  "detailedAnalysisAchromatopsiaDesc": "The condition of not being able to see all colors. It is very rare, only black and white vision exists.",
+  "detailedAnalysisAchromatopsiaSymptom": "Seeing only black, white and gray tones",
+  "detailedAnalysisColorDailyLife1": "Difficulty distinguishing traffic lights",
+  "detailedAnalysisColorDailyLife2": "Difficulty choosing colored clothing",
+  "detailedAnalysisColorDailyLife3": "Cooking and ripeness checking",
+  "detailedAnalysisColorDailyLife4": "Difficulty on nature walks",
+  "detailedAnalysisColorWorkLife1": "Difficulty in graphic design and art fields",
+  "detailedAnalysisColorWorkLife2": "Risk in electrical and electronic work",
+  "detailedAnalysisColorWorkLife3": "Limitations in medical and laboratory work",
+  "detailedAnalysisColorWorkLife4": "Restrictions in aviation and maritime professions",
+  "detailedAnalysisColorEducation1": "Difficulty understanding color materials",
+  "detailedAnalysisColorEducation2": "Deficiency in visual learning",
+  "detailedAnalysisColorEducation3": "Difficulty in some subjects",
+  "detailedAnalysisColorSolutionApps": "Color Identification Apps",
+  "detailedAnalysisColorSolutionAppsDesc": "You can identify colors with smartphone applications.",
+  "detailedAnalysisColorSolutionGlasses": "Special Glasses",
+  "detailedAnalysisColorSolutionGlassesDesc": "Some special glasses can improve color perception. Consult your eye doctor.",
+  "detailedAnalysisColorSolutionCareer": "Career Counseling",
+  "detailedAnalysisColorSolutionCareerDesc": "Consider color blindness in career choice.",
+  "detailedAnalysisColorImportantNote": "Important Note",
+  "detailedAnalysisColorImportantNoteText": "Color blindness is usually hereditary and has no complete cure. However, quality of life can be improved with special glasses and applications.",
+  "detailedAnalysisAstigmatismAssessment": "Astigmatism Assessment",
+  "detailedAnalysisAstigmatismNormal": "Astigmatism findings are minimal. You are at a normal vision level.",
+  "detailedAnalysisAstigmatismDetected": "Astigmatism has been detected. The image is not clear due to the irregular shape of the cornea or lens.",
+  "detailedAnalysisAstigmatismTypes": "Types of Astigmatism",
+  "detailedAnalysisCornealAstigmatism": "Corneal Astigmatism",
+  "detailedAnalysisCornealAstigmatismDesc": "Caused by the irregular shape of the cornea. It is the most common type.",
+  "detailedAnalysisCornealAstigmatismSymptom1": "Blurred vision at all distances",
+  "detailedAnalysisCornealAstigmatismSymptom2": "Lines appearing curved",
+  "detailedAnalysisCornealAstigmatismSymptom3": "Eye strain",
+  "detailedAnalysisLenticularAstigmatism": "Lenticular Astigmatism",
+  "detailedAnalysisLenticularAstigmatismDesc": "Caused by the irregular shape of the eye lens.",
+  "detailedAnalysisLenticularAstigmatismSymptom1": "Near and far vision problems",
+  "detailedAnalysisLenticularAstigmatismSymptom2": "Headache",
+  "detailedAnalysisLenticularAstigmatismSymptom3": "Eye strain",
+  "detailedAnalysisAstigmatismConsequences": "Possible Consequences",
+  "detailedAnalysisAstigmatismVisionQuality": "Vision Quality",
+  "detailedAnalysisAstigmatismVisionQuality1": "Blurred vision at all distances",
+  "detailedAnalysisAstigmatismVisionQuality2": "Lines appearing curved",
+  "detailedAnalysisAstigmatismVisionQuality3": "Seeing light halos",
+  "detailedAnalysisAstigmatismVisionQuality4": "Difficulty with night vision",
+  "detailedAnalysisAstigmatismDailyLife1": "Reading difficulty",
+  "detailedAnalysisAstigmatismDailyLife2": "Fatigue when using computers",
+  "detailedAnalysisAstigmatismDailyLife3": "Difficulty while driving",
+  "detailedAnalysisAstigmatismDailyLife4": "Headaches",
+  "detailedAnalysisAstigmatismSolutionCylindrical": "Cylindrical Glasses",
+  "detailedAnalysisAstigmatismSolutionCylindricalDesc": "Glasses specially designed for astigmatism.",
+  "detailedAnalysisAstigmatismSolutionToric": "Toric Contact Lenses",
+  "detailedAnalysisAstigmatismSolutionToricDesc": "Special contact lenses for astigmatism.",
+  "detailedAnalysisAstigmatismSolutionLaser": "Laser Surgery",
+  "detailedAnalysisAstigmatismSolutionLaserDesc": "Permanent solution for suitable candidates.",
+  "detailedAnalysisGenericTestAssessment": "{testName} Assessment",
+  "@detailedAnalysisGenericTestAssessment": {
+    "placeholders": {
+      "testName": {
+        "type": "String"
+      }
+    }
+  },
+  "detailedAnalysisGenericTestResult": "{description} Result: %{percentage}",
+  "@detailedAnalysisGenericTestResult": {
+    "placeholders": {
+      "description": {
+        "type": "String"
+      },
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "detailedAnalysisGenericConsequences": "Possible Consequences",
+  "detailedAnalysisGenericEffects": "Effects",
+  "detailedAnalysisGenericSolutionDoctor": "Eye Doctor Examination",
+  "detailedAnalysisGenericSolutionDoctorDesc": "Be sure to consult an eye doctor for a detailed examination.",
+  "detailedAnalysisGenericSolutionCheckups": "Regular Checkups",
+  "detailedAnalysisGenericSolutionCheckupsDesc": "Have regular checkups for your eye health.",
+  "detailedAnalysisGenericTestResultTitle": "Test Result",
+  "detailedAnalysisGenericTestResultText": "Your test result: %{percentage}",
+  "@detailedAnalysisGenericTestResultText": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "detailedAnalysisVergenceTest": "Vergence Test",
+  "detailedAnalysisVergenceTestDesc": "Your convergence and divergence abilities are being evaluated. This test detects double vision (diplopia) and eye muscle coordination problems.",
+  "detailedAnalysisVergenceTestConsequence": "Vergence problems can cause issues such as eye strain, headache, reading difficulty, and double vision.",
+  "detailedAnalysisNearVisionTest": "Near Vision",
+  "detailedAnalysisNearVisionTestDesc": "Your near-distance vision ability is being evaluated.",
+  "detailedAnalysisNearVisionTestConsequence": "Near vision problems can create difficulty in reading, writing, and detailed work.",
+  "detailedAnalysisMacularTest": "Macular Test",
+  "detailedAnalysisMacularTestDesc": "Your macular (yellow spot) health is being evaluated.",
+  "detailedAnalysisMacularTestConsequence": "Macular problems can cause central vision loss.",
+  "detailedAnalysisPeripheralVisionTest": "Peripheral Vision",
+  "detailedAnalysisPeripheralVisionTestDesc": "Your side vision ability is being evaluated.",
+  "detailedAnalysisPeripheralVisionTestConsequence": "Peripheral vision problems can cause a decrease in environmental awareness.",
+  "detailedAnalysisEyeMovementTest": "Eye Movement",
+  "detailedAnalysisEyeMovementTestDesc": "Your eye movement coordination is being evaluated.",
+  "detailedAnalysisEyeMovementTestConsequence": "Eye movement problems can cause tracking and focusing difficulties.",
+  
+  "fact1Title": "Eye Blinking",
+  "fact1Text": "When looking at screens, our blink rate decreases by up to 60%.",
+  "fact2Title": "Baby Vision",
+  "fact2Text": "Babies see the world blurry and colorless when they are born.",
+  "fact3Title": "Eye Growth",
+  "fact3Text": "Our eyes do not grow throughout life, but ears and nose continue to grow.",
+  "fact4Title": "Night Vision",
+  "fact4Text": "To see better in the dark, looking slightly to the side of objects is more effective than looking directly at them.",
+  "fact5Title": "Color Blindness",
+  "fact5Text": "Approximately 8% of men and only 0.5% of women are color blind.",
+  "fact6Title": "Color Perception",
+  "fact6Text": "Two people looking at the same color do not see it exactly the same.",
+  "fact7Title": "Purple Color",
+  "fact7Text": "Purple is not a real color in the spectrum; the brain produces it by mixing red and blue.",
+  "fact8Title": "Color Discrimination",
+  "fact8Text": "The human eye can theoretically distinguish 10 million different colors.",
+  "fact9Title": "Eye Movement",
+  "fact9Text": "Our eyes constantly move; if they stay still, the image disappears in a few seconds.",
+  "fact10Title": "Brain and Vision",
+  "fact10Text": "More than 30% of the back part of the brain is directly related to vision.",
+  "fact11Title": "Dark Mode",
+  "fact11Text": "Dark mode reduces energy consumption, not eye strain.",
+  "fact12Title": "Cat Vision",
+  "fact12Text": "Cats can see with 6 times less light than humans.",
+  "fact13Title": "Mantis Shrimp",
+  "fact13Text": "Mantis shrimp have 12-16 different color receptors in their eyes (humans only have 3). They can also see ultraviolet light.",
+  "fact14Title": "Eagle Vision",
+  "fact14Text": "An eagle can clearly spot a small prey from 3-4 kilometers away.",
+  "fact15Title": "Owl Vision",
+  "fact15Text": "Owls' eyes are tube-shaped and the eyeball cannot move. That's why they can rotate their heads 270 degrees.",
+  "fact16Title": "Whale Vision",
+  "fact16Text": "Whales see very well underwater and are not color blind. However, their vision is limited on the water surface.",
+  "fact17Title": "Dog Vision",
+  "fact17Text": "Dogs cannot distinguish red and green. They see the world in yellow, blue, and gray tones.",
+  "fact18Title": "Snake Vision",
+  "fact18Text": "Snakes can detect infrared light and \"see\" temperature differences. This allows them to find prey in the dark.",
+  "fact19Title": "Blind Cave Fish",
+  "fact19Text": "Blind cave fish are born completely blind but their other senses are so developed that they can navigate by \"feeling\" water currents.",
+  "fact20Title": "Chameleon Eyes",
+  "fact20Text": "Chameleons' eyes can move independently of each other. One eye can track prey while the other scans the environment.",
+  "fact21Title": "Butterfly Vision",
+  "fact21Text": "Butterflies can see ultraviolet light and detect invisible patterns on flowers.",
+  "fact22Title": "Shark Vision",
+  "fact22Text": "Sharks see 10 times better than humans in the dark. They can also distinguish colors underwater.",
+  "fact23Title": "Horse Vision",
+  "fact23Text": "Horses have almost 360-degree vision because their eyes are on the sides of their heads.",
+  "fact24Title": "Dolphin Vision",
+  "fact24Text": "Dolphins can use each eye independently. One eye can watch the water surface while the other watches underwater.",
+  "fact25Title": "Spider Eyes",
+  "fact25Text": "Some spiders have 8 eyes. Each eye serves a different function: some detect movement, others detect details.",
+  "fact26Title": "Blind Mole",
+  "fact26Text": "Blind moles are born completely blind but their sense of smell and touch are so developed that they never get lost in their tunnels.",
+  "fact27Title": "Parrot Vision",
+  "fact27Text": "Parrots can see ultraviolet light, allowing them to find ripe fruits more easily.",
+  "fact28Title": "Shark Retina",
+  "fact28Text": "Sharks have special cells in their retina, allowing them to see their prey even at very low light levels.",
+  "fact29Title": "Nocturnal Animals",
+  "fact29Text": "Nocturnal animals have a special layer called tapetum lucidum in their eyes. This layer reflects light to enhance vision.",
+  "fact30Title": "Bat Vision",
+  "fact30Text": "Bats are not blind! Although their vision is weak, they use echolocation to navigate in the dark.",
+  "factPrevious": "Previous",
+  "factNext": "Next",
+  "factComplete": "Complete"
+}

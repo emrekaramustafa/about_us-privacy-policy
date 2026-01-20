@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/widgets/scroll_indicator.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Terms of Service Page
 /// 
@@ -39,6 +40,8 @@ class _TermsOfServicePageState extends State<TermsOfServicePage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -52,7 +55,7 @@ class _TermsOfServicePageState extends State<TermsOfServicePage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Kullanım Koşulları',
+          l10n.termsOfServiceTitle,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -71,120 +74,59 @@ class _TermsOfServicePageState extends State<TermsOfServicePage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildHeader(),
+                  _buildHeader(l10n),
                   const SizedBox(height: 32),
                   _buildSection(
-                    title: '1. Hizmetin Kullanımı',
-                    content: '''
-Bu uygulama bilgilendirme ve eğitim amaçlıdır. Uygulamayı kullanarak:
-
-• Uygulamanın yalnızca bilgilendirme amaçlı olduğunu kabul edersiniz
-• Test sonuçlarının profesyonel göz muayenesi yerine geçmediğini anlarsınız
-• Uygulamayı yasalara uygun şekilde kullanacağınızı taahhüt edersiniz
-• Uygulamayı kötüye kullanmayacağınızı kabul edersiniz
-''',
+                    title: l10n.termsSection1Title,
+                    content: l10n.termsSection1Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '2. Tıbbi Tavsiye Değildir',
-                    content: '''
-ÖNEMLİ: Bu uygulama tıbbi tavsiye, teşhis veya tedavi sağlamaz.
-
-• Test sonuçları yalnızca bilgilendirme amaçlıdır
-• Herhangi bir görme sorunu yaşıyorsanız mutlaka bir göz doktoruna başvurun
-• Test sonuçları ekran boyutu, parlaklık ve çevre koşullarından etkilenebilir
-• Uygulama sonuçlarına göre tıbbi karar vermeyin
-''',
+                    title: l10n.termsSection2Title,
+                    content: l10n.termsSection2Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '3. Kullanıcı Sorumlulukları',
-                    content: '''
-Kullanıcı olarak siz:
-
-• Testleri doğru koşullarda yapmakla sorumlusunuz
-• Test sonuçlarını yanlış yorumlamaktan sorumlusunuz
-• Uygulamayı yasalara uygun kullanmakla sorumlusunuz
-• Üçüncü kişilere zarar vermek için kullanmayacağınızı taahhüt edersiniz
-''',
+                    title: l10n.termsSection3Title,
+                    content: l10n.termsSection3Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '4. Fikri Mülkiyet',
-                    content: '''
-• Uygulamanın tüm içeriği telif hakkı ile korunmaktadır
-• İçeriği kopyalama, dağıtma veya değiştirme hakkınız yoktur
-• Ticari amaçlarla kullanılamaz
-• Marka isimleri ve logolar sahiplerine aittir
-''',
+                    title: l10n.termsSection4Title,
+                    content: l10n.termsSection4Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '5. Hizmet Değişiklikleri',
-                    content: '''
-• Uygulama içeriğini ve özelliklerini herhangi bir zamanda değiştirme hakkını saklı tutarız
-• Önemli değişiklikler durumunda bildirim gönderilir
-• Hizmeti geçici veya kalıcı olarak durdurma hakkımız saklıdır
-• Değişikliklerden haberdar olmak için uygulamayı güncel tutun
-''',
+                    title: l10n.termsSection5Title,
+                    content: l10n.termsSection5Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '6. Sorumluluk Reddi',
-                    content: '''
-Uygulama "olduğu gibi" sağlanmaktadır. Aşağıdakilerden sorumlu değiliz:
-
-• Test sonuçlarının doğruluğu veya güvenilirliği
-• Uygulama kullanımından kaynaklanan herhangi bir zarar
-• Veri kaybı veya cihaz hasarı
-• Üçüncü taraf hizmetlerin kesintisi
-• Uygulama hataları veya teknik sorunlar
-''',
+                    title: l10n.termsSection6Title,
+                    content: l10n.termsSection6Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '7. Ücretli Hizmetler',
-                    content: '''
-• Uygulama içi satın alımlar (Premium) geri alınamaz
-• Satın alımlar Google Play Store veya App Store politikalarına tabidir
-• İade talepleri ilgili mağaza politikalarına göre değerlendirilir
-• Premium özellikler değiştirilebilir veya kaldırılabilir
-''',
+                    title: l10n.termsSection7Title,
+                    content: l10n.termsSection7Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '8. Fesih',
-                    content: '''
-Aşağıdaki durumlarda hizmetinizi sonlandırabiliriz:
-
-• Koşulları ihlal ettiğinizde
-• Yasadışı faaliyetlerde bulunduğunuzda
-• Diğer kullanıcılara zarar verdiğinizde
-• Uygulamayı kötüye kullandığınızda
-
-Fesih durumunda verileriniz silinebilir.
-''',
+                    title: l10n.termsSection8Title,
+                    content: l10n.termsSection8Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '9. Değişiklikler',
-                    content: '''
-Kullanım koşullarını zaman zaman güncelleyebiliriz. 
-Önemli değişiklikler durumunda uygulama içinde bildirim gönderilir.
-Koşulları düzenli olarak kontrol etmeniz önerilir.
-Son güncelleme tarihi: ${DateTime.now().year} yılı
-''',
+                    title: l10n.termsSection9Title,
+                    content: l10n.termsSection9Content(DateTime.now().year),
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '10. İletişim ve Şikayetler',
-                    content: '''
-Kullanım koşulları hakkında sorularınız veya şikayetleriniz varsa, 
-lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
-''',
+                    title: l10n.termsSection10Title,
+                    content: l10n.termsSection10Content,
                   ),
                   const SizedBox(height: 32),
-                  _buildDisclaimer(),
+                  _buildDisclaimer(l10n),
                 ],
               ),
             ),
@@ -195,7 +137,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -233,7 +175,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Kullanım Koşulları',
+                  l10n.termsOfServiceTitle,
                   style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -242,7 +184,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Hizmet şartları ve koşullar',
+                  l10n.termsOfServiceSubtitle,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: AppColors.textSecondary,
@@ -298,7 +240,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
     );
   }
 
-  Widget _buildDisclaimer() {
+  Widget _buildDisclaimer(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -317,7 +259,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
           ),
           const SizedBox(height: 12),
           Text(
-            'Önemli Uyarı',
+            l10n.termsImportantWarning,
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -326,8 +268,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
           ),
           const SizedBox(height: 8),
           Text(
-            'Bu uygulamayı kullanarak yukarıdaki kullanım koşullarını kabul etmiş olursunuz. '
-            'Koşulları kabul etmiyorsanız, lütfen uygulamayı kullanmayın.',
+            l10n.termsDisclaimer,
             style: GoogleFonts.inter(
               fontSize: 14,
               color: AppColors.textSecondary,

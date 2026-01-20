@@ -7,6 +7,7 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Near Vision Test Page
 enum NearVisionPhase { info, instructions, testing }
@@ -35,10 +36,21 @@ class _NearVisionPageState extends State<NearVisionPage>
     20, 17, 14, 12, 10, 8.5, 7, 6, 5, 4.5
   ];
   
-  final List<String> _words = [
-    'KİTAP', 'YAZI', 'OKU', 'METİN', 'SATIR',
-    'KELİME', 'CÜMLE', 'PARAGRAF', 'HARF', 'SÖZCÜK'
-  ];
+  List<String> _getWords(AppLocalizations l10n) {
+    return [
+      l10n.nearVisionWord1,
+      l10n.nearVisionWord2,
+      l10n.nearVisionWord3,
+      l10n.nearVisionWord4,
+      l10n.nearVisionWord5,
+      l10n.nearVisionWord6,
+      l10n.nearVisionWord7,
+      l10n.nearVisionWord8,
+      l10n.nearVisionWord9,
+      l10n.nearVisionWord10,
+    ];
+  }
+  
   String? _currentWord;
   List<String> _options = [];
   int? _selectedAnswer;
@@ -109,11 +121,13 @@ class _NearVisionPageState extends State<NearVisionPage>
   }
 
   void _generateQuestion() {
+    final l10n = AppLocalizations.of(context)!;
+    final words = _getWords(l10n);
     final random = _currentQuestion * 7;
-    _currentWord = _words[random % _words.length];
+    _currentWord = words[random % words.length];
     
     // Generate options (correct + 3 wrong)
-    final allWords = List<String>.from(_words);
+    final allWords = List<String>.from(words);
     allWords.remove(_currentWord);
     allWords.shuffle();
     
@@ -158,15 +172,16 @@ class _NearVisionPageState extends State<NearVisionPage>
   }
 
   void _finishTest() {
+    final l10n = AppLocalizations.of(context)!;
     final percentage = (_correctAnswers / _fontSizes.length * 100).round();
     String diagnosis;
     
     if (percentage >= 80) {
-      diagnosis = 'Yakın görüşünüz normal görünüyor';
+      diagnosis = l10n.nearVisionDiagnosisNormal;
     } else if (percentage >= 60) {
-      diagnosis = 'Hafif yakın görüş sorunu olabilir';
+      diagnosis = l10n.nearVisionDiagnosisMild;
     } else {
-      diagnosis = 'Yakın görüş sorunu var. Göz doktoruna danışın.';
+      diagnosis = l10n.nearVisionDiagnosisSevere;
     }
     
     context.pushReplacement(
@@ -198,6 +213,8 @@ class _NearVisionPageState extends State<NearVisionPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -206,7 +223,7 @@ class _NearVisionPageState extends State<NearVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.nearVisionTitle),
+        title: Text(l10n.nearVisionTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -232,7 +249,7 @@ class _NearVisionPageState extends State<NearVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Yakın Görme Testi Nedir?',
+                l10n.nearVisionInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -268,7 +285,7 @@ class _NearVisionPageState extends State<NearVisionPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -280,7 +297,7 @@ class _NearVisionPageState extends State<NearVisionPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Yakın görme testi, kitap, telefon veya yakın mesafedeki nesneleri ne kadar iyi görebildiğinizi ölçer. Bu test, presbiyopi (yaşa bağlı yakın görme sorunu) gibi durumları değerlendirmeye yardımcı olur.',
+                      l10n.nearVisionInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -305,7 +322,7 @@ class _NearVisionPageState extends State<NearVisionPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, yakın mesafedeki küçük yazıları net bir şekilde okuyabilmelidir. Test sırasında yazılar giderek küçülecektir.',
+                              l10n.nearVisionInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -321,7 +338,7 @@ class _NearVisionPageState extends State<NearVisionPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -335,6 +352,8 @@ class _NearVisionPageState extends State<NearVisionPage>
   }
 
   Widget _buildInstructionsScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -343,7 +362,7 @@ class _NearVisionPageState extends State<NearVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.nearVisionTitle),
+        title: Text(l10n.nearVisionTitle),
       ),
       body: SafeArea(
         child: Padding(
@@ -369,7 +388,7 @@ class _NearVisionPageState extends State<NearVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                AppStrings.testInstructions,
+                l10n.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -390,29 +409,29 @@ class _NearVisionPageState extends State<NearVisionPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.ruler,
-                      text: 'Telefonu yaklaşık 40 cm mesafede tutun',
+                      text: l10n.nearVisionInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.eye,
-                      text: 'Ekrandaki kelimeyi okuyun',
+                      text: l10n.nearVisionInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.mousePointer,
-                      text: 'Gördüğünüz kelimeyi seçeneklerden seçin',
+                      text: l10n.nearVisionInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.alertCircle,
-                      text: 'Yazılar giderek küçülecektir',
+                      text: l10n.nearVisionInstruction4,
                     ),
                   ],
                 ),
               ),
               const Spacer(),
               AppButton(
-                text: AppStrings.startTest,
+                text: l10n.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
@@ -459,7 +478,7 @@ class _NearVisionPageState extends State<NearVisionPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Soru ${_currentQuestion + 1} / ${_fontSizes.length}',
+          AppLocalizations.of(context)!.questionNumber(_currentQuestion + 1, _fontSizes.length),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -487,7 +506,7 @@ class _NearVisionPageState extends State<NearVisionPage>
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        _currentWord ?? 'KİTAP',
+                        _currentWord ?? AppLocalizations.of(context)!.nearVisionWord1,
                         style: GoogleFonts.inter(
                           fontSize: fontSize,
                           fontWeight: FontWeight.w700,
@@ -501,7 +520,7 @@ class _NearVisionPageState extends State<NearVisionPage>
                   const SizedBox(height: 40),
                   
                   Text(
-                    'Hangi kelimeyi görüyorsunuz?',
+                    AppLocalizations.of(context)!.nearVisionQuestion,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -636,7 +655,7 @@ class _DistanceInstructionDialog extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Kitap Okuma Mesafesi',
+              AppLocalizations.of(context)!.nearVisionDistanceDialogTitle,
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -645,7 +664,7 @@ class _DistanceInstructionDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Cihazı kitap okuma mesafesinde (25-30 cm) tutarak teste başlayabilirsiniz.',
+              AppLocalizations.of(context)!.nearVisionDistanceDialogContent,
               style: GoogleFonts.inter(
                 fontSize: 15,
                 height: 1.5,
@@ -670,7 +689,7 @@ class _DistanceInstructionDialog extends StatelessWidget {
                   elevation: 0,
                 ),
                 child: Text(
-                  'Tamam',
+                  AppLocalizations.of(context)!.okay,
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

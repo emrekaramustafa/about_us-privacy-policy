@@ -8,7 +8,9 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/eye_exercises/domain/models/exercise_model.dart';
+import 'package:goz_testi/features/eye_exercises/domain/models/exercise_localizations.dart';
 import 'package:goz_testi/features/eye_exercises/presentation/pages/exercise_completion_page.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Exercise Detail Page
 /// Shows individual exercise with animations
@@ -247,7 +249,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
                       ),
                       Expanded(
                         child: Text(
-                          'Egzersiz ${widget.exerciseIndex + 1} / ${widget.totalExercises}',
+                          AppLocalizations.of(context)!.exerciseNumber(widget.exerciseIndex + 1, widget.totalExercises),
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -279,7 +281,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
                         SizedBox(height: isSmallScreen ? 10 : 20),
                         // Title - Animasyonun üstüne
                         Text(
-                          widget.exercise.title,
+                          ExerciseLocalizations.getTitle(context, widget.exercise.id),
                           style: GoogleFonts.inter(
                             fontSize: isSmallScreen ? 24 : 28,
                             fontWeight: FontWeight.w700,
@@ -339,7 +341,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
                           ),
                         ),
                         // Benefit (Ne işe yarar?) - Enhanced
-                        if (widget.exercise.benefit != null && widget.exercise.benefit!.isNotEmpty) ...[
+                        if (ExerciseLocalizations.getBenefit(context, widget.exercise.id) != null && ExerciseLocalizations.getBenefit(context, widget.exercise.id)!.isNotEmpty) ...[
                           SizedBox(height: isSmallScreen ? 16 : 20),
                           Container(
                             padding: EdgeInsets.all(isSmallScreen ? 16 : 20),
@@ -383,7 +385,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
                             SizedBox(width: isSmallScreen ? 12 : 16),
                             Expanded(
                               child: Text(
-                                widget.exercise.benefit!,
+                                ExerciseLocalizations.getBenefit(context, widget.exercise.id) ?? '',
                                 style: GoogleFonts.inter(
                                   fontSize: isSmallScreen ? 13 : 15,
                                   height: 1.5,
@@ -433,14 +435,16 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
                 final isSmallScreen = screenWidth < 400;
                 final buttonPadding = isSmallScreen ? 16.0 : 24.0;
                 
+                final l10n = AppLocalizations.of(context)!;
+                
                 if (widget.profile == 'adult' || widget.profile == 'child') {
                   // Yetişkin ve çocuk profilleri: "Sonraki" butonu her zaman görünür
                   return Padding(
                     padding: EdgeInsets.all(buttonPadding),
                     child: AppButton(
                       text: widget.exerciseIndex < widget.totalExercises - 1
-                          ? 'Sonraki'
-                          : 'Tamamla',
+                          ? l10n.exerciseNext
+                          : l10n.exerciseComplete,
                       icon: LucideIcons.arrowRight,
                       onPressed: _onNext,
                       backgroundColor: AppColors.medicalBlue,
@@ -452,13 +456,13 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
                     child: AppButton(
                       text: _isCompleted
                           ? widget.exerciseIndex < widget.totalExercises - 1
-                              ? 'Sonraki'
-                              : 'Tamamla'
+                              ? l10n.exerciseNext
+                              : l10n.exerciseComplete
                           : widget.exercise.repetitions > 0
-                              ? 'Yapıldı ($_currentRepetition/${widget.exercise.repetitions})'
+                              ? l10n.exerciseDone(_currentRepetition, widget.exercise.repetitions)
                               : widget.exercise.duration > 0
-                                  ? 'Devam Et'
-                                  : 'Başla',
+                                  ? l10n.continueText
+                                  : l10n.exerciseStart,
                       icon: _isCompleted
                           ? LucideIcons.arrowRight
                           : widget.exercise.repetitions > 0
@@ -582,14 +586,15 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
   }
 
   String _getDescriptionWithRepetition() {
-    String description = widget.exercise.description;
+    final l10n = AppLocalizations.of(context)!;
+    String description = ExerciseLocalizations.getDescription(context, widget.exercise.id);
     
     // Çocuk profili için tekrar sayısını açıklamanın sonuna ekle
     if (widget.profile == 'child') {
       if (widget.exercise.repetitions > 0) {
-        description = '$description (${widget.exercise.repetitions} tekrar)';
+        description = '$description (${widget.exercise.repetitions} ${l10n.repetitionText})';
       } else if (widget.exercise.duration > 0) {
-        description = '$description (${widget.exercise.duration} saniye)';
+        description = '$description (${widget.exercise.duration} ${l10n.secondText})';
       }
     }
     
@@ -602,11 +607,13 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
       return const SizedBox.shrink();
     }
     
+    final l10n = AppLocalizations.of(context)!;
+    
     // Yetişkin profili için tekrar sayısını göster (sadece bilgi amaçlı)
     if (widget.profile == 'adult') {
       if (widget.exercise.repetitions > 0) {
         return Text(
-          '${widget.exercise.repetitions} tekrar',
+          '${widget.exercise.repetitions} ${l10n.repetitionText}',
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -615,7 +622,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
         );
       } else if (widget.exercise.duration > 0) {
         return Text(
-          '${widget.exercise.duration} saniye',
+          '${widget.exercise.duration} ${l10n.secondText}',
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -629,7 +636,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
     // Ofis profili için eski mantık (kalan tekrar/süre)
     if (widget.exercise.repetitions > 0) {
       return Text(
-        '${widget.exercise.repetitions - _currentRepetition} tekrar kaldı',
+        '${widget.exercise.repetitions - _currentRepetition} ${l10n.repetitionText} ${l10n.remainingText}',
         style: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.w600,
@@ -638,7 +645,7 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage>
       );
     } else if (widget.exercise.duration > 0) {
       return Text(
-        '${widget.exercise.duration - _elapsedSeconds} saniye kaldı',
+        '${widget.exercise.duration - _elapsedSeconds} ${l10n.secondText} ${l10n.remainingText}',
         style: GoogleFonts.inter(
           fontSize: 18,
           fontWeight: FontWeight.w600,

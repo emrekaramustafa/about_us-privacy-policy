@@ -8,6 +8,7 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Stereopsis (Visual Tracking Game) Test Page
 enum StereopsisPhase { info, instructions, testing }
@@ -211,15 +212,16 @@ class _StereopsisPageState extends State<StereopsisPage>
   }
 
   void _finishTest() {
+    final l10n = AppLocalizations.of(context)!;
     final percentage = (_correctAnswers / _speedLevels.length * 100).round();
     String diagnosis;
     
     if (percentage >= 80) {
-      diagnosis = 'Görsel takip yeteneğiniz normal görünüyor';
+      diagnosis = l10n.stereopsisDiagnosisNormal;
     } else if (percentage >= 60) {
-      diagnosis = 'Hafif görsel takip sorunu olabilir';
+      diagnosis = l10n.stereopsisDiagnosisMild;
     } else {
-      diagnosis = 'Görsel takip sorunu var. Göz doktoruna danışın.';
+      diagnosis = l10n.stereopsisDiagnosisLow;
     }
     
     context.pushReplacement(
@@ -259,7 +261,7 @@ class _StereopsisPageState extends State<StereopsisPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Görsel Takip Testi'),
+        title: Text(AppLocalizations.of(context)!.stereopsisTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -285,7 +287,7 @@ class _StereopsisPageState extends State<StereopsisPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Görsel Takip Testi Nedir?',
+                AppLocalizations.of(context)!.stereopsisInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -333,7 +335,7 @@ class _StereopsisPageState extends State<StereopsisPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Bu test, hareket eden bir nesneyi takip edip hangi çizim altında olduğunu belirleme yeteneğinizi ölçer. Görsel dikkat, takip ve konsantrasyon becerilerinizi değerlendirir.',
+                      AppLocalizations.of(context)!.stereopsisInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -358,7 +360,7 @@ class _StereopsisPageState extends State<StereopsisPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Top hareket ederken dikkatle takip edin. Hareket durduğunda hangi çizim altında olduğunu seçin.',
+                              AppLocalizations.of(context)!.stereopsisInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -374,7 +376,7 @@ class _StereopsisPageState extends State<StereopsisPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: AppLocalizations.of(context)!.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -396,10 +398,10 @@ class _StereopsisPageState extends State<StereopsisPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Görsel Takip Testi'),
+        title: Text(AppLocalizations.of(context)!.stereopsisTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -422,7 +424,7 @@ class _StereopsisPageState extends State<StereopsisPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Test Talimatları',
+                AppLocalizations.of(context)!.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -443,34 +445,35 @@ class _StereopsisPageState extends State<StereopsisPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.eye,
-                      text: 'Topun hareketini dikkatle takip edin',
+                      text: AppLocalizations.of(context)!.stereopsisInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.move,
-                      text: 'Top 3 şekil (Şapka, Yıldız, Kalp) altında hareket edecek',
+                      text: AppLocalizations.of(context)!.stereopsisInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.mousePointer,
-                      text: 'Hareket durduğunda topun hangi çizim altında olduğunu seçin',
+                      text: AppLocalizations.of(context)!.stereopsisInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.alertCircle,
-                      text: 'Test ilerledikçe top daha hızlı hareket edecek',
+                      text: AppLocalizations.of(context)!.stereopsisInstruction4,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: 'Testi Başlat',
+                text: AppLocalizations.of(context)!.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.medicalTeal,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -513,7 +516,7 @@ class _StereopsisPageState extends State<StereopsisPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Soru ${_currentQuestion + 1} / ${_speedLevels.length}',
+          AppLocalizations.of(context)!.questionNumber(_currentQuestion + 1, _speedLevels.length),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -537,7 +540,7 @@ class _StereopsisPageState extends State<StereopsisPage>
                       Padding(
                         padding: const EdgeInsets.all(24),
                         child: Text(
-                          'Top hangi çizim altında?',
+                          AppLocalizations.of(context)!.stereopsisQuestion,
                           style: GoogleFonts.inter(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -629,7 +632,7 @@ class _StereopsisPageState extends State<StereopsisPage>
                       Padding(
                         padding: const EdgeInsets.all(24),
                         child: Text(
-                          'Topu takip edin...',
+                          AppLocalizations.of(context)!.stereopsisTracking,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             color: AppColors.textSecondary,

@@ -7,6 +7,7 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Peripheral Vision Test Page
 enum PeripheralPhase { info, instructions, testing }
@@ -215,6 +216,8 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -223,7 +226,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Periferik Görüş Testi'),
+        title: Text(AppLocalizations.of(context)!.peripheralVisionTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -249,7 +252,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Periferik Görüş Testi Nedir?',
+                l10n.peripheralVisionInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -285,7 +288,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -297,7 +300,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Periferik görüş, merkezi görüş alanının dışındaki görme yeteneğidir. Bu test, glokom ve retina sorunları gibi durumları tespit etmeye yardımcı olur.',
+                      l10n.peripheralVisionInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -322,7 +325,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Merkez noktaya odaklanın ve kenarlardaki içi boş şekli görmeye çalışın. Başınızı veya gözlerinizi hareket ettirmeyin.',
+                              l10n.peripheralVisionInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -338,7 +341,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -360,10 +363,10 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Periferik Görüş Testi'),
+        title: Text(AppLocalizations.of(context)!.peripheralVisionTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -386,7 +389,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Test Talimatları',
+                AppLocalizations.of(context)!.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -407,34 +410,35 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.target,
-                      text: 'Merkez noktaya odaklanın',
+                      text: AppLocalizations.of(context)!.peripheralVisionInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.eye,
-                      text: 'Başınızı veya gözlerinizi hareket ettirmeyin',
+                      text: AppLocalizations.of(context)!.peripheralVisionInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.scan,
-                      text: 'Kenarlardaki şekilleri görüp görmediğinizi belirtin',
+                      text: AppLocalizations.of(context)!.peripheralVisionInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.mousePointer,
-                      text: 'İçi boş olan şekli seçin',
+                      text: AppLocalizations.of(context)!.peripheralVisionInstruction4,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: 'Testi Başlat',
+                text: AppLocalizations.of(context)!.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.medicalBlue,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -481,7 +485,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Soru ${_currentQuestion + 1} / 10',
+          AppLocalizations.of(context)!.questionNumber(_currentQuestion + 1, 10),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -568,7 +572,7 @@ class _PeripheralVisionPageState extends State<PeripheralVisionPage>
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'Merkeze bakın ve içi boş olan şekli seçin',
+                          AppLocalizations.of(context)!.peripheralVisionQuestion,
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.white,

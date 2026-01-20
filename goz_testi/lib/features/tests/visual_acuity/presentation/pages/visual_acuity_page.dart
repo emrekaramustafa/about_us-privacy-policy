@@ -9,6 +9,7 @@ import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/utils/screen_calibration.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Visual Acuity Test Page (Percentage Based)
 /// 
@@ -237,18 +238,18 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
         return _buildInfoScreen();
       case TestPhase.instructionsLeft:
         return _buildInstructionScreen(
-          title: 'Sol Göz Testi',
-          instruction: 'Lütfen SAĞ gözünüzü kapatın ve cihazı kol mesafesinde tutun.',
-          subInstruction: 'Test boyunca 10 soru sorulacak.',
+          title: AppLocalizations.of(context)!.visualAcuityLeftEyeTitle,
+          instruction: AppLocalizations.of(context)!.visualAcuityLeftEyeInstruction,
+          subInstruction: AppLocalizations.of(context)!.visualAcuityLeftEyeSubInstruction,
           onStart: _startLeftEyeTest,
           isRightEyeClosed: true,
           onShowDialog: () => _showDistanceInstructionDialog(isRightEyeClosed: true),
         );
       case TestPhase.instructionsRight:
         return _buildInstructionScreen(
-          title: 'Sağ Göz Testi',
-          instruction: 'Lütfen SOL gözünüzü kapatın ve cihazı kol mesafesinde tutun.',
-          subInstruction: 'Test boyunca 10 soru sorulacak.',
+          title: AppLocalizations.of(context)!.visualAcuityRightEyeTitle,
+          instruction: AppLocalizations.of(context)!.visualAcuityRightEyeInstruction,
+          subInstruction: AppLocalizations.of(context)!.visualAcuityRightEyeSubInstruction,
           onStart: _startRightEyeTest,
           isRightEyeClosed: false,
           onShowDialog: () => _showDistanceInstructionDialog(isRightEyeClosed: false),
@@ -262,6 +263,8 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -270,7 +273,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.visualAcuityTitle),
+        title: Text(l10n.visualAcuityTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -296,7 +299,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Görme Keskinliği Testi Nedir?',
+                l10n.visualAcuityInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -332,7 +335,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -344,7 +347,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Görme keskinliği testi, gözlerinizin ne kadar net görebildiğini ölçer. Bu test, standart göz muayenelerinde kullanılan Snellen harf tablosuna dayanmaktadır.',
+                      l10n.visualAcuityInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -369,7 +372,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, test boyunca tüm harfleri net bir şekilde görebilmelidir. Eğer harfler bulanık görünüyorsa veya emin değilseniz, "Emin Değilim" seçeneğini işaretleyiniz.',
+                              l10n.visualAcuityInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -398,7 +401,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Test sırasında her gözünüz ayrı ayrı değerlendirilecektir. Bir gözünüzü kapatarak testi tamamlamanız gerekmektedir.',
+                              l10n.visualAcuityInfoWarning,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -414,7 +417,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -548,7 +551,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Test boyunca 10 soru sorulacak.',
+                      AppLocalizations.of(context)!.questionsDuringTest(_totalQuestionsPerEye),
                       style: GoogleFonts.inter(fontSize: 14, color: AppColors.textSecondary),
                       textAlign: TextAlign.center,
                     ),
@@ -557,7 +560,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
               ),
               const SizedBox(height: 48),
               AppButton(
-                text: 'Başlat',
+                text: AppLocalizations.of(context)!.startButton,
                 icon: LucideIcons.play,
                 onPressed: onStart,
                 width: double.infinity,
@@ -570,6 +573,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
   }
 
   Widget _buildTestScreen() {
+    final l10n = AppLocalizations.of(context)!;
     // Map question index directly to 1-10 scale
     final difficultyLevel = _currentQuestionIndex; 
     final fontSize = ScreenCalibration.getSnellenSize(context, difficultyLevel);
@@ -589,7 +593,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                isLeftTest ? 'SOL GÖZ' : 'SAĞ GÖZ',
+                isLeftTest ? l10n.leftEyeLabel : l10n.rightEyeLabel,
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
@@ -599,7 +603,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
             ),
             const Spacer(),
             Text(
-              'Soru $_currentQuestionIndex / $_totalQuestionsPerEye',
+              l10n.questionNumber(_currentQuestionIndex, _totalQuestionsPerEye),
               style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
             ),
           ],
@@ -647,7 +651,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                 child: Column(
                   children: [
                     Text(
-                      'Gördüğünüz harfi işaretleyiniz',
+                      AppLocalizations.of(context)!.visualAcuityQuestionText,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -682,7 +686,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                           ),
                         ),
                         child: Text(
-                          'Emin Değilim',
+                          l10n.notSure,
                           style: GoogleFonts.inter(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -746,9 +750,10 @@ class _DistanceInstructionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final eyeText = isRightEyeClosed 
-        ? 'Sağ gözünüzü kapatıp cihazı kol mesafesine getirdiğinizde teste başlayabilirsiniz.'
-        : 'Sol gözünüzü kapatıp cihazı kol mesafesine getirdiğinizde teste başlayabilirsiniz.';
+        ? l10n.visualAcuityDistanceDialogContent
+        : l10n.visualAcuityDistanceDialogContentLeft;
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -807,7 +812,7 @@ class _DistanceInstructionDialog extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Kol Mesafesi',
+              l10n.visualAcuityDistanceDialogTitle,
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -842,7 +847,7 @@ class _DistanceInstructionDialog extends StatelessWidget {
                   elevation: 0,
                 ),
                 child: Text(
-                  'Tamam',
+                  l10n.okay,
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

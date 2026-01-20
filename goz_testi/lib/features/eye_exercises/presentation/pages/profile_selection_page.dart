@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/services/notification_service.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Profile Selection Page
@@ -66,6 +67,8 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
   }
 
   Future<bool?> _showNotificationPermissionDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -78,7 +81,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Günlük Hatırlatma',
+                l10n.exerciseDailyReminder,
                 style: GoogleFonts.inter(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -88,7 +91,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
           ],
         ),
         content: Text(
-          'Günde 1 kez göz egzersizi hatırlatması almak ister misiniz?',
+          l10n.exerciseDailyReminderDesc,
           style: GoogleFonts.inter(
             fontSize: 16,
             color: AppColors.textSecondary,
@@ -98,7 +101,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: Text(
-              'Hayır',
+              l10n.exerciseNo,
               style: GoogleFonts.inter(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w600,
@@ -114,7 +117,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
               ),
             ),
             child: Text(
-              'Evet',
+              l10n.exerciseYes,
               style: GoogleFonts.inter(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
@@ -128,6 +131,8 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -137,7 +142,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Göz Egzersizleri',
+          l10n.exerciseTitle,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -153,7 +158,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
             children: [
               const SizedBox(height: 20),
               Text(
-                'Profil Seçin',
+                l10n.exerciseProfileSelect,
                 style: GoogleFonts.inter(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
@@ -163,7 +168,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Size uygun egzersiz programını seçin',
+                l10n.exerciseProfileSelectDesc,
                 style: GoogleFonts.inter(
                   fontSize: 16,
                   color: AppColors.textSecondary,
@@ -175,16 +180,16 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
                 child: Column(
                   children: [
                     _ProfileCard(
-                      title: 'Çocuk (Aile)',
-                      subtitle: '5-12 yaş',
+                      title: l10n.exerciseProfileChild,
+                      subtitle: l10n.exerciseProfileChildSubtitle,
                       icon: LucideIcons.heart,
                       color: AppColors.medicalTeal,
                       onTap: () => _handleProfileSelection('child'),
                     ),
                     const SizedBox(height: 20),
                     _ProfileCard(
-                      title: 'Yetişkin',
-                      subtitle: 'Her yaş için uygun.',
+                      title: l10n.exerciseProfileAdult,
+                      subtitle: l10n.exerciseProfileAdultSubtitle,
                       icon: LucideIcons.user,
                       color: AppColors.medicalBlue,
                       onTap: () => _handleProfileSelection('adult'),
@@ -210,7 +215,7 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Her profil için özel hazırlanmış egzersiz programları',
+                              l10n.exerciseProfileInfo,
                               style: GoogleFonts.inter(
                                 fontSize: 13,
                                 color: AppColors.medicalBlue,

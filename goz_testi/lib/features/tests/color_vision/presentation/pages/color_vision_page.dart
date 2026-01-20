@@ -8,6 +8,7 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Color Vision Test Page - Enhanced with multiple test types
 enum ColorVisionPhase { info, instructions, testing }
@@ -73,8 +74,8 @@ class _ColorVisionPageState extends State<ColorVisionPage>
     IshiharaPlateData(
       type: PlateType.ring,
       number: 0,
-      options: ['Evet', 'Hayır', 'Emin Değilim'],
-      correctAnswer: 'Evet',
+      options: ['yes', 'no', 'notSure'], // Will be localized in build method
+      correctAnswer: 'yes',
       description: 'Halka Renk Testi 1',
       imagePath: 'assets/images/ishihara/halka_1.png',
     ),
@@ -82,8 +83,8 @@ class _ColorVisionPageState extends State<ColorVisionPage>
     IshiharaPlateData(
       type: PlateType.ring,
       number: 0,
-      options: ['Evet', 'Hayır', 'Emin Değilim'],
-      correctAnswer: 'Evet',
+      options: ['yes', 'no', 'notSure'], // Will be localized in build method
+      correctAnswer: 'yes',
       description: 'Halka Renk Testi 2',
       imagePath: 'assets/images/ishihara/halka_2.png',
     ),
@@ -143,7 +144,16 @@ class _ColorVisionPageState extends State<ColorVisionPage>
 
   void _onOptionSelected(String selectedOption) {
     final currentPlate = _plates[_currentPlateIndex];
-    final isCorrect = selectedOption == currentPlate.correctAnswer;
+    final l10n = AppLocalizations.of(context)!;
+    
+    // For ring tests, compare localized values
+    String correctAnswer = currentPlate.correctAnswer;
+    if (currentPlate.type == PlateType.ring) {
+      if (correctAnswer == 'yes') correctAnswer = l10n.yes;
+      if (correctAnswer == 'no') correctAnswer = l10n.no;
+    }
+    
+    final isCorrect = selectedOption == correctAnswer;
     
     if (isCorrect) {
       _correctAnswers++;
@@ -212,6 +222,8 @@ class _ColorVisionPageState extends State<ColorVisionPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -220,7 +232,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.colorVisionTitle),
+        title: Text(AppLocalizations.of(context)!.colorVisionTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -246,7 +258,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Renk Körlüğü Testi Nedir?',
+                l10n.colorVisionInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -282,7 +294,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -294,7 +306,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Bu test üç farklı renk körlüğü türünü değerlendirir:\n\n• Deuteranopia (Yeşil Renk Körlüğü)\n• Protanopia (Kırmızı Renk Körlüğü)\n• Tritanopia (Mavi Renk Körlüğü)',
+                      l10n.colorVisionInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -319,7 +331,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, renkli daireler içindeki sayıları net bir şekilde görebilmelidir. Halka testlerinde ise farklı renkleri ayırt edebilmelidir. Eğer emin değilseniz, "Emin Değilim" seçeneğini işaretleyiniz.',
+                              l10n.colorVisionInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -335,7 +347,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -349,6 +361,8 @@ class _ColorVisionPageState extends State<ColorVisionPage>
   }
 
   Widget _buildInstructionsScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -357,10 +371,10 @@ class _ColorVisionPageState extends State<ColorVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.colorVisionTitle),
+        title: Text(AppLocalizations.of(context)!.colorVisionTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -383,7 +397,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Test Talimatları',
+                l10n.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -404,29 +418,30 @@ class _ColorVisionPageState extends State<ColorVisionPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.sun,
-                      text: 'Ekran parlaklığını maksimuma ayarlayın.',
+                      text: l10n.colorVisionInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.search,
-                      text: 'Sayı plakalarında: Daire içindeki sayıyı bulun.',
+                      text: l10n.colorVisionInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.circle,
-                      text: 'Halka testlerinde: Farklı renkleri görüp görmediğinizi değerlendirin.',
+                      text: l10n.colorVisionInstruction3,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: AppStrings.startTest,
+                text: l10n.startTest,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.medicalTeal,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -462,9 +477,10 @@ class _ColorVisionPageState extends State<ColorVisionPage>
     
     // For number tests: 4 options in 2x2 grid + "Emin Değilim" below
     // For ring tests: 2 options (Evet, Hayır) in 2x1 grid + "Emin Değilim" below
+    final l10n = AppLocalizations.of(context)!;
     List<String> mainOptions;
     if (isRingTest) {
-      mainOptions = ['Evet', 'Hayır'];
+      mainOptions = [l10n.yes, l10n.no];
     } else {
       mainOptions = List<String>.from(currentPlateData.options);
     }
@@ -478,7 +494,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Plaka ${_currentPlateIndex + 1} / ${_plates.length}',
+          AppLocalizations.of(context)!.colorVisionPlate(_currentPlateIndex + 1, _plates.length),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -519,8 +535,8 @@ class _ColorVisionPageState extends State<ColorVisionPage>
                   children: [
                     Text(
                       isRingTest 
-                          ? 'Dairenin içinde farklı renk bir halka görüyor musunuz?'
-                          : 'Hangi sayıyı görüyorsunuz?',
+                          ? l10n.colorVisionRingQuestion
+                          : l10n.colorVisionWhichNumber,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -573,7 +589,7 @@ class _ColorVisionPageState extends State<ColorVisionPage>
                             // "Emin Değilim" button below
                             Padding(
                               padding: const EdgeInsets.only(top: 4),
-                              child: _buildOptionButton('Emin Değilim', isSecondary: true),
+                              child: _buildOptionButton(l10n.notSure, isSecondary: true),
                             ),
                           ],
                         ),

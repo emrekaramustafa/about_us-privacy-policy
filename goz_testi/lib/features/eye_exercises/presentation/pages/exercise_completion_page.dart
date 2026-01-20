@@ -7,6 +7,7 @@ import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/core/services/notification_service.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Exercise Completion Page
 /// Shown when all exercises are completed
@@ -44,15 +45,18 @@ class _ExerciseCompletionPageState extends State<ExerciseCompletionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final profile = widget.profile;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
               // Celebration Icon
               Container(
                 width: 150,
@@ -70,13 +74,15 @@ class _ExerciseCompletionPageState extends State<ExerciseCompletionPage> {
               const SizedBox(height: 40),
               // Title
               Text(
-                profile == 'adult' ? '✔ Bugünkü egzersizler tamamlandı' : '🎉 Harika İş Çıkardın!',
+                profile == 'adult' ? l10n.exerciseCompletionTitleAdult : l10n.exerciseCompletionTitleChild,
                 style: GoogleFonts.inter(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                 ),
                 textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 24),
               // Message
@@ -101,14 +107,16 @@ class _ExerciseCompletionPageState extends State<ExerciseCompletionPage> {
                   children: [
                     Text(
                       profile == 'adult'
-                          ? 'Gözlerini dinlendirdin\nOdağını yeniledin'
-                          : 'Bugünkü göz egzersizlerini tamamladın 👏',
+                          ? l10n.exerciseCompletionMessageAdult
+                          : l10n.exerciseCompletionMessageChild,
                       style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: AppColors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 16),
                     Row(
@@ -129,21 +137,23 @@ class _ExerciseCompletionPageState extends State<ExerciseCompletionPage> {
                     const SizedBox(height: 8),
                     Text(
                       profile == 'adult'
-                          ? 'Gün içinde 1 kez yeterlidir'
-                          : 'Gözlerin sana teşekkür ediyor',
+                          ? l10n.exerciseCompletionSubtitleAdult
+                          : l10n.exerciseCompletionSubtitleChild,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         color: AppColors.textSecondary,
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 40),
               // Home Button
               AppButton(
-                text: 'Ana Ekrana Dön',
+                text: l10n.exerciseBackToHome,
                 icon: LucideIcons.home,
                 onPressed: () => context.go(AppRoutes.home),
                 backgroundColor: AppColors.medicalBlue,
@@ -151,7 +161,7 @@ class _ExerciseCompletionPageState extends State<ExerciseCompletionPage> {
               const SizedBox(height: 16),
               // Restart Button
               AppButton(
-                text: 'Egzersizleri Tekrarla',
+                text: l10n.exerciseRepeat,
                 icon: LucideIcons.repeat,
                 onPressed: () => context.push(
                   AppRoutes.exerciseList,
@@ -161,7 +171,9 @@ class _ExerciseCompletionPageState extends State<ExerciseCompletionPage> {
                 backgroundColor: AppColors.medicalBlue,
                 textColor: AppColors.medicalBlue,
               ),
-            ],
+              const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

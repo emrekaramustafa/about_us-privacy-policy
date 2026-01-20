@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 
+import 'package:goz_testi/core/services/purchase_service.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+
 /// Test State Management
 /// 
 /// Manages the overall testing state including completed tests count
@@ -20,6 +23,18 @@ final isPremiumProvider = StateNotifierProvider<PremiumStatusNotifier, bool>((re
 final dailyTestCountProvider = FutureProvider<int>((ref) async {
   final storageService = StorageService();
   return await storageService.getDailyTestCount();
+});
+
+/// Remaining test credits provider
+final remainingTestCreditsProvider = FutureProvider<int>((ref) async {
+  final storageService = StorageService();
+  return await storageService.getRemainingTestCredits();
+});
+
+/// Premium product details provider
+final premiumProductProvider = FutureProvider<ProductDetails?>((ref) async {
+  final purchaseService = PurchaseService();
+  return await purchaseService.getPremiumProduct();
 });
 
 /// Test history provider - loads from storage on first access

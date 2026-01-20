@@ -7,6 +7,7 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Macular Degeneration Test Page (Amsler Grid)
 enum MacularPhase { info, instructions, testing }
@@ -104,6 +105,7 @@ class _MacularPageState extends State<MacularPage>
   }
 
   void _finishTest() {
+    final l10n = AppLocalizations.of(context)!;
     int normalCount = 0;
     if (_rightEyeNormal) normalCount++;
     if (_leftEyeNormal) normalCount++;
@@ -112,12 +114,12 @@ class _MacularPageState extends State<MacularPage>
     String diagnosis;
     
     if (normalCount == 2) {
-      diagnosis = 'Her iki gözde de makula görünümü normal';
+      diagnosis = l10n.macularDiagnosisBothNormal;
     } else if (normalCount == 1) {
-      final affectedEye = _rightEyeNormal ? 'Sol' : 'Sağ';
-      diagnosis = '$affectedEye gözde makula anormallikleri görülebilir. Göz doktoruna danışın.';
+      final affectedEye = _rightEyeNormal ? l10n.leftEyeLabel : l10n.rightEyeLabel;
+      diagnosis = l10n.macularDiagnosisOneEye(affectedEye);
     } else {
-      diagnosis = 'Her iki gözde de makula anormallikleri görülebilir. Acilen göz doktoruna danışın.';
+      diagnosis = l10n.macularDiagnosisBothAbnormal;
     }
     
     context.pushReplacement(
@@ -149,6 +151,8 @@ class _MacularPageState extends State<MacularPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -157,7 +161,7 @@ class _MacularPageState extends State<MacularPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.macularTitle),
+        title: Text(l10n.macularTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -183,7 +187,7 @@ class _MacularPageState extends State<MacularPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Makula Testi Nedir?',
+                l10n.macularInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -219,7 +223,7 @@ class _MacularPageState extends State<MacularPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -231,7 +235,7 @@ class _MacularPageState extends State<MacularPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Amsler Grid testi, makula dejenerasyonu (sarı nokta hastalığı) gibi makula sorunlarını tespit etmeye yardımcı olur. Bu test, merkezi görüş alanındaki bozuklukları, çarpılmaları veya eksik alanları belirler.',
+                      l10n.macularInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -256,7 +260,7 @@ class _MacularPageState extends State<MacularPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, grid çizgilerini düz ve kesişim noktasındaki merkez noktayı net görebilmelidir. Çizgilerde çarpılma, bulanıklık veya eksik alanlar varsa göz doktoruna danışın.',
+                              l10n.macularInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -272,7 +276,7 @@ class _MacularPageState extends State<MacularPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -286,6 +290,8 @@ class _MacularPageState extends State<MacularPage>
   }
 
   Widget _buildInstructionsScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -294,10 +300,10 @@ class _MacularPageState extends State<MacularPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.macularTitle),
+        title: Text(l10n.macularTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -320,7 +326,7 @@ class _MacularPageState extends State<MacularPage>
               ),
               const SizedBox(height: 32),
               Text(
-                AppStrings.testInstructions,
+                l10n.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -341,34 +347,35 @@ class _MacularPageState extends State<MacularPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.eyeOff,
-                      text: 'Bir gözünüzü kapatın',
+                      text: l10n.macularInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.target,
-                      text: 'Grid\'in ortasındaki noktaya odaklanın',
+                      text: l10n.macularInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.scan,
-                      text: 'Tüm çizgilerin düz ve eşit olup olmadığını kontrol edin',
+                      text: l10n.macularInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.alertCircle,
-                      text: 'Çarpılma, bulanıklık veya eksik alan var mı?',
+                      text: l10n.macularInstruction4,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: AppStrings.startTest,
+                text: l10n.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.medicalTeal,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -399,8 +406,9 @@ class _MacularPageState extends State<MacularPage>
   }
 
   Widget _buildTestScreen() {
+    final l10n = AppLocalizations.of(context)!;
     final isRightEye = _currentStep == 0;
-    final eyeName = isRightEye ? AppStrings.rightEye : AppStrings.leftEye;
+    final eyeName = isRightEye ? l10n.rightEyeLabel : l10n.leftEyeLabel;
     
     return Scaffold(
       backgroundColor: Colors.white,
@@ -411,7 +419,7 @@ class _MacularPageState extends State<MacularPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Adım ${_currentStep + 1} / 2',
+          l10n.macularStep(_currentStep + 1, 2),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -462,8 +470,8 @@ class _MacularPageState extends State<MacularPage>
                     // Instructions
                     Text(
                       isRightEye
-                          ? 'Sol gözünüzü kapatın ve sağ gözle bakın'
-                          : 'Sağ gözünüzü kapatın ve sol gözle bakın',
+                          ? l10n.closeRightEyeInstruction
+                          : l10n.closeLeftEyeInstruction,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: AppColors.textSecondary,
@@ -483,7 +491,7 @@ class _MacularPageState extends State<MacularPage>
                     
                     // Options
                     AppButton(
-                      text: 'Tüm Çizgiler Normal',
+                      text: l10n.macularAllLinesNormal,
                       icon: LucideIcons.check,
                       onPressed: _onAllNormal,
                       width: double.infinity,
@@ -493,7 +501,7 @@ class _MacularPageState extends State<MacularPage>
                     const SizedBox(height: 12),
                     
                     AppButton(
-                      text: 'Çarpılma/Bulanıklık/Eksik Alan Var',
+                      text: l10n.macularHasIssues,
                       icon: LucideIcons.alertTriangle,
                       onPressed: _onHasIssues,
                       width: double.infinity,

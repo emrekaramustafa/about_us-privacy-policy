@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Test Limit Checker
@@ -62,18 +63,18 @@ class TestLimitChecker {
       return true;
     }
     
-    // Check daily test count
+    // Check remaining test credits
     try {
       final storageService = StorageService();
-      final dailyCount = await storageService.getDailyTestCount();
+      final remaining = await storageService.getRemainingTestCredits();
       
-      // If daily limit reached (3 tests), show dialog
-      if (dailyCount >= 3) {
+      // If no credits remaining, show dialog
+      if (remaining <= 0) {
         return await _showTestLimitDialog(context);
       }
     } catch (e) {
-      // If daily count check fails, allow test to proceed (fail open)
-      debugPrint('Error checking daily test count: $e');
+      // If check fails, allow test to proceed (fail open)
+      debugPrint('Error checking remaining test credits: $e');
     }
     
     return true;
@@ -81,6 +82,8 @@ class TestLimitChecker {
   
   /// Show dialog when test limit is reached
   static Future<bool> _showTestLimitDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    
     final result = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
@@ -88,21 +91,19 @@ class TestLimitChecker {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: const Text('Günlük Test Kotası Doldu'),
-        content: const Text(
-          'Bugün 3 reklamsız test hakkınızı kullandınız. Daha fazla test yapmak için reklam izleyebilir veya Premium olabilirsiniz.',
-        ),
+        title: Text(l10n.dailyTestQuotaReached),
+        content: Text(l10n.dailyTestQuotaReachedDesc),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(false); // Don't start test
               context.push(AppRoutes.dailyTestInfo);
             },
-            child: const Text('Reklam İzle / Premium'),
+            child: Text(l10n.watchAdOrPremium),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(false), // Don't start test
-            child: const Text('İptal'),
+            child: Text(l10n.cancel),
           ),
         ],
       ),

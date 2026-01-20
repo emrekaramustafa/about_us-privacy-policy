@@ -6,6 +6,7 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Contrast Sensitivity Test Page
 enum ContrastPhase { info, instructions, testing }
@@ -129,15 +130,16 @@ class _ContrastPageState extends State<ContrastPage>
   }
 
   void _finishTest() {
+    final l10n = AppLocalizations.of(context)!;
     final percentage = (_correctAnswers / _contrastLevels.length * 100).round();
     String diagnosis;
     
     if (percentage >= 80) {
-      diagnosis = 'Kontrast hassasiyetiniz normal görünüyor';
+      diagnosis = l10n.contrastDiagnosisNormal;
     } else if (percentage >= 60) {
-      diagnosis = 'Hafif kontrast hassasiyeti eksikliği olabilir';
+      diagnosis = l10n.contrastDiagnosisMild;
     } else {
-      diagnosis = 'Kontrast hassasiyeti düşük. Göz doktoruna danışın.';
+      diagnosis = l10n.contrastDiagnosisLow;
     }
     
     context.pushReplacement(
@@ -169,6 +171,8 @@ class _ContrastPageState extends State<ContrastPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -177,7 +181,7 @@ class _ContrastPageState extends State<ContrastPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.contrastTitle),
+        title: Text(l10n.contrastTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -203,7 +207,7 @@ class _ContrastPageState extends State<ContrastPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Kontrast Hassasiyeti Testi Nedir?',
+                l10n.contrastInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -251,7 +255,7 @@ class _ContrastPageState extends State<ContrastPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Kontrast hassasiyeti, farklı parlaklıktaki nesneleri ayırt edebilme yeteneğidir. Bu test, düşük kontrastlı harfleri ne kadar iyi görebildiğinizi ölçer.',
+                      AppLocalizations.of(context)!.contrastInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -276,7 +280,7 @@ class _ContrastPageState extends State<ContrastPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, düşük kontrastlı harfleri de görebilmelidir. Test sırasında harfler giderek daha az kontrastlı hale gelecektir.',
+                              AppLocalizations.of(context)!.contrastInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -292,7 +296,7 @@ class _ContrastPageState extends State<ContrastPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: AppLocalizations.of(context)!.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -306,6 +310,8 @@ class _ContrastPageState extends State<ContrastPage>
   }
 
   Widget _buildInstructionsScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -314,10 +320,10 @@ class _ContrastPageState extends State<ContrastPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.contrastTitle),
+        title: Text(l10n.contrastTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -340,7 +346,7 @@ class _ContrastPageState extends State<ContrastPage>
               ),
               const SizedBox(height: 32),
               Text(
-                AppStrings.testInstructions,
+                l10n.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -361,34 +367,35 @@ class _ContrastPageState extends State<ContrastPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.eye,
-                      text: 'Ekranın ortasındaki harfe odaklanın',
+                      text: l10n.contrastInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.sun,
-                      text: 'Ekran parlaklığını maksimuma ayarlayın',
+                      text: l10n.contrastInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.mousePointer,
-                      text: 'Gördüğünüz harfi seçeneklerden seçin',
+                      text: l10n.contrastInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.alertCircle,
-                      text: 'Harfler giderek daha az kontrastlı olacak',
+                      text: l10n.contrastInstruction4,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: AppStrings.startTest,
+                text: l10n.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.medicalBlue,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -435,7 +442,7 @@ class _ContrastPageState extends State<ContrastPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Soru ${_currentQuestion + 1} / ${_contrastLevels.length}',
+          AppLocalizations.of(context)!.questionNumber(_currentQuestion + 1, _contrastLevels.length),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -480,7 +487,7 @@ class _ContrastPageState extends State<ContrastPage>
                   const SizedBox(height: 40),
                   
                   Text(
-                    'Hangi harfi görüyorsunuz?',
+                    AppLocalizations.of(context)!.contrastQuestion,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,

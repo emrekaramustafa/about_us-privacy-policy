@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/services/sound_service.dart';
 import 'package:goz_testi/core/services/notification_service.dart';
 import 'package:goz_testi/core/router/app_router.dart';
+import 'package:goz_testi/core/providers/locale_provider.dart';
+import 'package:goz_testi/core/services/rating_service.dart';
 
 /// Settings Page
 /// User preferences and app settings
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends ConsumerState<SettingsPage> {
   final NotificationService _notificationService = NotificationService();
   bool _soundEnabled = true;
   bool _notificationsEnabled = true;
@@ -43,6 +47,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = ref.watch(localeProvider);
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -52,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Ayarlar',
+          l10n.settingsTitle,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -64,12 +71,29 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            // Ses Ayarları
-            _buildSectionTitle('Ses & Bildirimler'),
+            // Language Settings
+            _buildSectionTitle(l10n.language),
+            _buildSettingTile(
+              icon: LucideIcons.globe,
+              title: l10n.language,
+              subtitle: currentLocale != null 
+                  ? '${SupportedLocales.getFlag(currentLocale)} ${SupportedLocales.getLanguageName(currentLocale)}'
+                  : '🌐 Auto (${SupportedLocales.getLanguageName(Localizations.localeOf(context))})',
+              trailing: const Icon(
+                LucideIcons.chevronRight,
+                color: AppColors.textSecondary,
+              ),
+              onTap: () => _showLanguageSelector(),
+            ),
+            
+            const SizedBox(height: 32),
+            
+            // Sound & Notifications
+            _buildSectionTitle(l10n.notifications),
             _buildSettingTile(
               icon: LucideIcons.volume2,
-              title: 'Ses Efektleri',
-              subtitle: 'Buton tıklama seslerini aç/kapat',
+              title: l10n.soundEffects,
+              subtitle: l10n.soundEffectsDesc,
               trailing: Switch(
                 value: _soundEnabled,
                 onChanged: (value) {
@@ -84,19 +108,18 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 8),
             _buildSettingTile(
               icon: LucideIcons.bell,
-              title: 'Bildirimler',
-              subtitle: 'Göz egzersizi hatırlatıcıları',
+              title: l10n.notifications,
+              subtitle: l10n.dailyReminder,
               trailing: Switch(
                 value: _notificationsEnabled,
                 onChanged: (value) async {
                   if (value) {
-                    // Request permission first
                     final hasPermission = await _notificationService.requestPermissions();
                     if (!hasPermission) {
                       if (mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Bildirim izni gerekli'),
+                          SnackBar(
+                            content: Text(l10n.errorGeneric),
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -109,15 +132,6 @@ class _SettingsPageState extends State<SettingsPage> {
                     _notificationsEnabled = value;
                   });
                   await _notificationService.setNotificationsEnabled(value);
-                  
-                  if (mounted && value) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Bildirimler açıldı'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
                 },
                 activeColor: AppColors.medicalBlue,
               ),
@@ -126,8 +140,8 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 8),
               _buildSettingTile(
                 icon: LucideIcons.clock,
-                title: 'Bildirim Saati',
-                subtitle: '${_notificationTime.format(context)}',
+                title: l10n.notificationTime,
+                subtitle: _notificationTime.format(context),
                 trailing: const Icon(
                   LucideIcons.chevronRight,
                   color: AppColors.textSecondary,
@@ -138,19 +152,18 @@ class _SettingsPageState extends State<SettingsPage> {
             
             const SizedBox(height: 32),
             
-            // Test Ayarları
-            _buildSectionTitle('Test Ayarları'),
+            // Test Settings
+            _buildSectionTitle(l10n.testSection),
             _buildSettingTile(
               icon: LucideIcons.monitor,
-              title: 'Parlaklık Uyarısı',
-              subtitle: 'Test öncesi ekran parlaklığı uyarısı',
+              title: l10n.brightnessWarning,
+              subtitle: l10n.brightnessWarningDesc,
               trailing: Switch(
                 value: _brightnessWarningEnabled,
                 onChanged: (value) {
                   setState(() {
                     _brightnessWarningEnabled = value;
                   });
-                  // TODO: Implement brightness warning
                 },
                 activeColor: AppColors.medicalBlue,
               ),
@@ -158,12 +171,12 @@ class _SettingsPageState extends State<SettingsPage> {
             
             const SizedBox(height: 32),
             
-            // Bilgi
-            _buildSectionTitle('Bilgi'),
+            // Information
+            _buildSectionTitle(l10n.about),
             _buildSettingTile(
               icon: LucideIcons.info,
-              title: 'Hakkında',
-              subtitle: 'Uygulama bilgileri ve versiyon',
+              title: l10n.about,
+              subtitle: '${l10n.version} 1.0.0',
               trailing: const Icon(
                 LucideIcons.chevronRight,
                 color: AppColors.textSecondary,
@@ -175,8 +188,8 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 8),
             _buildSettingTile(
               icon: LucideIcons.shield,
-              title: 'Gizlilik Politikası',
-              subtitle: 'Veri kullanımı ve gizlilik',
+              title: l10n.privacyPolicy,
+              subtitle: l10n.privacy,
               trailing: const Icon(
                 LucideIcons.chevronRight,
                 color: AppColors.textSecondary,
@@ -188,8 +201,8 @@ class _SettingsPageState extends State<SettingsPage> {
             const SizedBox(height: 8),
             _buildSettingTile(
               icon: LucideIcons.fileText,
-              title: 'Kullanım Koşulları',
-              subtitle: 'Hizmet şartları ve koşullar',
+              title: l10n.termsOfService,
+              subtitle: l10n.terms,
               trailing: const Icon(
                 LucideIcons.chevronRight,
                 color: AppColors.textSecondary,
@@ -198,19 +211,150 @@ class _SettingsPageState extends State<SettingsPage> {
                 context.push(AppRoutes.termsOfService);
               },
             ),
+            const SizedBox(height: 8),
+            _buildSettingTile(
+              icon: LucideIcons.star,
+              title: l10n.rateApp,
+              subtitle: l10n.rateApp,
+              trailing: const Icon(
+                LucideIcons.chevronRight,
+                color: AppColors.textSecondary,
+              ),
+              onTap: () {
+                _rateApp();
+              },
+            ),
             
             const SizedBox(height: 32),
             
-            // Versiyon
+            // Version
             Center(
               child: Text(
-                'Versiyon 1.0.0',
+                '${l10n.version} 1.0.0',
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   color: AppColors.textSecondary,
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showLanguageSelector() {
+    final l10n = AppLocalizations.of(context)!;
+    final currentLocale = ref.read(localeProvider);
+    
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+        ),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar
+            Container(
+              margin: const EdgeInsets.only(top: 12, bottom: 8),
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.borderLight,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            // Title
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(
+                l10n.language,
+                style: GoogleFonts.inter(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ),
+            // Scrollable language list
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Auto option
+                    _buildLanguageOption(
+                      flag: '🌐',
+                      name: 'Auto (${SupportedLocales.getLanguageName(Localizations.localeOf(context))})',
+                      isSelected: currentLocale == null,
+                      onTap: () {
+                        ref.read(localeProvider.notifier).clearLocale();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Divider(height: 1),
+                    // Language options
+                    ...SupportedLocales.all.map((locale) => _buildLanguageOption(
+                      flag: SupportedLocales.getFlag(locale),
+                      name: SupportedLocales.getLanguageName(locale),
+                      isSelected: currentLocale?.languageCode == locale.languageCode,
+                      onTap: () {
+                        ref.read(localeProvider.notifier).setLocale(locale);
+                        Navigator.pop(context);
+                      },
+                    )),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption({
+    required String flag,
+    required String name,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            Text(
+              flag,
+              style: const TextStyle(fontSize: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                name,
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                  color: isSelected ? AppColors.medicalBlue : AppColors.textPrimary,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(
+                LucideIcons.check,
+                color: AppColors.medicalBlue,
+                size: 20,
+              ),
           ],
         ),
       ),
@@ -305,6 +449,8 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _showAboutDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -312,7 +458,7 @@ class _SettingsPageState extends State<SettingsPage> {
           borderRadius: BorderRadius.circular(20),
         ),
         title: Text(
-          'Göz Testi',
+          l10n.appName,
           style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -323,7 +469,7 @@ class _SettingsPageState extends State<SettingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Profesyonel göz sağlığı testleri uygulaması',
+              l10n.appTagline,
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: AppColors.textSecondary,
@@ -331,7 +477,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Versiyon: 1.0.0',
+              '${l10n.version}: 1.0.0',
               style: GoogleFonts.inter(
                 fontSize: 12,
                 color: AppColors.textSecondary,
@@ -339,7 +485,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Bu uygulama bilgilendirme amaçlıdır ve profesyonel göz muayenesi yerine geçmez.',
+              l10n.informationalPurposeDesc,
               style: GoogleFonts.inter(
                 fontSize: 12,
                 color: AppColors.textSecondary,
@@ -352,7 +498,7 @@ class _SettingsPageState extends State<SettingsPage> {
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text(
-              'Tamam',
+              l10n.okay,
               style: GoogleFonts.inter(
                 color: AppColors.medicalBlue,
                 fontWeight: FontWeight.w600,
@@ -365,14 +511,14 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _selectNotificationTime() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: _notificationTime,
-      helpText: 'Bildirim Saati Seçin',
-      cancelText: 'İptal',
-      confirmText: 'Tamam',
-      hourLabelText: 'Saat',
-      minuteLabelText: 'Dakika',
+      helpText: l10n.dailyReminder,
+      cancelText: l10n.cancel,
+      confirmText: l10n.okay,
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -388,12 +534,11 @@ class _SettingsPageState extends State<SettingsPage> {
     );
 
     if (picked != null) {
-      // Validate time range (08:00 - 22:30)
       if (picked.hour < 8 || (picked.hour == 22 && picked.minute > 30) || picked.hour > 22) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bildirim saati 08:00 - 22:30 arasında olmalıdır'),
+            SnackBar(
+              content: Text(l10n.errorGeneric),
               backgroundColor: Colors.red,
             ),
           );
@@ -410,7 +555,7 @@ class _SettingsPageState extends State<SettingsPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Bildirim saati ${picked.format(context)} olarak ayarlandı'),
+              content: Text('${l10n.success}: ${picked.format(context)}'),
               duration: const Duration(seconds: 2),
             ),
           );
@@ -419,12 +564,17 @@ class _SettingsPageState extends State<SettingsPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(e.toString()),
+              content: Text(l10n.errorGeneric),
               backgroundColor: Colors.red,
             ),
           );
         }
       }
     }
+  }
+
+  Future<void> _rateApp() async {
+    final ratingService = RatingService();
+    await ratingService.showRatingDialog(context);
   }
 }

@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/widgets/scroll_indicator.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Privacy Policy Page
 /// 
@@ -39,6 +40,8 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -52,7 +55,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Gizlilik Politikası',
+          l10n.privacyPolicyTitle,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -71,101 +74,49 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildHeader(),
+                  _buildHeader(l10n),
                   const SizedBox(height: 32),
                   _buildSection(
-                    title: '1. Veri Toplama',
-                    content: '''
-Uygulamamız, hizmetlerimizi sağlamak ve iyileştirmek için aşağıdaki verileri toplayabilir:
-
-• Test sonuçları ve geçmişi (cihazınızda saklanır)
-• Kullanım istatistikleri (anonim)
-• Cihaz bilgileri (işletim sistemi, model)
-• Uygulama performans verileri
-
-Kişisel kimlik bilgileriniz (isim, e-posta, telefon) toplanmaz.
-''',
+                    title: l10n.privacySection1Title,
+                    content: l10n.privacySection1Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '2. Veri Kullanımı',
-                    content: '''
-Toplanan veriler aşağıdaki amaçlarla kullanılır:
-
-• Test sonuçlarınızı görüntülemeniz ve karşılaştırmanız
-• Uygulama performansını iyileştirme
-• Hata ayıklama ve teknik sorunları çözme
-• Kullanıcı deneyimini geliştirme
-
-Verileriniz reklam amaçlı üçüncü taraflarla paylaşılmaz.
-''',
+                    title: l10n.privacySection2Title,
+                    content: l10n.privacySection2Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '3. Veri Saklama',
-                    content: '''
-• Test sonuçları ve geçmişi cihazınızda yerel olarak saklanır
-• Uygulamayı silerseniz, tüm verileriniz silinir
-• Bulut senkronizasyonu yapılmaz
-• Verileriniz güvenli şekilde şifrelenmiş olarak saklanır
-''',
+                    title: l10n.privacySection3Title,
+                    content: l10n.privacySection3Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '4. Üçüncü Taraf Hizmetler',
-                    content: '''
-Uygulamamız aşağıdaki üçüncü taraf hizmetleri kullanabilir:
-
-• Google AdMob: Reklam gösterimi için
-• Google Play Services: Uygulama içi satın alımlar için
-• Firebase Analytics: Kullanım istatistikleri için (anonim)
-
-Bu hizmetler kendi gizlilik politikalarına tabidir.
-''',
+                    title: l10n.privacySection4Title,
+                    content: l10n.privacySection4Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '5. Çocuk Gizliliği',
-                    content: '''
-Uygulamamız 13 yaş altı çocuklardan bilerek kişisel bilgi toplamaz. 
-Eğer bir çocuğun kişisel bilgilerini topladığımızı fark edersek, 
-bu bilgileri derhal sileriz.
-''',
+                    title: l10n.privacySection5Title,
+                    content: l10n.privacySection5Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '6. Haklarınız',
-                    content: '''
-Verilerinizle ilgili aşağıdaki haklara sahipsiniz:
-
-• Verilerinize erişim
-• Verilerinizi düzeltme
-• Verilerinizi silme
-• Veri taşınabilirliği
-• İtiraz etme hakkı
-
-Bu hakları kullanmak için uygulama ayarlarından verilerinizi silebilirsiniz.
-''',
+                    title: l10n.privacySection6Title,
+                    content: l10n.privacySection6Content,
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '7. Değişiklikler',
-                    content: '''
-Gizlilik politikamızı zaman zaman güncelleyebiliriz. 
-Önemli değişiklikler durumunda uygulama içinde bildirim gönderilir.
-Son güncelleme tarihi: ${DateTime.now().year} yılı
-''',
+                    title: l10n.privacySection7Title,
+                    content: l10n.privacySection7Content(DateTime.now().year),
                   ),
                   const SizedBox(height: 24),
                   _buildSection(
-                    title: '8. İletişim',
-                    content: '''
-Gizlilik politikamız hakkında sorularınız varsa, 
-lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
-''',
+                    title: l10n.privacySection8Title,
+                    content: l10n.privacySection8Content,
                   ),
                   const SizedBox(height: 32),
-                  _buildDisclaimer(),
+                  _buildDisclaimer(l10n),
                 ],
               ),
             ),
@@ -176,7 +127,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -214,7 +165,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Gizlilik Politikası',
+                  l10n.privacyPolicyTitle,
                   style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
@@ -223,7 +174,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Verilerinizin nasıl korunduğunu öğrenin',
+                  l10n.privacyPolicySubtitle,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: AppColors.textSecondary,
@@ -279,7 +230,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
     );
   }
 
-  Widget _buildDisclaimer() {
+  Widget _buildDisclaimer(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -298,7 +249,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
           ),
           const SizedBox(height: 12),
           Text(
-            'Önemli Not',
+            l10n.privacyImportantNote,
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -307,8 +258,7 @@ lütfen uygulama içindeki "Hakkında" bölümünden bizimle iletişime geçin.
           ),
           const SizedBox(height: 8),
           Text(
-            'Bu gizlilik politikası, uygulamanın veri toplama ve kullanım uygulamalarını açıklar. '
-            'Uygulamayı kullanarak bu politikayı kabul etmiş olursunuz.',
+            l10n.privacyDisclaimer,
             style: GoogleFonts.inter(
               fontSize: 14,
               color: AppColors.textSecondary,

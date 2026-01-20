@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Exercise Info Page
 /// Information screen about eye exercises before profile selection
@@ -55,6 +56,8 @@ class _ExerciseInfoPageState extends State<ExerciseInfoPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       body: SafeArea(
@@ -104,7 +107,7 @@ class _ExerciseInfoPageState extends State<ExerciseInfoPage>
               const SizedBox(height: 32),
               // Title
               Text(
-                'Göz Egzersizleri',
+                l10n.exerciseTitle,
                 style: GoogleFonts.inter(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
@@ -124,32 +127,32 @@ class _ExerciseInfoPageState extends State<ExerciseInfoPage>
                         children: [
                       _buildBenefitItem(
                         icon: LucideIcons.eye,
-                        title: 'Göz Yorgunluğunu Azaltır',
-                        description: 'Ekran kullanımından kaynaklanan göz yorgunluğunu hafifletir',
+                        title: l10n.exerciseBenefit1Title,
+                        description: l10n.exerciseBenefit1Desc,
                       ),
                       const SizedBox(height: 20),
                       _buildBenefitItem(
                         icon: LucideIcons.focus,
-                        title: 'Odaklanmayı Geliştirir',
-                        description: 'Göz kaslarını güçlendirerek odaklanma becerisini artırır',
+                        title: l10n.exerciseBenefit2Title,
+                        description: l10n.exerciseBenefit2Desc,
                       ),
                       const SizedBox(height: 20),
                       _buildBenefitItem(
                         icon: LucideIcons.zap,
-                        title: 'Göz Koordinasyonunu Artırır',
-                        description: 'Göz hareketlerini düzenleyerek koordinasyonu geliştirir',
+                        title: l10n.exerciseBenefit3Title,
+                        description: l10n.exerciseBenefit3Desc,
                       ),
                       const SizedBox(height: 20),
                       _buildBenefitItem(
                         icon: LucideIcons.heart,
-                        title: 'Göz Sağlığını Korur',
-                        description: 'Düzenli egzersiz ile göz sağlığınızı koruyun',
+                        title: l10n.exerciseBenefit4Title,
+                        description: l10n.exerciseBenefit4Desc,
                       ),
                       const SizedBox(height: 20),
                       _buildBenefitItem(
                         icon: LucideIcons.moon,
-                        title: 'Gözleri Dinlendirir',
-                        description: 'Günlük rutininize ekleyerek gözlerinizi dinlendirin',
+                        title: l10n.exerciseBenefit5Title,
+                        description: l10n.exerciseBenefit5Desc,
                       ),
                         ],
                       ),
@@ -187,7 +190,7 @@ class _ExerciseInfoPageState extends State<ExerciseInfoPage>
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Aşağı kaydır',
+                                        l10n.exerciseScrollDown,
                                         style: GoogleFonts.inter(
                                           fontSize: 12,
                                           fontWeight: FontWeight.w500,
@@ -209,7 +212,7 @@ class _ExerciseInfoPageState extends State<ExerciseInfoPage>
               const SizedBox(height: 24),
               // Start Button
               AppButton(
-                text: 'Başla',
+                text: l10n.exerciseStart,
                 icon: LucideIcons.arrowRight,
                 onPressed: () => context.push(AppRoutes.exerciseProfile),
                 backgroundColor: AppColors.medicalBlue,

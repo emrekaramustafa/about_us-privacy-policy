@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
 
@@ -17,6 +18,7 @@ class StorageService {
   static const String _testHistoryKey = 'test_history';
   static const String _exerciseHistoryKey = 'exercise_history';
   static const String _dailyTestCountKey = 'daily_test_count';
+  static const String _extraTestCreditsKey = 'extra_test_credits'; // Reklam izlenerek kazanılan ekstra haklar
   static const String _lastResetDateKey = 'last_reset_date';
   static const String _hasSeenSoftGateTodayKey = 'has_seen_soft_gate_today';
   static const int _maxHistoryItems = 100; // Keep last 100 test results
@@ -246,6 +248,7 @@ class StorageService {
       // If it's a new day, reset counts
       if (today.isAfter(lastResetDay)) {
         await prefs.setInt(_dailyTestCountKey, 0);
+        await prefs.setInt(_extraTestCreditsKey, 0);
         await prefs.setBool(_hasSeenSoftGateTodayKey, false);
         await prefs.setString(_lastResetDateKey, today.toIso8601String());
       }
@@ -270,13 +273,40 @@ class StorageService {
   }
 
   /// Add extra test credit (after watching ad)
+  /// User can watch up to 18 ads to get 18 extra tests (3 free + 18 ads = 21 max)
+  /// Increments extra credits counter
   Future<void> addExtraTestCredit() async {
     await resetDailyCountsIfNeeded();
     final prefs = await SharedPreferences.getInstance();
     final currentCount = prefs.getInt(_dailyTestCountKey) ?? 0;
-    // Decrement by 1 to allow one more test (effectively resetting the 3-test limit)
-    if (currentCount >= 3) {
-      await prefs.setInt(_dailyTestCountKey, currentCount - 1);
+    final currentCredits = prefs.getInt(_extraTestCreditsKey) ?? 0;
+    
+    // Maximum 21 tests per day (3 free + 18 ads)
+    // Check if we can add more credits (total available = 3 free + credits)
+    final totalAvailable = 3 + currentCredits;
+    if (totalAvailable < 21) {
+      // Increment extra credits (max 18 ads = 18 credits)
+      final newCredits = (currentCredits + 1).clamp(0, 18);
+      await prefs.setInt(_extraTestCreditsKey, newCredits);
+      debugPrint('Extra test credit added. Credits: $currentCredits -> $newCredits, Test count: $currentCount');
+    } else {
+      debugPrint('Daily test limit reached (21). Cannot add more credits.');
     }
+  }
+
+  /// Get remaining test credits
+  /// Returns: 3 (free) + extra credits - tests taken
+  Future<int> getRemainingTestCredits() async {
+    await resetDailyCountsIfNeeded();
+    final prefs = await SharedPreferences.getInstance();
+    final testCount = prefs.getInt(_dailyTestCountKey) ?? 0;
+    final extraCredits = prefs.getInt(_extraTestCreditsKey) ?? 0;
+    
+    // Total available = 3 free + extra credits from ads
+    final totalAvailable = 3 + extraCredits;
+    // Remaining = total available - tests taken
+    final remaining = (totalAvailable - testCount).clamp(0, 21);
+    
+    return remaining;
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Splash Screen Page
 class SplashPage extends StatefulWidget {
@@ -76,15 +76,21 @@ class _SplashPageState extends State<SplashPage> {
                   ),
                   child: Column(
                     children: [
-                      Text(
-                        'Göz Sağlığınız İçin Akıllı Testler',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                          letterSpacing: -0.5,
-                        ),
+                      Builder(
+                        builder: (ctx) {
+                          final l10n = AppLocalizations.of(ctx);
+                          final tagline = l10n?.appTagline ?? 'Smart Tests for Your Eye Health';
+                          return Text(
+                            tagline,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                              letterSpacing: -0.5,
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(height: 24),
                       

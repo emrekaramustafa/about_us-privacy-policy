@@ -5,6 +5,8 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/features/eye_exercises/domain/models/exercise_model.dart';
+import 'package:goz_testi/features/eye_exercises/domain/models/exercise_localizations.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Exercise List Page
 /// Shows list of exercises for selected profile
@@ -29,21 +31,23 @@ class ExerciseListPage extends StatelessWidget {
     }
   }
 
-  String _getProfileTitle() {
+  String _getProfileTitle(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     switch (profile) {
       case 'child':
-        return 'Çocuk (Aile) - 5-12 yaş';
+        return l10n.exerciseProfileChildFull;
       case 'adult':
-        return 'Yetişkin (Her yaş için uygun.)';
+        return l10n.exerciseProfileAdultFull;
       case 'office':
-        return 'Ofis Çalışanı';
+        return l10n.exerciseProfileOffice;
       default:
-        return 'Yetişkin';
+        return l10n.exerciseProfileAdult;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final exercises = _getExercises();
 
     return Scaffold(
@@ -55,12 +59,14 @@ class ExerciseListPage extends StatelessWidget {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          _getProfileTitle(),
+          _getProfileTitle(context),
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
       body: SafeArea(
@@ -72,7 +78,7 @@ class ExerciseListPage extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'Bugünkü Egzersizler',
+                    l10n.exerciseTodayExercises,
                     style: GoogleFonts.inter(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
@@ -81,7 +87,7 @@ class ExerciseListPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${exercises.length} adım',
+                    l10n.exerciseSteps(exercises.length),
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       color: AppColors.textSecondary,
@@ -140,7 +146,7 @@ class ExerciseListPage extends StatelessWidget {
                     const Icon(LucideIcons.play),
                     const SizedBox(width: 8),
                     Text(
-                      'Egzersizlere Başla',
+                      l10n.exerciseStartExercises,
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -233,21 +239,23 @@ class _ExerciseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    exercise.title,
+                    ExerciseLocalizations.getTitle(context, exercise.id),
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    exercise.description.split('\n').first,
+                    ExerciseLocalizations.getDescription(context, exercise.id).split('\n').first,
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: AppColors.textSecondary,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],

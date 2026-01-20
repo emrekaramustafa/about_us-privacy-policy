@@ -8,6 +8,8 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
+import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
 
 /// Vergence Test Page - Convergence/Divergence Test
 enum VergencePhase { info, instructions, testing }
@@ -36,29 +38,31 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
   late Animation<double> _sizeAnimation;
   late Animation<double> _positionAnimation;
   
-  final List<Map<String, dynamic>> _testQuestions = [
-    {
-      'type': VergenceType.convergence,
-      'instruction': 'Nesneyi yakınlaştırın (burnunuza doğru)',
-      'target': '●',
-      'minSize': 40.0,
-      'maxSize': 120.0,
-    },
-    {
-      'type': VergenceType.divergence,
-      'instruction': 'Nesneyi uzaklaştırın',
-      'target': '■',
-      'minSize': 120.0,
-      'maxSize': 40.0,
-    },
-    {
-      'type': VergenceType.convergence,
-      'instruction': 'Son yakınsama testi',
-      'target': '▲',
-      'minSize': 35.0,
-      'maxSize': 110.0,
-    },
-  ];
+  List<Map<String, dynamic>> _getTestQuestions(AppLocalizations l10n) {
+    return [
+      {
+        'type': VergenceType.convergence,
+        'instruction': l10n.vergenceQuestionConverge,
+        'target': '●',
+        'minSize': 40.0,
+        'maxSize': 120.0,
+      },
+      {
+        'type': VergenceType.divergence,
+        'instruction': l10n.vergenceQuestionDiverge,
+        'target': '■',
+        'minSize': 120.0,
+        'maxSize': 40.0,
+      },
+      {
+        'type': VergenceType.convergence,
+        'instruction': l10n.vergenceQuestionFinal,
+        'target': '▲',
+        'minSize': 35.0,
+        'maxSize': 110.0,
+      },
+    ];
+  }
 
   @override
   void initState() {
@@ -118,12 +122,15 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
   }
 
   void _loadQuestion() {
-    if (_currentQuestion >= _testQuestions.length) {
+    final l10n = AppLocalizations.of(context)!;
+    final testQuestions = _getTestQuestions(l10n);
+    
+    if (_currentQuestion >= testQuestions.length) {
       _finishTest();
       return;
     }
     
-    final question = _testQuestions[_currentQuestion];
+    final question = testQuestions[_currentQuestion];
     _currentTestType = question['type'] as VergenceType;
     
     if (_currentTestType == VergenceType.convergence) {
@@ -184,15 +191,17 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
   void _finishTest() {
     _movementController.stop();
     
-    final percentage = (_correctAnswers / _testQuestions.length * 100).round();
+    final l10n = AppLocalizations.of(context)!;
+    final testQuestions = _getTestQuestions(l10n);
+    final percentage = (_correctAnswers / testQuestions.length * 100).round();
     String diagnosis;
     
     if (percentage >= 80) {
-      diagnosis = 'Yakınsama ve uzaklaşma yeteneğiniz normal görünüyor';
+      diagnosis = l10n.vergenceDiagnosisNormal;
     } else if (percentage >= 60) {
-      diagnosis = 'Hafif vergence sorunu olabilir - Göz doktoruna danışın';
+      diagnosis = l10n.vergenceDiagnosisMild;
     } else {
-      diagnosis = 'Vergence sorunu var - Mutlaka göz doktoruna danışın';
+      diagnosis = l10n.vergenceDiagnosisSevere;
     }
     
     context.pushReplacement(
@@ -200,12 +209,12 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
       extra: {
         'testType': 'binocular_vision',
         'score': _correctAnswers,
-        'totalQuestions': _testQuestions.length,
+        'totalQuestions': testQuestions.length,
         'details': {
           'percentage': percentage,
           'diagnosis': diagnosis,
           'correctAnswers': _correctAnswers,
-          'totalQuestions': _testQuestions.length,
+          'totalQuestions': testQuestions.length,
           'hasDiplopia': _hasDiplopia,
         },
       },
@@ -225,6 +234,8 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -233,7 +244,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Vergence Testi'),
+        title: Text(AppLocalizations.of(context)!.stereopsisTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -259,7 +270,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Vergence Testi Nedir?',
+                l10n.vergenceInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -295,7 +306,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Profesyonel Binoküler Görüş Testi',
+                            l10n.vergenceInfoSectionTitle,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -307,7 +318,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Vergence Testi, gözlerinizin yakınsama (convergence) ve uzaklaşma (divergence) yeteneğini ölçer. Bu test, çift görme (diplopia) ve göz kas koordinasyonu problemlerini tespit eder.',
+                      l10n.vergenceInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -332,7 +343,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Test sırasında bir nesneyi yakınlaştırıp uzaklaştıracaksınız. Çift görme olup olmadığını belirteceksiniz.',
+                              l10n.vergenceInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -348,7 +359,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -362,6 +373,8 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
   }
 
   Widget _buildInstructionsScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -370,10 +383,10 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Vergence Testi'),
+        title: Text(l10n.stereopsisTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -396,7 +409,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
               ),
               const SizedBox(height: 32),
               Text(
-                AppStrings.testInstructions,
+                l10n.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -417,34 +430,35 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.eye,
-                      text: 'Ekrandaki nesneye odaklanın',
+                      text: l10n.vergenceInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.move,
-                      text: 'Nesneyi yakınlaştırın veya uzaklaştırın',
+                      text: l10n.vergenceInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.alertCircle,
-                      text: 'Çift görme (diplopia) olup olmadığını belirtin',
+                      text: l10n.vergenceInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.target,
-                      text: 'Her iki gözünüzü açık tutun',
+                      text: l10n.vergenceInstruction4,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: AppStrings.startTest,
+                text: l10n.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.medicalBlue,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -453,11 +467,14 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
   }
 
   Widget _buildTestScreen() {
-    if (_currentQuestion >= _testQuestions.length) {
+    final l10n = AppLocalizations.of(context)!;
+    final testQuestions = _getTestQuestions(l10n);
+    
+    if (_currentQuestion >= testQuestions.length) {
       return const SizedBox();
     }
     
-    final question = _testQuestions[_currentQuestion];
+    final question = testQuestions[_currentQuestion];
     final target = question['target'] as String;
     final instruction = question['instruction'] as String;
     
@@ -470,7 +487,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Soru ${_currentQuestion + 1} / ${_testQuestions.length}',
+          l10n.questionNumber(_currentQuestion + 1, testQuestions.length),
           style: const TextStyle(color: Colors.white),
         ),
       ),
@@ -480,7 +497,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
           child: Column(
             children: [
               LinearProgressIndicator(
-                value: (_currentQuestion + 1) / _testQuestions.length,
+                value: (_currentQuestion + 1) / testQuestions.length,
                 backgroundColor: Colors.grey.shade800,
                 valueColor: const AlwaysStoppedAnimation<Color>(AppColors.medicalBlue),
                 minHeight: 4,
@@ -546,7 +563,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                       const SizedBox(height: 60),
                       
                       Text(
-                        'Nesneyi çift görüyor musunuz?',
+                        l10n.vergenceDiplopiaQuestion,
                         style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -581,7 +598,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                                 ),
                               ),
                               child: Text(
-                                'Hayır',
+                                l10n.no,
                                 style: GoogleFonts.inter(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
@@ -611,7 +628,7 @@ class _BinocularVisionPageState extends State<BinocularVisionPage>
                                 ),
                               ),
                               child: Text(
-                                'Evet',
+                                l10n.yes,
                                 style: GoogleFonts.inter(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,

@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
-import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Legal Disclaimer Page
 /// 
@@ -42,7 +42,6 @@ class _DisclaimerPageState extends State<DisclaimerPage>
     )..repeat(reverse: true);
 
     _scrollController.addListener(() {
-      final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
       
       // Hide indicator when scrolled down
@@ -68,6 +67,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       body: SafeArea(
@@ -106,8 +107,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        AppStrings.disclaimerTitle,
-                        style: GoogleFonts.inter(
+                        l10n.disclaimerTitle,
+                        style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
@@ -166,8 +167,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                               const SizedBox(width: 12),
                               Expanded(
                                 child: Text(
-                                  'Tıbbi Uyarı',
-                                  style: GoogleFonts.inter(
+                                  l10n.medicalWarning,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.errorRed,
@@ -181,8 +182,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                           
                           // Main Content
                           Text(
-                            AppStrings.disclaimerContent,
-                            style: GoogleFonts.inter(
+                            l10n.disclaimerContent,
+                            style: const TextStyle(
                               fontSize: 15,
                               height: 1.6,
                               color: AppColors.textSecondary,
@@ -194,15 +195,15 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                           // Info Cards
                           _buildInfoCard(
                             icon: LucideIcons.info,
-                            title: 'Bilgilendirme Amaçlı',
-                            description: 'Bu uygulama yalnızca eğitim ve farkındalık amaçlıdır.',
+                            title: l10n.informationalPurpose,
+                            description: l10n.informationalPurposeDesc,
                             color: AppColors.infoBlue,
                           ),
                           const SizedBox(height: 12),
                           _buildInfoCard(
                             icon: LucideIcons.userCheck,
-                            title: 'Profesyonel Muayene',
-                            description: 'Düzenli göz muayenesi için göz doktorunuzu ziyaret edin.',
+                            title: l10n.professionalExamination,
+                            description: l10n.professionalExaminationDesc,
                             color: AppColors.medicalTeal,
                           ),
                             ],
@@ -241,8 +242,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            'Aşağı kaydır',
-                                            style: GoogleFonts.inter(
+                                            l10n.scrollDown,
+                                            style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w500,
                                               color: AppColors.medicalBlue,
@@ -316,8 +317,8 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Yukarıdaki uyarıları okudum ve kabul ediyorum',
-                            style: GoogleFonts.inter(
+                            l10n.readAndAccept,
+                            style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: AppColors.textPrimary,
@@ -339,7 +340,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                   curve: const Interval(0.6, 1.0),
                 ),
                 child: AppButton(
-                  text: AppStrings.acceptAndContinue,
+                  text: l10n.acceptAndContinue,
                   onPressed: _isAccepted
                       ? () async {
                           // Save disclaimer acceptance
@@ -388,7 +389,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: color,
@@ -397,7 +398,7 @@ class _DisclaimerPageState extends State<DisclaimerPage>
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: GoogleFonts.inter(
+                  style: const TextStyle(
                     fontSize: 13,
                     color: AppColors.textSecondary,
                   ),
@@ -410,4 +411,3 @@ class _DisclaimerPageState extends State<DisclaimerPage>
     );
   }
 }
-

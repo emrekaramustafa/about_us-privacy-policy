@@ -9,6 +9,7 @@ import 'package:goz_testi/core/services/ad_service.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Soft Gate Page
 /// 
@@ -48,14 +49,30 @@ class _SoftGatePageState extends ConsumerState<SoftGatePage>
   }
 
   Future<void> _watchAd() async {
+    // Check if user has remaining credits
+    final remaining = await _storageService.getRemainingTestCredits();
+    if (remaining <= 0) {
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.dailyTestQuotaReached),
+            backgroundColor: AppColors.errorRed,
+          ),
+        );
+      }
+      return;
+    }
+
     if (!_adService.isRewardedAdReady) {
       // Try to load ad
       await _adService.loadRewardedAd();
       if (!_adService.isRewardedAdReady) {
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Reklam yüklenemedi. Lütfen daha sonra tekrar deneyin.'),
+            SnackBar(
+              content: Text(l10n.adLoadFailed),
               backgroundColor: AppColors.errorRed,
             ),
           );
@@ -72,13 +89,15 @@ class _SoftGatePageState extends ConsumerState<SoftGatePage>
         // Grant +1 test credit
         await _storageService.addExtraTestCredit();
         
-        // Refresh daily count
+        // Refresh daily count and remaining credits
         ref.invalidate(dailyTestCountProvider);
+        ref.invalidate(remainingTestCreditsProvider);
         
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('+1 test hakkı kazandınız!'),
+            SnackBar(
+              content: Text(l10n.adRewardEarned),
               backgroundColor: AppColors.successGreen,
             ),
           );
@@ -147,7 +166,7 @@ class _SoftGatePageState extends ConsumerState<SoftGatePage>
               FadeTransition(
                 opacity: _controller,
                 child: Text(
-                  'Günlük Test Limiti',
+                  AppLocalizations.of(context)!.dailyTestLimit,
                   style: GoogleFonts.inter(
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
@@ -162,7 +181,7 @@ class _SoftGatePageState extends ConsumerState<SoftGatePage>
               FadeTransition(
                 opacity: _controller,
                 child: Text(
-                  'Bugün 3 test tamamladınız. Daha fazla test yapmak için bir seçenek seçin:',
+                  AppLocalizations.of(context)!.dailyTestLimitDesc,
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     color: AppColors.textSecondary,
@@ -181,8 +200,8 @@ class _SoftGatePageState extends ConsumerState<SoftGatePage>
                     // Watch Ad Option
                     _buildOptionCard(
                       icon: LucideIcons.play,
-                      title: 'Reklam İzle',
-                      subtitle: '+1 test hakkı kazan',
+                      title: AppLocalizations.of(context)!.watchAd,
+                      subtitle: AppLocalizations.of(context)!.earnTestCredit,
                       gradient: LinearGradient(
                         colors: [
                           AppColors.medicalBlue,
@@ -195,20 +214,36 @@ class _SoftGatePageState extends ConsumerState<SoftGatePage>
                     const SizedBox(height: 16),
 
                     // Premium Option
-                    _buildOptionCard(
-                      icon: LucideIcons.crown,
-                      title: 'Premium\'a Geç',
-                      subtitle: 'Sınırsız test ve detaylı analiz',
-                      gradient: AppColors.premiumGradient,
-                      onTap: _goPremium,
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final productAsync = ref.watch(premiumProductProvider);
+                        
+                        return _buildOptionCard(
+                          icon: LucideIcons.crown,
+                          title: AppLocalizations.of(context)!.goPremium,
+                          subtitle: productAsync.when(
+                            data: (product) {
+                              final price = product?.price ?? '';
+                              if (price.isNotEmpty) {
+                                return '${AppLocalizations.of(context)!.premiumLifetimePrice(price)} - ${AppLocalizations.of(context)!.unlimitedTestsAndAnalysis}';
+                              }
+                              return AppLocalizations.of(context)!.unlimitedTestsAndAnalysis;
+                            },
+                            loading: () => AppLocalizations.of(context)!.unlimitedTestsAndAnalysis,
+                            error: (_, __) => AppLocalizations.of(context)!.unlimitedTestsAndAnalysis,
+                          ),
+                          gradient: AppColors.premiumGradient,
+                          onTap: _goPremium,
+                        );
+                      },
                     ),
                     const SizedBox(height: 16),
 
                     // Later Option
                     _buildOptionCard(
                       icon: LucideIcons.clock,
-                      title: 'Daha Sonra',
-                      subtitle: 'Ana ekrana dön',
+                      title: AppLocalizations.of(context)!.later,
+                      subtitle: AppLocalizations.of(context)!.backToHome,
                       gradient: LinearGradient(
                         colors: [
                           AppColors.borderLight,

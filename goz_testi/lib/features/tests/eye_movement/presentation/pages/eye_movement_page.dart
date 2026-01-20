@@ -8,6 +8,8 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
+import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
 
 /// Eye Movement (Smooth Pursuit) Test Page
 enum EyeMovementPhase { info, instructions, testing }
@@ -203,15 +205,16 @@ class _EyeMovementPageState extends State<EyeMovementPage>
   }
 
   void _finishTest() {
+    final l10n = AppLocalizations.of(context)!;
     final percentage = (_correctAnswers / 5 * 100).round();
     String diagnosis;
     
     if (percentage >= 80) {
-      diagnosis = 'Göz hareket takip yeteneğiniz normal görünüyor';
+      diagnosis = l10n.eyeMovementDiagnosisNormal;
     } else if (percentage >= 60) {
-      diagnosis = 'Hafif göz hareket sorunu olabilir';
+      diagnosis = l10n.eyeMovementDiagnosisMild;
     } else {
-      diagnosis = 'Göz hareket sorunu var. Göz doktoruna danışın.';
+      diagnosis = l10n.eyeMovementDiagnosisLow;
     }
     
     context.pushReplacement(
@@ -243,6 +246,8 @@ class _EyeMovementPageState extends State<EyeMovementPage>
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -251,7 +256,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Hareket Takip Testi'),
+        title: Text(AppLocalizations.of(context)!.eyeMovementTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -277,7 +282,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Hareket Takip Testi Nedir?',
+                l10n.eyeMovementInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -313,7 +318,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -325,7 +330,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Smooth pursuit (düzgün takip) testi, gözlerin hareket eden nesneleri takip etme yeteneğini ölçer. Bu test, göz kası koordinasyonu ve nörolojik sorunları değerlendirmeye yardımcı olur.',
+                      l10n.eyeMovementInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -350,7 +355,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, hareket eden nesneyi başını hareket ettirmeden sadece gözleriyle takip edebilmelidir.',
+                              l10n.eyeMovementInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -366,7 +371,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -388,10 +393,10 @@ class _EyeMovementPageState extends State<EyeMovementPage>
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: const Text('Hareket Takip Testi'),
+        title: Text(AppLocalizations.of(context)!.eyeMovementTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -414,7 +419,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
               ),
               const SizedBox(height: 32),
               Text(
-                'Test Talimatları',
+                AppLocalizations.of(context)!.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -435,34 +440,35 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.eye,
-                      text: 'Her iki gözünüzü açık tutun',
+                      text: AppLocalizations.of(context)!.eyeMovementInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.move,
-                      text: 'Hareket eden topu sadece gözlerinizle takip edin',
+                      text: AppLocalizations.of(context)!.eyeMovementInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.ban,
-                      text: 'Başınızı hareket ettirmeyin',
+                      text: AppLocalizations.of(context)!.eyeMovementInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.mousePointer,
-                      text: 'Topu takip edip edemediğinizi belirtin',
+                      text: AppLocalizations.of(context)!.eyeMovementInstruction4,
                     ),
                   ],
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 32),
               AppButton(
-                text: 'Testi Başlat',
+                text: AppLocalizations.of(context)!.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
                 backgroundColor: AppColors.premiumGold,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -502,7 +508,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Soru ${_currentQuestion + 1} / 5',
+          AppLocalizations.of(context)!.questionNumber(_currentQuestion + 1, 5),
           style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
@@ -551,7 +557,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'Topu takip edebildiniz mi?',
+                          AppLocalizations.of(context)!.eyeMovementQuestion,
                           style: GoogleFonts.inter(
                             fontSize: 18,
                             color: Colors.white,
@@ -572,7 +578,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                         child: Column(
                           children: [
                             AppButton(
-                              text: 'Evet, Takip Edebiliyorum',
+                              text: AppLocalizations.of(context)!.eyeMovementCanFollow,
                               icon: LucideIcons.check,
                               onPressed: () => _onAnswerSelected(true),
                               width: double.infinity,
@@ -582,7 +588,7 @@ class _EyeMovementPageState extends State<EyeMovementPage>
                             const SizedBox(height: 16),
                             
                             AppButton(
-                              text: 'Hayır, Takip Edemiyorum',
+                              text: AppLocalizations.of(context)!.eyeMovementCannotFollow,
                               icon: LucideIcons.x,
                               onPressed: () => _onAnswerSelected(false),
                               width: double.infinity,

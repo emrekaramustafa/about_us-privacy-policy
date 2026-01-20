@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/constants/app_strings.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import '../pages/home_page.dart';
 
 /// Test Category Card Widget
@@ -21,6 +22,7 @@ class TestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDisabled = test.isComingSoon;
     
     return GestureDetector(
@@ -111,20 +113,20 @@ class TestCard extends StatelessWidget {
                     children: [
                       if (test.isComingSoon)
                         _buildBadge(
-                          text: 'Yakında',
+                          text: l10n.comingSoon,
                           color: AppColors.textTertiary,
                           bgColor: AppColors.backgroundGrey,
                         )
                       else if (test.isPremium)
                         _buildBadge(
-                          text: AppStrings.premiumLabel,
+                          text: l10n.premiumLabel,
                           color: AppColors.premiumGold,
                           bgColor: AppColors.premiumGoldPale,
                           icon: LucideIcons.crown,
                         )
                       else
                         _buildBadge(
-                          text: AppStrings.freeLabel,
+                          text: l10n.freeLabel,
                           color: AppColors.successGreen,
                           bgColor: AppColors.successGreenPale,
                         ),

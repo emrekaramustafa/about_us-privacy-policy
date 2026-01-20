@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
-import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import '../widgets/test_card.dart';
 
 /// Home Page
@@ -23,82 +23,83 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  int _completedTests = 0;
 
-  final List<TestCategory> _tests = [
-    TestCategory(
-      id: 'visual_acuity',
-      title: AppStrings.visualAcuityTitle,
-      description: AppStrings.visualAcuityDesc,
-      icon: LucideIcons.eye,
-      route: AppRoutes.visualAcuity,
-      isPremium: false,
-      color: AppColors.medicalBlue,
-    ),
-    TestCategory(
-      id: 'color_vision',
-      title: AppStrings.colorVisionTitle,
-      description: AppStrings.colorVisionDesc,
-      icon: LucideIcons.palette,
-      route: AppRoutes.colorVision,
-      isPremium: false,
-      color: AppColors.medicalTeal,
-    ),
-    TestCategory(
-      id: 'astigmatism',
-      title: AppStrings.astigmatismTitle,
-      description: AppStrings.astigmatismDesc,
-      icon: LucideIcons.focus,
-      route: AppRoutes.astigmatism,
-      isPremium: false,
-      color: AppColors.premiumGold,
-    ),
-    TestCategory(
-      id: 'stereopsis',
-      title: AppStrings.stereopsisTitle,
-      description: AppStrings.stereopsisDesc,
-      icon: LucideIcons.eye,
-      route: AppRoutes.stereopsis,
-      isPremium: false,
-      color: AppColors.medicalTeal,
-    ),
-    TestCategory(
-      id: 'near_vision',
-      title: AppStrings.nearVisionTitle,
-      description: AppStrings.nearVisionDesc,
-      icon: LucideIcons.bookOpen,
-      route: AppRoutes.nearVision,
-      isPremium: false,
-      color: AppColors.medicalTeal,
-    ),
-    TestCategory(
-      id: 'macular',
-      title: AppStrings.macularTitle,
-      description: AppStrings.macularDesc,
-      icon: LucideIcons.grid,
-      route: AppRoutes.macular,
-      isPremium: false,
-      color: AppColors.medicalTeal,
-    ),
-    TestCategory(
-      id: 'peripheral_vision',
-      title: AppStrings.peripheralVisionTitle,
-      description: AppStrings.peripheralVisionDesc,
-      icon: LucideIcons.scan,
-      route: AppRoutes.peripheralVision,
-      isPremium: false,
-      color: AppColors.medicalBlue,
-    ),
-    TestCategory(
-      id: 'eye_movement',
-      title: AppStrings.eyeMovementTitle,
-      description: AppStrings.eyeMovementDesc,
-      icon: LucideIcons.move,
-      route: AppRoutes.eyeMovement,
-      isPremium: false,
-      color: AppColors.premiumGold,
-    ),
-  ];
+  List<TestCategory> _getTests(AppLocalizations l10n) {
+    return [
+      TestCategory(
+        id: 'visual_acuity',
+        title: l10n.visualAcuityTitle,
+        description: l10n.visualAcuityDesc,
+        icon: LucideIcons.eye,
+        route: AppRoutes.visualAcuity,
+        isPremium: false,
+        color: AppColors.medicalBlue,
+      ),
+      TestCategory(
+        id: 'color_vision',
+        title: l10n.colorVisionTitle,
+        description: l10n.colorVisionDesc,
+        icon: LucideIcons.palette,
+        route: AppRoutes.colorVision,
+        isPremium: false,
+        color: AppColors.medicalTeal,
+      ),
+      TestCategory(
+        id: 'astigmatism',
+        title: l10n.astigmatismTitle,
+        description: l10n.astigmatismDesc,
+        icon: LucideIcons.focus,
+        route: AppRoutes.astigmatism,
+        isPremium: false,
+        color: AppColors.premiumGold,
+      ),
+      TestCategory(
+        id: 'stereopsis',
+        title: l10n.stereopsisTitle,
+        description: l10n.stereopsisDesc,
+        icon: LucideIcons.eye,
+        route: AppRoutes.stereopsis,
+        isPremium: false,
+        color: AppColors.medicalTeal,
+      ),
+      TestCategory(
+        id: 'near_vision',
+        title: l10n.nearVisionTitle,
+        description: l10n.nearVisionDesc,
+        icon: LucideIcons.bookOpen,
+        route: AppRoutes.nearVision,
+        isPremium: false,
+        color: AppColors.medicalTeal,
+      ),
+      TestCategory(
+        id: 'macular',
+        title: l10n.macularTitle,
+        description: l10n.macularDesc,
+        icon: LucideIcons.grid,
+        route: AppRoutes.macular,
+        isPremium: false,
+        color: AppColors.medicalTeal,
+      ),
+      TestCategory(
+        id: 'peripheral_vision',
+        title: l10n.peripheralVisionTitle,
+        description: l10n.peripheralVisionDesc,
+        icon: LucideIcons.scan,
+        route: AppRoutes.peripheralVision,
+        isPremium: false,
+        color: AppColors.medicalBlue,
+      ),
+      TestCategory(
+        id: 'eye_movement',
+        title: l10n.eyeMovementTitle,
+        description: l10n.eyeMovementDesc,
+        icon: LucideIcons.move,
+        route: AppRoutes.eyeMovement,
+        isPremium: false,
+        color: AppColors.premiumGold,
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -116,11 +117,11 @@ class _HomePageState extends ConsumerState<HomePage>
     super.dispose();
   }
 
-  void _onTestTap(TestCategory test) {
+  void _onTestTap(TestCategory test, AppLocalizations l10n) {
     if (test.isComingSoon) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${test.title} yakında eklenecek!'),
+          content: Text('${test.title} ${l10n.comingSoon}!'),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
@@ -128,7 +129,6 @@ class _HomePageState extends ConsumerState<HomePage>
       return;
     }
 
-    // Premium restriction removed - all tests are now free
     if (test.route != null) {
       context.push(test.route!);
     }
@@ -136,6 +136,9 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final tests = _getTests(l10n);
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       body: SafeArea(
@@ -173,7 +176,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        AppStrings.homeTitle,
+                                        l10n.homeTitle,
                                         style: GoogleFonts.inter(
                                           fontSize: titleFontSize,
                                           fontWeight: FontWeight.w700,
@@ -183,7 +186,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        AppStrings.homeSubtitle,
+                                        l10n.homeSubtitle,
                                         style: GoogleFonts.inter(
                                           fontSize: isSmallScreen ? 14 : 16,
                                           color: AppColors.textSecondary,
@@ -194,12 +197,13 @@ class _HomePageState extends ConsumerState<HomePage>
                                       Consumer(
                                         builder: (context, ref, child) {
                                           final isPremium = ref.watch(isPremiumProvider);
-                                          final dailyCountAsync = ref.watch(dailyTestCountProvider);
+                                          final remainingAsync = ref.watch(remainingTestCreditsProvider);
                                           
                                           if (isPremium) return const SizedBox.shrink();
                                           
-                                          return dailyCountAsync.when(
-                                            data: (count) {
+                                          return remainingAsync.when(
+                                            data: (remaining) {
+                                              final hasNoCredits = remaining <= 0;
                                               return InkWell(
                                                 onTap: () {
                                                   context.push(AppRoutes.dailyTestInfo);
@@ -211,11 +215,11 @@ class _HomePageState extends ConsumerState<HomePage>
                                                     vertical: 6,
                                                   ),
                                                   decoration: BoxDecoration(
-                                                    color: count >= 3
+                                                    color: hasNoCredits
                                                         ? AppColors.warningYellow.withOpacity(0.1)
                                                         : AppColors.medicalTeal.withOpacity(0.1),
                                                     borderRadius: BorderRadius.circular(8),
-                                                    border: count >= 3
+                                                    border: hasNoCredits
                                                         ? Border.all(
                                                             color: AppColors.warningYellow.withOpacity(0.3),
                                                           )
@@ -225,26 +229,24 @@ class _HomePageState extends ConsumerState<HomePage>
                                                     mainAxisSize: MainAxisSize.min,
                                                     children: [
                                                       Icon(
-                                                        count >= 3
+                                                        hasNoCredits
                                                             ? LucideIcons.info
                                                             : LucideIcons.checkCircle2,
                                                         size: 14,
-                                                        color: count >= 3
+                                                        color: hasNoCredits
                                                             ? AppColors.warningYellow
                                                             : AppColors.medicalTeal,
                                                       ),
                                                       const SizedBox(width: 6),
                                                       Flexible(
                                                         child: Text(
-                                                          count >= 3
-                                                              ? 'Video izle, +1 test hakkı kazan. Kalan hak: 0'
-                                                              : 'Video izle, +1 test hakkı kazan. Kalan hak: ${3 - count}',
+                                                          l10n.watchAdForTest(remaining),
                                                           style: GoogleFonts.inter(
                                                             fontSize: 12,
-                                                            fontWeight: count >= 3
+                                                            fontWeight: hasNoCredits
                                                                 ? FontWeight.w600
                                                                 : FontWeight.w500,
-                                                            color: count >= 3
+                                                            color: hasNoCredits
                                                                 ? AppColors.warningYellow
                                                                 : AppColors.medicalTeal,
                                                           ),
@@ -254,7 +256,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                                       Icon(
                                                         LucideIcons.chevronRight,
                                                         size: 12,
-                                                        color: count >= 3
+                                                        color: hasNoCredits
                                                             ? AppColors.warningYellow
                                                             : AppColors.medicalTeal,
                                                       ),
@@ -282,7 +284,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                     icon: const Icon(LucideIcons.settings, size: 22),
                                     color: AppColors.textSecondary,
                                     onPressed: () => context.push(AppRoutes.settings),
-                                    tooltip: 'Ayarlar',
+                                    tooltip: l10n.settings,
                                   ),
                                 ),
                               ],
@@ -305,7 +307,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     parent: _controller,
                     curve: const Interval(0.15, 1.0),
                   ),
-                  child: _buildEyeExercisesBanner(),
+                  child: _buildEyeExercisesBanner(l10n),
                 ),
               ),
             ),
@@ -319,7 +321,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     parent: _controller,
                     curve: const Interval(0.2, 1.0),
                   ),
-                  child: _buildEyeTestsBanner(),
+                  child: _buildEyeTestsBanner(l10n, tests),
                 ),
               ),
             ),
@@ -339,7 +341,7 @@ class _HomePageState extends ConsumerState<HomePage>
                         parent: _controller,
                         curve: const Interval(0.25, 1.0),
                       ),
-                      child: _buildPremiumBanner(),
+                      child: _buildPremiumBanner(l10n),
                     ),
                   ),
                 );
@@ -355,7 +357,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     parent: _controller,
                     curve: const Interval(0.3, 1.0),
                   ),
-                  child: _buildFactsBanner(),
+                  child: _buildFactsBanner(l10n),
                 ),
               ),
             ),
@@ -369,7 +371,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     parent: _controller,
                     curve: const Interval(0.35, 1.0),
                   ),
-                  child: _buildHistoryBanner(),
+                  child: _buildHistoryBanner(l10n),
                 ),
               ),
             ),
@@ -380,7 +382,7 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  Widget _buildEyeExercisesBanner() {
+  Widget _buildEyeExercisesBanner(AppLocalizations l10n) {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.exerciseInfo),
       child: Container(
@@ -424,17 +426,18 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Göz Egzersizleri',
+                    l10n.eyeExercises,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Günlük göz egzersizleri ile gözlerinizi dinlendirin',
+                    l10n.eyeExercisesDesc,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: Colors.white.withOpacity(0.9),
@@ -456,7 +459,7 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  Widget _buildPremiumBanner() {
+  Widget _buildPremiumBanner(AppLocalizations l10n) {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.paywall),
       child: Container(
@@ -493,17 +496,18 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Premium\'a Geç',
+                    l10n.goPremium,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Tüm testlere eriş ve detaylı rapor al',
+                    l10n.goPremiumDesc,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: Colors.white.withOpacity(0.9),
@@ -525,7 +529,7 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  Widget _buildFactsBanner() {
+  Widget _buildFactsBanner(AppLocalizations l10n) {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.facts),
       child: Container(
@@ -562,17 +566,18 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Biliyor muydunuz?',
+                    l10n.didYouKnow,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Gözler hakkında ilginç bilgiler keşfedin',
+                    l10n.didYouKnowDesc,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: Colors.white.withOpacity(0.9),
@@ -594,9 +599,9 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  Widget _buildEyeTestsBanner() {
+  Widget _buildEyeTestsBanner(AppLocalizations l10n, List<TestCategory> tests) {
     return GestureDetector(
-      onTap: () => _showTestsDialog(),
+      onTap: () => _showTestsDialog(l10n, tests),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -638,17 +643,18 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Göz Testleri',
+                    l10n.eyeTests,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '8 farklı göz testi ile göz sağlığınızı değerlendirin',
+                    l10n.eyeTestsDesc,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: Colors.white.withOpacity(0.9),
@@ -670,7 +676,7 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  void _showTestsDialog() {
+  void _showTestsDialog(AppLocalizations l10n, List<TestCategory> tests) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -700,7 +706,7 @@ class _HomePageState extends ConsumerState<HomePage>
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
               child: Text(
-                'Göz Testleri',
+                l10n.eyeTests,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -718,13 +724,13 @@ class _HomePageState extends ConsumerState<HomePage>
                   crossAxisSpacing: 16,
                   childAspectRatio: 0.85,
                 ),
-                itemCount: _tests.length,
+                itemCount: tests.length,
                 itemBuilder: (context, index) {
                   return TestCard(
-                    test: _tests[index],
+                    test: tests[index],
                     onTap: () {
                       Navigator.of(context).pop();
-                      _onTestTap(_tests[index]);
+                      _onTestTap(tests[index], l10n);
                     },
                   );
                 },
@@ -736,7 +742,7 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  Widget _buildHistoryBanner() {
+  Widget _buildHistoryBanner(AppLocalizations l10n) {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.testHistory),
       child: Container(
@@ -780,17 +786,18 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Egzersiz ve Test Geçmişi',
+                    l10n.testHistory,
                     style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Tüm test sonuçlarınızı ve egzersiz geçmişinizi görüntüleyin',
+                    l10n.testHistoryDesc,
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: Colors.white.withOpacity(0.9),
@@ -835,4 +842,3 @@ class TestCategory {
     this.isComingSoon = false,
   });
 }
-

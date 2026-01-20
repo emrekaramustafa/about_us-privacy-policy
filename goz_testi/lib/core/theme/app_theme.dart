@@ -11,6 +11,33 @@ class AppTheme {
 
   /// Light theme for the application
   static ThemeData get lightTheme {
+    // Use Google Fonts with fallback
+    TextStyle _textStyle({
+      required double fontSize,
+      required FontWeight fontWeight,
+      required Color color,
+      double? letterSpacing,
+      double? height,
+    }) {
+      try {
+        return GoogleFonts.inter(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          letterSpacing: letterSpacing,
+          height: height,
+        );
+      } catch (e) {
+        return TextStyle(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+          letterSpacing: letterSpacing,
+          height: height,
+        );
+      }
+    }
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
@@ -27,50 +54,50 @@ class AppTheme {
         onError: Colors.white,
       ),
       
-      // Text Theme with Google Fonts
-      textTheme: GoogleFonts.interTextTheme().copyWith(
-        displayLarge: GoogleFonts.inter(
+      // Text Theme
+      textTheme: TextTheme(
+        displayLarge: _textStyle(
           fontSize: 32,
           fontWeight: FontWeight.w700,
           color: AppColors.textPrimary,
           letterSpacing: -0.5,
         ),
-        displayMedium: GoogleFonts.inter(
+        displayMedium: _textStyle(
           fontSize: 28,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
         ),
-        headlineLarge: GoogleFonts.inter(
+        headlineLarge: _textStyle(
           fontSize: 24,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
         ),
-        headlineMedium: GoogleFonts.inter(
+        headlineMedium: _textStyle(
           fontSize: 20,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
         ),
-        titleLarge: GoogleFonts.inter(
+        titleLarge: _textStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
         ),
-        titleMedium: GoogleFonts.inter(
+        titleMedium: _textStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
           color: AppColors.textPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
+        bodyLarge: _textStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: AppColors.textSecondary,
         ),
-        bodyMedium: GoogleFonts.inter(
+        bodyMedium: _textStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: AppColors.textSecondary,
         ),
-        labelLarge: GoogleFonts.inter(
+        labelLarge: _textStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
@@ -83,7 +110,7 @@ class AppTheme {
         centerTitle: true,
         backgroundColor: AppColors.cleanWhite,
         foregroundColor: AppColors.textPrimary,
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: _textStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
@@ -116,9 +143,10 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: _textStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
+            color: Colors.white,
           ),
         ),
       ),
@@ -132,9 +160,10 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: _textStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
+            color: AppColors.medicalBlue,
           ),
         ),
       ),
@@ -167,4 +196,3 @@ class AppTheme {
     );
   }
 }
-

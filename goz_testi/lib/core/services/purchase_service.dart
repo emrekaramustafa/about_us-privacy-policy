@@ -50,44 +50,46 @@ class PurchaseService {
     }
   }
 
-  /// Get products
-  Future<List<ProductDetails>> getProducts() async {
-    if (!_isAvailable) return [];
-
-    final Set<String> productIds = {_premiumProductId};
-    final ProductDetailsResponse response =
-        await _inAppPurchase.queryProductDetails(productIds);
-
-    if (response.error != null) {
-      debugPrint('Error querying products: ${response.error}');
-      return [];
+  /// Get premium product details
+  Future<ProductDetails?> getPremiumProduct() async {
+    if (!_isAvailable) {
+      await initialize();
+      if (!_isAvailable) return null;
     }
 
-    return response.productDetails;
+    try {
+      final Set<String> productIds = {_premiumProductId};
+      final ProductDetailsResponse response =
+          await _inAppPurchase.queryProductDetails(productIds);
+
+      if (response.error != null) {
+        debugPrint('Error querying products: ${response.error}');
+        return null;
+      }
+
+      if (response.productDetails.isEmpty) {
+        debugPrint('Product not found: $_premiumProductId');
+        return null;
+      }
+
+      return response.productDetails.first;
+    } catch (e) {
+      debugPrint('Error fetching premium product: $e');
+      return null;
+    }
   }
 
   /// Purchase premium
-  /// TEST MODE: Directly grants premium without actual payment
-  /// NOTE: In test mode, premium status is NOT persisted - it resets on app restart
   Future<bool> purchasePremium() async {
-    // TEST MODE: Directly grant premium for testing (session only, not persisted)
-    debugPrint('TEST MODE: Granting premium without payment (session only)');
-    // Don't save to SharedPreferences - premium will reset on app restart
-    // This allows testing the purchase flow repeatedly
-    return true;
-    
-    // Original payment code (commented out for testing)
-    /*
     if (!_isAvailable) return false;
 
-    final products = await getProducts();
-    if (products.isEmpty) {
-      debugPrint('No products available');
+    final products = await getPremiumProduct();
+    if (products == null) {
+      debugPrint('Premium product not found');
       return false;
     }
 
-    final productDetails = products.first;
-    final purchaseParam = PurchaseParam(productDetails: productDetails);
+    final purchaseParam = PurchaseParam(productDetails: products);
 
     // Platform-specific purchase
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -96,8 +98,10 @@ class PurchaseService {
       await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
     }
 
+    // The result will be handled in _onPurchaseUpdate listener
+    // We return true here to indicate the request was sent successfully
+    // The UI should show a loading state until the stream updates
     return true;
-    */
   }
 
   /// Restore purchases

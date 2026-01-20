@@ -9,7 +9,9 @@ import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/core/services/ad_service.dart';
+import 'package:goz_testi/core/services/rating_service.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 class ResultPage extends ConsumerStatefulWidget {
   final String testType;
@@ -34,6 +36,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   late AnimationController _animationController;
   final StorageService _storageService = StorageService();
   final AdService _adService = AdService();
+  final RatingService _ratingService = RatingService();
   bool _isSaving = false;
   bool _hasUnlockedDetailedAnalysis = false;
 
@@ -81,11 +84,22 @@ class _ResultPageState extends ConsumerState<ResultPage>
       final dailyCount = await _storageService.getDailyTestCount();
       final isPremium = ref.read(isPremiumProvider);
       
-      // Refresh daily count provider
+      // Refresh daily count and remaining credits provider
       ref.invalidate(dailyTestCountProvider);
+      ref.invalidate(remainingTestCreditsProvider);
+      
+      // Show rating dialog for color vision test (if not already rated)
+      if (widget.testType == 'color_vision' && mounted) {
+        Future.delayed(const Duration(milliseconds: 1500), () async {
+          if (mounted) {
+            await _ratingService.showRatingDialog(context);
+          }
+        });
+      }
       
       // Show soft gate if needed (after result screen is shown)
-      if (dailyCount >= 3 && !isPremium && mounted) {
+      // Show after 3 free tests are completed (then ads can be watched)
+      if (dailyCount >= 3 && dailyCount < 21 && !isPremium && mounted) {
         // Wait a bit for result screen to show, then navigate to soft gate
         // Use pushReplacement to replace result screen with soft gate
         Future.delayed(const Duration(milliseconds: 500), () {
@@ -118,26 +132,28 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   String _getStatusText(int percentage, {bool isColorVision = false}) {
+    final l10n = AppLocalizations.of(context)!;
     if (isColorVision) {
-      if (percentage == 100) return 'Testi Başarıyla Geçtiniz';
-      return 'Renk Körlüğü Şüphesi';
+      if (percentage == 100) return l10n.resultStatusColorPassed;
+      return l10n.resultStatusColorSuspicion;
     }
-    if (percentage == 100) return 'Mükemmel Görüş';
-    if (percentage >= 90) return 'Çok İyi Görüş';
-    if (percentage >= 80) return 'İyi Görüş';
-    if (percentage >= 60) return 'Göz Doktoruna Görünmelisin';
-    if (percentage >= 40) return 'Lens/Gözlük Şart';
-    return 'Hemen Randevu Al';
+    if (percentage == 100) return l10n.resultStatusPerfect;
+    if (percentage >= 90) return l10n.resultStatusVeryGood;
+    if (percentage >= 80) return l10n.resultStatusGood;
+    if (percentage >= 60) return l10n.resultStatusSeeDoctor;
+    if (percentage >= 40) return l10n.resultStatusNeedGlasses;
+    return l10n.resultStatusUrgent;
   }
   
   String _getRecommendationText(int percentage, {bool isColorVision = false}) {
+    final l10n = AppLocalizations.of(context)!;
     if (isColorVision) {
       if (percentage == 100) {
-        return 'Renk görüşünüz normal görünüyor. Düzenli kontroller için göz doktorunuza danışın.';
+        return l10n.resultRecommendationColorNormal;
       }
-      return 'Renk körlüğü şüphesi var. Lütfen doktorunuza görünün.';
+      return l10n.resultRecommendationColorSuspicion;
     }
-    return 'Bu sonuçlar bilgilendirme amaçlıdır. Kesin tanı için göz doktoruna başvurun.';
+    return l10n.resultRecommendationGeneral;
   }
 
   void _goToNextTest() {
@@ -160,22 +176,23 @@ class _ResultPageState extends ConsumerState<ResultPage>
     }
   }
   
-  String? _getNextTestName() {
-    if (widget.testType == 'visual_acuity') return AppStrings.colorVisionTitle;
-    if (widget.testType == 'color_vision') return AppStrings.astigmatismTitle;
-    if (widget.testType == 'astigmatism') return AppStrings.stereopsisTitle;
-    if (widget.testType == 'stereopsis' || widget.testType == 'binocular_vision') return AppStrings.nearVisionTitle;
-    if (widget.testType == 'near_vision') return AppStrings.macularTitle;
-    if (widget.testType == 'macular') return AppStrings.peripheralVisionTitle;
-    if (widget.testType == 'peripheral_vision') return AppStrings.eyeMovementTitle;
+  String? _getNextTestName(AppLocalizations l10n) {
+    if (widget.testType == 'visual_acuity') return l10n.colorVisionTitle;
+    if (widget.testType == 'color_vision') return l10n.astigmatismTitle;
+    if (widget.testType == 'astigmatism') return l10n.stereopsisTitle;
+    if (widget.testType == 'stereopsis' || widget.testType == 'binocular_vision') return l10n.nearVisionTitle;
+    if (widget.testType == 'near_vision') return l10n.macularTitle;
+    if (widget.testType == 'macular') return l10n.peripheralVisionTitle;
+    if (widget.testType == 'peripheral_vision') return l10n.eyeMovementTitle;
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isDualEyeTest = widget.testType == 'visual_acuity';
     final isColorVision = widget.testType == 'color_vision';
-    final nextTestName = _getNextTestName();
+    final nextTestName = _getNextTestName(l10n);
     final percentage = widget.details != null && widget.details!['percentage'] != null
         ? widget.details!['percentage'] as int
         : ((widget.score / widget.totalQuestions) * 100).round();
@@ -191,7 +208,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
               const SizedBox(height: 20),
               
               Text(
-                AppStrings.resultsTitle,
+                l10n.resultsTitle,
                 style: GoogleFonts.inter(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
@@ -204,10 +221,10 @@ class _ResultPageState extends ConsumerState<ResultPage>
               
               Text(
                 isDualEyeTest 
-                    ? 'Görme Keskinliği Analizi' 
+                    ? l10n.resultSubtitleVisualAcuity
                     : isColorVision 
-                        ? 'Renk Körlüğü Testi Sonucu'
-                        : 'Test Sonucu',
+                        ? l10n.resultSubtitleColorVision
+                        : l10n.resultSubtitleGeneral,
                 style: GoogleFonts.inter(
                   fontSize: 16,
                   color: AppColors.textSecondary,
@@ -222,7 +239,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                   children: [
                     Expanded(
                       child: _buildPercentageCard(
-                        'Sol Göz',
+                        l10n.leftEyeLabel,
                         widget.details!['leftEyeScore'] as int,
                         widget.details!['leftEyeAcuity'] as String,
                         delay: 0.0,
@@ -231,7 +248,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                     const SizedBox(width: 16),
                     Expanded(
                       child: _buildPercentageCard(
-                        'Sağ Göz',
+                        l10n.rightEyeLabel,
                         widget.details!['rightEyeScore'] as int,
                         widget.details!['rightEyeAcuity'] as String,
                         delay: 0.2,
@@ -298,8 +315,8 @@ class _ResultPageState extends ConsumerState<ResultPage>
                               children: [
                                 Text(
                                   isColorVision && percentage < 100
-                                      ? 'Önemli Uyarı'
-                                      : 'Öneri',
+                                      ? l10n.resultImportantWarning
+                                      : l10n.resultRecommendation,
                                   style: GoogleFonts.inter(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -350,7 +367,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                         return Column(
                           children: [
                             AppButton(
-                              text: '${AppStrings.nextTest}: $nextTestName',
+                              text: '${l10n.nextTest}: $nextTestName',
                               icon: LucideIcons.arrowRight,
                               onPressed: _goToNextTest,
                               width: double.infinity,
@@ -367,7 +384,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                         ? Column(
                             children: [
                               AppButton(
-                                text: '${AppStrings.nextTest}: $nextTestName',
+                                text: '${l10n.nextTest}: $nextTestName',
                                 icon: LucideIcons.arrowRight,
                                 onPressed: _goToNextTest,
                                 width: double.infinity,
@@ -386,7 +403,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                 children: [
                   Expanded(
                     child: AppButton(
-                      text: AppStrings.retakeTest,
+                      text: l10n.retakeTest,
                       icon: LucideIcons.refreshCw,
                       isOutlined: true,
                       onPressed: () {
@@ -415,7 +432,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                   const SizedBox(width: 12),
                   Expanded(
                     child: AppButton(
-                      text: 'Ana Menü',
+                      text: l10n.resultHomeMenu,
                       icon: LucideIcons.home,
                       isOutlined: true,
                       onPressed: () => context.go(AppRoutes.home),
@@ -423,6 +440,49 @@ class _ResultPageState extends ConsumerState<ResultPage>
                   ),
                 ],
               ),
+              
+              const SizedBox(height: 24),
+              
+              // Medical Disclaimer Footer
+              FadeTransition(
+                opacity: CurvedAnimation(
+                  parent: _animationController,
+                  curve: const Interval(0.8, 1.0),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.warningYellow.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: AppColors.warningYellow.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        LucideIcons.alertTriangle,
+                        size: 20,
+                        color: AppColors.warningYellow,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          l10n.resultMedicalDisclaimer,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -431,6 +491,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   Widget _buildPercentageCard(String title, int score, String secondaryInfo, {required double delay}) {
+    final l10n = AppLocalizations.of(context)!;
     final color = _getStatusColor(score);
     
     return FadeTransition(
@@ -514,7 +575,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
               const SizedBox(height: 4),
               
               Text(
-                'Snellen: $secondaryInfo',
+                l10n.resultSnellen(secondaryInfo),
                 style: GoogleFonts.inter(
                   fontSize: 12,
                   color: AppColors.textSecondary,
@@ -528,6 +589,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   Widget _buildSingleResultCard(int percentage, {bool isColorVision = false}) {
+    final l10n = AppLocalizations.of(context)!;
     final color = _getStatusColor(percentage);
     
     return FadeTransition(
@@ -599,7 +661,10 @@ class _ResultPageState extends ConsumerState<ResultPage>
               if (isColorVision) ...[
                 const SizedBox(height: 8),
                 Text(
-                  '${widget.details!['correctAnswers'] ?? widget.score} / ${widget.details!['totalPlates'] ?? widget.totalQuestions} Doğru',
+                  l10n.resultCorrectAnswers(
+                    widget.details!['correctAnswers'] ?? widget.score,
+                    widget.details!['totalPlates'] ?? widget.totalQuestions,
+                  ),
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: AppColors.textSecondary,
@@ -614,6 +679,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   Widget _buildDetailedAnalysisSection(int percentage, bool isColorVision) {
+    final l10n = AppLocalizations.of(context)!;
     final isPremium = ref.watch(isPremiumProvider);
     final canViewDetailed = isPremium || _hasUnlockedDetailedAnalysis;
     
@@ -653,16 +719,20 @@ class _ResultPageState extends ConsumerState<ResultPage>
                   size: 24,
                 ),
                 const SizedBox(width: 12),
-                Text(
-                  'Detaylı Analiz',
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+                Flexible(
+                  child: Text(
+                    l10n.resultDetailedAnalysis,
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 if (isPremium) ...[
-                  const Spacer(),
+                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
@@ -727,12 +797,17 @@ class _ResultPageState extends ConsumerState<ResultPage>
                         color: Colors.white,
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        'Detaylı Analizi Görüntüle',
-                        style: GoogleFonts.inter(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                      Flexible(
+                        child: Text(
+                          l10n.resultViewDetailedAnalysis,
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -762,7 +837,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Detaylı analizi görmek için',
+                      l10n.resultDetailedAnalysisLocked,
                       style: GoogleFonts.inter(
                         fontSize: 14,
                         color: AppColors.textSecondary,
@@ -796,7 +871,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Reklam İzle',
+                                    l10n.resultWatchAd,
                                     style: GoogleFonts.inter(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -875,6 +950,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   Widget _buildComparisonSection(List<TestResult> tests, int currentPercentage) {
+    final l10n = AppLocalizations.of(context)!;
     if (tests.length < 2) return const SizedBox.shrink();
     
     final previousTest = tests[1]; // Second most recent
@@ -901,7 +977,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Önceki Test ile Karşılaştırma',
+                  l10n.resultComparisonPrevious,
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -910,8 +986,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Önceki: %$previousPercentage → Şimdi: %$currentPercentage '
-                  '(${difference > 0 ? '+' : ''}$difference%)',
+                  l10n.resultComparisonText(previousPercentage, currentPercentage, '${difference > 0 ? '+' : ''}$difference'),
                   style: GoogleFonts.inter(
                     fontSize: 12,
                     color: AppColors.textSecondary,
@@ -926,6 +1001,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   Widget _buildTrendSection(List<TestResult> tests) {
+    final l10n = AppLocalizations.of(context)!;
     if (tests.length < 3) return const SizedBox.shrink();
     
     // Get last 7 tests
@@ -952,7 +1028,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
               ),
               const SizedBox(width: 8),
               Text(
-                'Son 7 Test Ortalaması',
+                l10n.resultAverageLast7,
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -976,6 +1052,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   Widget _buildDetailedRecommendations(int percentage, bool isColorVision) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -994,7 +1071,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
               ),
               const SizedBox(width: 8),
               Text(
-                'Detaylı Öneriler',
+                l10n.resultDetailedRecommendations,
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -1018,21 +1095,22 @@ class _ResultPageState extends ConsumerState<ResultPage>
   }
 
   String _getDetailedRecommendationText(int percentage, bool isColorVision) {
+    final l10n = AppLocalizations.of(context)!;
     if (isColorVision) {
       if (percentage == 100) {
-        return 'Mükemmel renk görüşüne sahipsiniz. Düzenli kontrollerle bu durumu koruyabilirsiniz.';
+        return l10n.resultDetailedColorPerfect;
       } else if (percentage >= 80) {
-        return 'Renk görüşünüz normal seviyede. Ancak bazı renkleri ayırt etmekte zorlanıyorsanız göz doktoruna danışmanız önerilir.';
+        return l10n.resultDetailedColorNormal;
       } else {
-        return 'Renk görüşünde eksiklik olabilir. Mutlaka bir göz doktoruna başvurun ve detaylı muayene yaptırın.';
+        return l10n.resultDetailedColorDeficiency;
       }
     } else {
       if (percentage >= 90) {
-        return 'Görme keskinliğiniz çok iyi seviyede. Düzenli göz muayeneleri ile bu durumu koruyabilirsiniz.';
+        return l10n.resultDetailedAcuityVeryGood;
       } else if (percentage >= 70) {
-        return 'Görme keskinliğiniz orta seviyede. Göz doktoruna danışarak daha detaylı değerlendirme yaptırmanız önerilir.';
+        return l10n.resultDetailedAcuityModerate;
       } else {
-        return 'Görme keskinliğiniz düşük seviyede. Acilen bir göz doktoruna başvurmanız ve muayene olmanız gerekmektedir.';
+        return l10n.resultDetailedAcuityLow;
       }
     }
   }
@@ -1042,9 +1120,10 @@ class _ResultPageState extends ConsumerState<ResultPage>
       await _adService.loadRewardedAd();
       if (!_adService.isRewardedAdReady) {
         if (mounted) {
+          final l10n = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Reklam yüklenemedi. Lütfen daha sonra tekrar deneyin.'),
+            SnackBar(
+              content: Text(l10n.adLoadFailed),
               backgroundColor: AppColors.errorRed,
             ),
           );
@@ -1075,9 +1154,10 @@ class _ResultPageState extends ConsumerState<ResultPage>
     );
 
     if (!success && mounted) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Reklam gösterilemedi. Lütfen tekrar deneyin.'),
+        SnackBar(
+          content: Text(l10n.adFailed),
           backgroundColor: AppColors.errorRed,
         ),
       );

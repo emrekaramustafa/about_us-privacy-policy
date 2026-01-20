@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Facts Page - "Biliyor muydunuz?" section
 class FactsPage extends StatefulWidget {
@@ -17,191 +18,193 @@ class FactsPage extends StatefulWidget {
 class _FactsPageState extends State<FactsPage> {
   int _currentFactIndex = 0;
   
-  final List<Map<String, dynamic>> _facts = [
+  List<Map<String, dynamic>> _getFacts(AppLocalizations l10n) => [
     {
-      'title': 'Göz Kırpma',
-      'fact': 'Ekrana bakarken göz kırpma sayımız %60\'a kadar azalır.',
+      'title': l10n.fact1Title,
+      'fact': l10n.fact1Text,
       'icon': LucideIcons.monitor,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Bebek Görüşü',
-      'fact': 'Bebekler doğduğunda dünyayı bulanık ve renksiz görür.',
+      'title': l10n.fact2Title,
+      'fact': l10n.fact2Text,
       'icon': LucideIcons.heart,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Göz Büyümesi',
-      'fact': 'Gözlerimiz ömür boyu büyümez, ama kulaklar ve burun büyümeye devam eder.',
+      'title': l10n.fact3Title,
+      'fact': l10n.fact3Text,
       'icon': LucideIcons.eye,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Karanlıkta Görüş',
-      'fact': 'Karanlıkta daha iyi görmek için nesnelere direkt bakmak yerine biraz yanından bakmak daha etkilidir.',
+      'title': l10n.fact4Title,
+      'fact': l10n.fact4Text,
       'icon': LucideIcons.moon,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Renk Körlüğü',
-      'fact': 'Erkeklerin yaklaşık %8\'i, kadınların ise sadece %0,5\'i renk körüdür.',
+      'title': l10n.fact5Title,
+      'fact': l10n.fact5Text,
       'icon': LucideIcons.palette,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Renk Algısı',
-      'fact': 'Aynı renge bakan iki kişi onu birebir aynı görmez.',
+      'title': l10n.fact6Title,
+      'fact': l10n.fact6Text,
       'icon': LucideIcons.eye,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Mor Renk',
-      'fact': 'Mor, spektrumda gerçek bir renk değildir; beyin kırmızı ve maviyi karıştırarak üretir.',
+      'title': l10n.fact7Title,
+      'fact': l10n.fact7Text,
       'icon': LucideIcons.sparkles,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Renk Ayırt Etme',
-      'fact': 'İnsan gözü teorik olarak 10 milyon farklı rengi ayırt edebilir.',
+      'title': l10n.fact8Title,
+      'fact': l10n.fact8Text,
       'icon': LucideIcons.rainbow,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Göz Hareketi',
-      'fact': 'Gözlerimiz sürekli hareket eder; sabit durursa görüntü birkaç saniyede kaybolur.',
+      'title': l10n.fact9Title,
+      'fact': l10n.fact9Text,
       'icon': LucideIcons.move,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Beyin ve Görme',
-      'fact': 'Beynin arka kısmının %30\'dan fazlası doğrudan görmeyle ilgilidir.',
+      'title': l10n.fact10Title,
+      'fact': l10n.fact10Text,
       'icon': LucideIcons.cpu,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Karanlık Mod',
-      'fact': 'Karanlık mod göz yorgunluğunu değil, enerji tüketimini azaltır.',
+      'title': l10n.fact11Title,
+      'fact': l10n.fact11Text,
       'icon': LucideIcons.moonStar,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Kedi Görüşü',
-      'fact': 'Kediler, insanlara göre 6 kat daha az ışıkla görebilir.',
+      'title': l10n.fact12Title,
+      'fact': l10n.fact12Text,
       'icon': LucideIcons.sparkles,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Mantis Karidesi',
-      'fact': 'Mantis karideslerinin gözlerinde 12–16 farklı renk algılayıcı vardır (insanda sadece 3). Ultraviyole ışığı da görebilirler.',
+      'title': l10n.fact13Title,
+      'fact': l10n.fact13Text,
       'icon': LucideIcons.waves,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Kartal Görüşü',
-      'fact': 'Bir kartal, 3–4 kilometre uzaktaki küçük bir avı net şekilde seçebilir.',
+      'title': l10n.fact14Title,
+      'fact': l10n.fact14Text,
       'icon': LucideIcons.eye,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Baykuş Görüşü',
-      'fact': 'Baykuşların gözleri tüp şeklindedir ve göz küresi hareket edemez. Bu yüzden kafalarını 270 derece döndürebilirler.',
+      'title': l10n.fact15Title,
+      'fact': l10n.fact15Text,
       'icon': LucideIcons.moon,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Balina Görüşü',
-      'fact': 'Balinalar su altında çok iyi görürler ve renk körü değillerdir. Ancak su yüzeyinde görüşleri sınırlıdır.',
+      'title': l10n.fact16Title,
+      'fact': l10n.fact16Text,
       'icon': LucideIcons.waves,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Köpek Görüşü',
-      'fact': 'Köpekler kırmızı ve yeşili ayırt edemezler. Dünyayı sarı, mavi ve gri tonlarında görürler.',
+      'title': l10n.fact17Title,
+      'fact': l10n.fact17Text,
       'icon': LucideIcons.heart,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Yılan Görüşü',
-      'fact': 'Yılanlar kızılötesi ışığı algılayabilir ve sıcaklık farklarını "görebilirler". Bu sayede karanlıkta avlarını bulabilirler.',
+      'title': l10n.fact18Title,
+      'fact': l10n.fact18Text,
       'icon': LucideIcons.eye,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Kör Mağara Balığı',
-      'fact': 'Kör mağara balıkları tamamen kör doğar ama diğer duyuları o kadar gelişmiştir ki su akıntılarını "hissederek" yön bulabilirler.',
+      'title': l10n.fact19Title,
+      'fact': l10n.fact19Text,
       'icon': LucideIcons.waves,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Bukalemun Gözleri',
-      'fact': 'Bukalemunların gözleri birbirinden bağımsız hareket edebilir. Bir göz avı izlerken diğeri çevreyi tarayabilir.',
+      'title': l10n.fact20Title,
+      'fact': l10n.fact20Text,
       'icon': LucideIcons.eye,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Kelebek Görüşü',
-      'fact': 'Kelebekler ultraviyole ışığı görebilir ve çiçeklerin üzerindeki görünmez desenleri algılayabilirler.',
+      'title': l10n.fact21Title,
+      'fact': l10n.fact21Text,
       'icon': LucideIcons.sparkles,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Köpekbalığı Görüşü',
-      'fact': 'Köpekbalıkları karanlıkta insanlardan 10 kat daha iyi görür. Ayrıca su altında renkleri ayırt edebilirler.',
+      'title': l10n.fact22Title,
+      'fact': l10n.fact22Text,
       'icon': LucideIcons.waves,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'At Görüşü',
-      'fact': 'Atların gözleri kafalarının yanlarında olduğu için neredeyse 360 derece görüş alanına sahiptirler.',
+      'title': l10n.fact23Title,
+      'fact': l10n.fact23Text,
       'icon': LucideIcons.eye,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Yunus Görüşü',
-      'fact': 'Yunuslar her gözü bağımsız kullanabilir. Bir göz su yüzeyini, diğeri su altını izleyebilir.',
+      'title': l10n.fact24Title,
+      'fact': l10n.fact24Text,
       'icon': LucideIcons.waves,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Örümcek Gözleri',
-      'fact': 'Bazı örümceklerin 8 gözü vardır. Her göz farklı bir işlev görür: bazıları hareketi, bazıları detayları algılar.',
+      'title': l10n.fact25Title,
+      'fact': l10n.fact25Text,
       'icon': LucideIcons.eye,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Kör Fare',
-      'fact': 'Kör fareler tamamen kör doğar ama koku alma ve dokunma duyuları o kadar gelişmiştir ki tünellerinde hiç kaybolmazlar.',
+      'title': l10n.fact26Title,
+      'fact': l10n.fact26Text,
       'icon': LucideIcons.heart,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Papağan Görüşü',
-      'fact': 'Papağanlar ultraviyole ışığı görebilir ve bu sayede olgun meyveleri daha kolay bulabilirler.',
+      'title': l10n.fact27Title,
+      'fact': l10n.fact27Text,
       'icon': LucideIcons.eye,
       'color': AppColors.premiumGold,
     },
     {
-      'title': 'Köpek Balığı Retina',
-      'fact': 'Köpekbalıklarının retinasında özel hücreler vardır ve bu sayede çok düşük ışık seviyelerinde bile avlarını görebilirler.',
+      'title': l10n.fact28Title,
+      'fact': l10n.fact28Text,
       'icon': LucideIcons.waves,
       'color': AppColors.medicalBlue,
     },
     {
-      'title': 'Gece Hayvanları',
-      'fact': 'Gece hayvanlarının gözlerinde tapetum lucidum adı verilen özel bir tabaka vardır. Bu tabaka ışığı yansıtarak görüşü artırır.',
+      'title': l10n.fact29Title,
+      'fact': l10n.fact29Text,
       'icon': LucideIcons.moon,
       'color': AppColors.medicalTeal,
     },
     {
-      'title': 'Yarasa Görüşü',
-      'fact': 'Yarasalar kör değildir! Görüşleri zayıf olsa da karanlıkta yön bulmak için ekolokasyon kullanırlar.',
+      'title': l10n.fact30Title,
+      'fact': l10n.fact30Text,
       'icon': LucideIcons.moon,
       'color': AppColors.premiumGold,
     },
   ];
 
   void _nextFact() {
-    if (_currentFactIndex < _facts.length - 1) {
+    final l10n = AppLocalizations.of(context)!;
+    final facts = _getFacts(l10n);
+    if (_currentFactIndex < facts.length - 1) {
       setState(() {
         _currentFactIndex++;
       });
@@ -221,7 +224,9 @@ class _FactsPageState extends State<FactsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final currentFact = _facts[_currentFactIndex];
+    final l10n = AppLocalizations.of(context)!;
+    final facts = _getFacts(l10n);
+    final currentFact = facts[_currentFactIndex];
     
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
@@ -232,7 +237,7 @@ class _FactsPageState extends State<FactsPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Biliyor muydunuz?',
+          l10n.didYouKnow,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -244,7 +249,7 @@ class _FactsPageState extends State<FactsPage> {
             padding: const EdgeInsets.all(16),
             child: Center(
               child: Text(
-                '${_currentFactIndex + 1} / ${_facts.length}',
+                '${_currentFactIndex + 1} / ${facts.length}',
                 style: GoogleFonts.inter(
                   fontSize: 14,
                   color: AppColors.textSecondary,
@@ -259,7 +264,7 @@ class _FactsPageState extends State<FactsPage> {
           children: [
             // Progress indicator
             LinearProgressIndicator(
-              value: (_currentFactIndex + 1) / _facts.length,
+              value: (_currentFactIndex + 1) / facts.length,
               backgroundColor: AppColors.backgroundGrey,
               valueColor: AlwaysStoppedAnimation<Color>(currentFact['color']),
               minHeight: 4,
@@ -340,7 +345,7 @@ class _FactsPageState extends State<FactsPage> {
                         if (_currentFactIndex > 0)
                           Expanded(
                             child: AppButton(
-                              text: 'Önceki',
+                              text: l10n.factPrevious,
                               icon: LucideIcons.arrowLeft,
                               onPressed: _previousFact,
                               isOutlined: true,
@@ -351,10 +356,10 @@ class _FactsPageState extends State<FactsPage> {
                         if (_currentFactIndex > 0) const SizedBox(width: 16),
                         Expanded(
                           child: AppButton(
-                            text: _currentFactIndex < _facts.length - 1
-                                ? 'Sonraki'
-                                : 'Tamamla',
-                            icon: _currentFactIndex < _facts.length - 1
+                            text: _currentFactIndex < facts.length - 1
+                                ? l10n.factNext
+                                : l10n.factComplete,
+                            icon: _currentFactIndex < facts.length - 1
                                 ? LucideIcons.arrowRight
                                 : LucideIcons.check,
                             onPressed: _nextFact,

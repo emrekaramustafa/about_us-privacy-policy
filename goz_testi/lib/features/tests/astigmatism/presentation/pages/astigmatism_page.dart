@@ -7,6 +7,7 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import '../widgets/astigmatism_dial.dart';
 
 /// Astigmatism Test Page
@@ -54,12 +55,13 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
     });
   }
   
-  void _showDistanceInstructionDialog({bool? isRightEyeClosed}) {
+  void _showDistanceInstructionDialog({bool? isRightEyeClosed, bool isBothEyes = false}) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => _DistanceInstructionDialog(
         isRightEyeClosed: isRightEyeClosed ?? true,
+        isBothEyes: isBothEyes,
         onConfirm: () {
           Navigator.of(context).pop();
         },
@@ -101,7 +103,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
       });
       // Show dialog for third question after build
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showDistanceInstructionDialog();
+        _showDistanceInstructionDialog(isBothEyes: true);
       });
     } else {
       setState(() {
@@ -116,7 +118,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
     if (_selectedLines.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Lütfen daha koyu görünen çizgilere dokunun'),
+          content: Text(AppLocalizations.of(context)!.astigmatismSelectDarkerLines),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
@@ -144,7 +146,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
       });
       // Show dialog for third question after build
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showDistanceInstructionDialog();
+        _showDistanceInstructionDialog(isBothEyes: true);
       });
     } else {
       setState(() {
@@ -217,6 +219,8 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
   }
 
   Widget _buildInfoScreen() {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -225,7 +229,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.astigmatismTitle),
+        title: Text(l10n.astigmatismTitle),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -251,7 +255,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
               ),
               const SizedBox(height: 32),
               Text(
-                'Astigmat Testi Nedir?',
+                l10n.astigmatismInfoTitle,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -287,7 +291,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            'Test Hakkında',
+                            l10n.testAbout,
                             style: GoogleFonts.inter(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
@@ -299,7 +303,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'Astigmat, gözün kornea veya lensinin düzensiz şeklinden kaynaklanan bir görme bozukluğudur. Bu durumda ışık göze düzgün odaklanamaz ve görüntüler bulanık veya çarpık görünebilir.',
+                      l10n.astigmatismInfoDesc,
                       style: GoogleFonts.inter(
                         fontSize: 15,
                         height: 1.6,
@@ -324,7 +328,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'Sağlıklı bir birey, radyal çizgilerin hepsini eşit netlikte görebilmelidir. Eğer bazı çizgiler daha koyu, bulanık veya farklı görünüyorsa, bu astigmat belirtisi olabilir.',
+                              l10n.astigmatismInfoTip,
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 height: 1.5,
@@ -340,7 +344,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
               ),
               const SizedBox(height: 32),
               AppButton(
-                text: 'Devam Et',
+                text: l10n.continueText,
                 icon: LucideIcons.arrowRight,
                 onPressed: _onInfoContinue,
                 width: double.infinity,
@@ -354,6 +358,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
   }
 
   Widget _buildInstructionsScreen() {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       appBar: AppBar(
@@ -362,10 +367,10 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
           icon: const Icon(LucideIcons.arrowLeft),
           onPressed: () => context.pop(),
         ),
-        title: Text(AppStrings.astigmatismTitle),
+        title: Text(l10n.astigmatismTitle),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -391,7 +396,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
               const SizedBox(height: 32),
               
               Text(
-                AppStrings.testInstructions,
+                l10n.testInstructions,
                 style: GoogleFonts.inter(
                   fontSize: 24,
                   fontWeight: FontWeight.w700,
@@ -414,22 +419,22 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                   children: [
                     _buildInstructionItem(
                       icon: LucideIcons.eyeOff,
-                      text: 'Bir gözünüzü kapatın',
+                      text: l10n.astigmatismInstruction1,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.target,
-                      text: 'Diyagramın ortasındaki noktaya odaklanın',
+                      text: l10n.astigmatismInstruction2,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.scan,
-                      text: 'Tüm çizgilerin eşit olup olmadığını değerlendirin',
+                      text: l10n.astigmatismInstruction3,
                     ),
                     const SizedBox(height: 16),
                     _buildInstructionItem(
                       icon: LucideIcons.mousePointer,
-                      text: 'Koyu görünen çizgilere dokunun',
+                      text: l10n.astigmatismInstruction4,
                     ),
                   ],
                 ),
@@ -454,7 +459,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Astigmat varsa bazı çizgiler daha koyu veya bulanık görünebilir',
+                        l10n.astigmatismInstructionInfo,
                         style: GoogleFonts.inter(
                           fontSize: 13,
                           color: AppColors.textSecondary,
@@ -465,14 +470,15 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                 ),
               ),
               
-              const Spacer(),
+              const SizedBox(height: 32),
               
               AppButton(
-                text: AppStrings.startTest,
+                text: l10n.startButton,
                 icon: LucideIcons.play,
                 onPressed: _startTest,
                 width: double.infinity,
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -509,17 +515,18 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
   }
 
   Widget _buildTestScreen() {
+    final l10n = AppLocalizations.of(context)!;
     String eyeName;
     String instruction;
     if (_currentStep == 0) {
-      eyeName = AppStrings.rightEye;
-      instruction = 'Sol gözünüzü kapatın ve sağ gözle bakın';
+      eyeName = l10n.rightEyeLabel;
+      instruction = l10n.closeRightEyeInstruction;
     } else if (_currentStep == 1) {
-      eyeName = AppStrings.leftEye;
-      instruction = 'Sağ gözünüzü kapatın ve sol gözle bakın';
+      eyeName = l10n.leftEyeLabel;
+      instruction = l10n.closeLeftEyeInstruction;
     } else {
-      eyeName = 'Her İki Göz';
-      instruction = 'Her iki gözünüzü açık tutun ve bakın';
+      eyeName = l10n.bothEyesLabel;
+      instruction = l10n.astigmatismBothEyesInstruction;
     }
     final eyeIcon = LucideIcons.eye;
     
@@ -532,7 +539,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Adım ${_currentStep + 1} / 3',
+          l10n.macularStep(_currentStep + 1, 3),
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -623,7 +630,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              '${_selectedLines.length} çizgi seçildi',
+                              l10n.astigmatismLinesSelected(_selectedLines.length),
                               style: GoogleFonts.inter(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -638,7 +645,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                     
                     // Buttons
                     AppButton(
-                      text: AppStrings.allLinesEqual,
+                      text: l10n.astigmatismAllLinesEqual,
                       icon: LucideIcons.check,
                       onPressed: _onAllLinesEqual,
                       width: double.infinity,
@@ -648,7 +655,7 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                     const SizedBox(height: 12),
                     
                     AppButton(
-                      text: AppStrings.someLinesdarker,
+                      text: l10n.astigmatismSomeLinesDarker,
                       icon: LucideIcons.alertTriangle,
                       onPressed: _onSomeLinesdarker,
                       width: double.infinity,
@@ -670,18 +677,23 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
 /// Dialog for showing distance instruction with selfie-like visual
 class _DistanceInstructionDialog extends StatelessWidget {
   final bool isRightEyeClosed;
+  final bool isBothEyes;
   final VoidCallback onConfirm;
 
   const _DistanceInstructionDialog({
     required this.isRightEyeClosed,
+    this.isBothEyes = false,
     required this.onConfirm,
   });
 
   @override
   Widget build(BuildContext context) {
-    final eyeText = isRightEyeClosed 
-        ? 'Sağ gözünüzü kapatıp cihazı kol mesafesine getirdiğinizde teste başlayabilirsiniz.'
-        : 'Sol gözünüzü kapatıp cihazı kol mesafesine getirdiğinizde teste başlayabilirsiniz.';
+    final l10n = AppLocalizations.of(context)!;
+    final eyeText = isBothEyes
+        ? l10n.visualAcuityDistanceDialogContentBoth
+        : isRightEyeClosed 
+            ? l10n.visualAcuityDistanceDialogContent
+            : l10n.visualAcuityDistanceDialogContentLeft;
 
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -690,9 +702,10 @@ class _DistanceInstructionDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         constraints: const BoxConstraints(maxWidth: 400),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
             // Selfie-like visual
             Container(
               width: 120,
@@ -740,12 +753,15 @@ class _DistanceInstructionDialog extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              'Kol Mesafesi',
+              l10n.visualAcuityDistanceDialogTitle,
               style: GoogleFonts.inter(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
@@ -774,7 +790,7 @@ class _DistanceInstructionDialog extends StatelessWidget {
                   elevation: 0,
                 ),
                 child: Text(
-                  'Tamam',
+                  l10n.okay,
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -782,7 +798,8 @@ class _DistanceInstructionDialog extends StatelessWidget {
                 ),
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );

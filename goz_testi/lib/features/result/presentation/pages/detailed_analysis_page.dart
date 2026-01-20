@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/widgets/scroll_indicator.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 
 /// Detailed Analysis Page
 /// 
@@ -55,6 +56,7 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final percentage = widget.details != null && widget.details!['percentage'] != null
         ? widget.details!['percentage'] as int
         : ((widget.score / widget.totalQuestions) * 100).round();
@@ -72,7 +74,7 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
           onPressed: () => context.pop(),
         ),
         title: Text(
-          'Detaylı Analiz',
+          l10n.detailedAnalysisTitle,
           style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -105,7 +107,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
   }
 
   Widget _buildTestHeader(int percentage) {
-    String testName = _getTestName();
+    final l10n = AppLocalizations.of(context)!;
+    String testName = _getTestName(l10n);
     IconData testIcon = _getTestIcon();
     Color testColor = _getTestColor();
 
@@ -152,10 +155,12 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Sonuç: %$percentage',
+                  l10n.detailedAnalysisResult(percentage),
                   style: GoogleFonts.inter(
                     fontSize: 14,
                     color: AppColors.textSecondary,
@@ -170,51 +175,52 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
   }
 
   Widget _buildAnalysisContent(int percentage) {
+    final l10n = AppLocalizations.of(context)!;
     switch (widget.testType) {
       case 'visual_acuity':
-        return _buildVisualAcuityAnalysis(percentage);
+        return _buildVisualAcuityAnalysis(percentage, l10n);
       case 'color_vision':
-        return _buildColorVisionAnalysis(percentage);
+        return _buildColorVisionAnalysis(percentage, l10n);
       case 'astigmatism':
-        return _buildAstigmatismAnalysis(percentage);
+        return _buildAstigmatismAnalysis(percentage, l10n);
       case 'stereopsis':
       case 'binocular_vision':
-        return _buildStereopsisAnalysis(percentage);
+        return _buildStereopsisAnalysis(percentage, l10n);
       case 'near_vision':
-        return _buildNearVisionAnalysis(percentage);
+        return _buildNearVisionAnalysis(percentage, l10n);
       case 'macular':
-        return _buildMacularAnalysis(percentage);
+        return _buildMacularAnalysis(percentage, l10n);
       case 'peripheral_vision':
-        return _buildPeripheralVisionAnalysis(percentage);
+        return _buildPeripheralVisionAnalysis(percentage, l10n);
       case 'eye_movement':
-        return _buildEyeMovementAnalysis(percentage);
+        return _buildEyeMovementAnalysis(percentage, l10n);
       default:
-        return _buildGenericAnalysis(percentage);
+        return _buildGenericAnalysis(percentage, l10n);
     }
   }
 
   // Visual Acuity Analysis
-  Widget _buildVisualAcuityAnalysis(int percentage) {
+  Widget _buildVisualAcuityAnalysis(int percentage, AppLocalizations l10n) {
     final isProblem = percentage < 70;
     final severity = percentage >= 90
-        ? 'Normal'
+        ? l10n.detailedAnalysisSeverityNormal
         : percentage >= 70
-            ? 'Hafif Düşük'
+            ? l10n.detailedAnalysisSeverityMild
             : percentage >= 50
-                ? 'Orta Düşük'
-                : 'Ciddi Düşük';
+                ? l10n.detailedAnalysisSeverityModerate
+                : l10n.detailedAnalysisSeveritySevere;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildSection(
-          title: 'Görme Keskinliği Değerlendirmesi',
+          title: l10n.detailedAnalysisVisualAcuityAssessment,
           icon: LucideIcons.eye,
           color: AppColors.medicalBlue,
           children: [
             _buildInfoCard(
-              'Mevcut Durum',
-              'Görme keskinliğiniz %$percentage seviyesinde. Bu değer $severity kategorisinde değerlendirilmektedir.',
+              l10n.detailedAnalysisCurrentStatus,
+              l10n.detailedAnalysisVisualAcuityStatus(percentage, severity),
               LucideIcons.info,
               AppColors.medicalBlue,
             ),
@@ -223,76 +229,76 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
         const SizedBox(height: 24),
         if (isProblem) ...[
           _buildSection(
-            title: 'Olası Problemler',
+            title: l10n.detailedAnalysisPossibleProblems,
             icon: LucideIcons.alertCircle,
             color: AppColors.errorRed,
             children: [
               _buildProblemCard(
-                'Miyopi (Uzağı Görememe)',
-                'Uzak mesafedeki nesneleri net görememe durumu. Genellikle göz küresinin normalden uzun olması veya korneanın çok kavisli olmasından kaynaklanır.',
+                l10n.detailedAnalysisMyopia,
+                l10n.detailedAnalysisMyopiaDesc,
                 [
-                  'Uzak nesneleri bulanık görme',
-                  'Gözleri kısarak bakma',
-                  'Baş ağrısı',
-                  'Göz yorgunluğu',
+                  l10n.detailedAnalysisMyopiaSymptom1,
+                  l10n.detailedAnalysisMyopiaSymptom2,
+                  l10n.detailedAnalysisMyopiaSymptom3,
+                  l10n.detailedAnalysisMyopiaSymptom4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildProblemCard(
-                'Hipermetropi (Yakını Görememe)',
-                'Yakın mesafedeki nesneleri net görememe durumu. Göz küresinin normalden kısa olması veya korneanın düz olmasından kaynaklanır.',
+                l10n.detailedAnalysisHypermetropia,
+                l10n.detailedAnalysisHypermetropiaDesc,
                 [
-                  'Yakın nesneleri bulanık görme',
-                  'Okuma zorluğu',
-                  'Göz yorgunluğu',
-                  'Baş ağrısı',
+                  l10n.detailedAnalysisHypermetropiaSymptom1,
+                  l10n.detailedAnalysisHypermetropiaSymptom2,
+                  l10n.detailedAnalysisHypermetropiaSymptom3,
+                  l10n.detailedAnalysisHypermetropiaSymptom4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildProblemCard(
-                'Presbiyopi (Yaşa Bağlı Yakın Görme Problemi)',
-                '40 yaş sonrası yakın görme yeteneğinin azalması. Göz merceğinin esnekliğini kaybetmesinden kaynaklanır.',
+                l10n.detailedAnalysisPresbyopia,
+                l10n.detailedAnalysisPresbyopiaDesc,
                 [
-                  'Yakın okuma zorluğu',
-                  'Kolları uzatarak okuma',
-                  'Işığa ihtiyaç duyma',
+                  l10n.detailedAnalysisPresbyopiaSymptom1,
+                  l10n.detailedAnalysisPresbyopiaSymptom2,
+                  l10n.detailedAnalysisPresbyopiaSymptom3,
                 ],
               ),
             ],
           ),
           const SizedBox(height: 24),
           _buildSection(
-            title: 'Olası Sonuçlar ve Etkiler',
+            title: l10n.detailedAnalysisPossibleConsequences,
             icon: LucideIcons.trendingDown,
             color: AppColors.warningYellow,
             children: [
               _buildConsequenceCard(
-                'Günlük Yaşam',
+                l10n.detailedAnalysisDailyLife,
                 [
-                  'Araç kullanırken zorluk',
-                  'Okuma ve yazma problemleri',
-                  'Ekran kullanımında yorgunluk',
-                  'Sosyal aktivitelerde zorluk',
+                  l10n.detailedAnalysisDailyLifeConsequence1,
+                  l10n.detailedAnalysisDailyLifeConsequence2,
+                  l10n.detailedAnalysisDailyLifeConsequence3,
+                  l10n.detailedAnalysisDailyLifeConsequence4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildConsequenceCard(
-                'İş Hayatı',
+                l10n.detailedAnalysisWorkLife,
                 [
-                  'Bilgisayar kullanımında zorluk',
-                  'Detaylı işlerde hata riski',
-                  'Üretkenlik kaybı',
-                  'Göz yorgunluğu',
+                  l10n.detailedAnalysisWorkLifeConsequence1,
+                  l10n.detailedAnalysisWorkLifeConsequence2,
+                  l10n.detailedAnalysisWorkLifeConsequence3,
+                  l10n.detailedAnalysisWorkLifeConsequence4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildConsequenceCard(
-                'Sağlık',
+                l10n.detailedAnalysisHealth,
                 [
-                  'Kronik baş ağrıları',
-                  'Göz yorgunluğu',
-                  'Göz kuruluğu',
-                  'Şaşılık riski (çocuklarda)',
+                  l10n.detailedAnalysisHealthConsequence1,
+                  l10n.detailedAnalysisHealthConsequence2,
+                  l10n.detailedAnalysisHealthConsequence3,
+                  l10n.detailedAnalysisHealthConsequence4,
                 ],
               ),
             ],
@@ -300,63 +306,63 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
           const SizedBox(height: 24),
         ],
         _buildSection(
-          title: 'Tedavi ve Çözüm Önerileri',
+          title: l10n.detailedAnalysisTreatmentOptions,
           icon: LucideIcons.heart,
           color: AppColors.successGreen,
           children: [
             _buildSolutionCard(
-              'Gözlük Kullanımı',
-              'En yaygın ve etkili çözüm. Göz doktorunuzun reçete ettiği gözlükleri düzenli kullanın.',
+              l10n.detailedAnalysisSolutionGlasses,
+              l10n.detailedAnalysisSolutionGlassesDesc,
               LucideIcons.eye,
             ),
             const SizedBox(height: 12),
             _buildSolutionCard(
-              'Kontakt Lens',
-              'Gözlük kullanmak istemeyenler için alternatif. Göz doktorunuzun önerisiyle kullanılabilir.',
+              l10n.detailedAnalysisSolutionContacts,
+              l10n.detailedAnalysisSolutionContactsDesc,
               LucideIcons.circle,
             ),
             const SizedBox(height: 12),
             _buildSolutionCard(
-              'Lazer Cerrahisi',
-              'Uygun adaylar için kalıcı çözüm. Detaylı muayene sonrası doktorunuz karar verecektir.',
+              l10n.detailedAnalysisSolutionLaser,
+              l10n.detailedAnalysisSolutionLaserDesc,
               LucideIcons.zap,
             ),
             const SizedBox(height: 12),
             _buildSolutionCard(
-              'Göz Egzersizleri',
-              'Bazı durumlarda göz kaslarını güçlendirerek görme kalitesini artırabilir.',
+              l10n.detailedAnalysisSolutionExercises,
+              l10n.detailedAnalysisSolutionExercisesDesc,
               LucideIcons.activity,
             ),
           ],
         ),
         const SizedBox(height: 24),
-        _buildWarningCard(),
+        _buildWarningCard(l10n),
       ],
     );
   }
 
   // Color Vision Analysis
-  Widget _buildColorVisionAnalysis(int percentage) {
+  Widget _buildColorVisionAnalysis(int percentage, AppLocalizations l10n) {
     final hasProblem = percentage < 100;
     final severity = percentage >= 90
-        ? 'Hafif'
+        ? l10n.detailedAnalysisSeverityMildShort
         : percentage >= 70
-            ? 'Orta'
-            : 'Ciddi';
+            ? l10n.detailedAnalysisSeverityModerateShort
+            : l10n.detailedAnalysisSeveritySevereShort;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildSection(
-          title: 'Renk Görüşü Değerlendirmesi',
+          title: l10n.detailedAnalysisColorVisionAssessment,
           icon: LucideIcons.palette,
           color: AppColors.medicalTeal,
           children: [
             _buildInfoCard(
-              'Mevcut Durum',
+              l10n.detailedAnalysisCurrentStatus,
               hasProblem
-                  ? 'Renk görüşünüzde eksiklik tespit edildi. Bu durum $severity seviyede renk körlüğü olarak değerlendirilmektedir.'
-                  : 'Renk görüşünüz normal seviyede. Tüm renkleri doğru şekilde ayırt edebiliyorsunuz.',
+                  ? l10n.detailedAnalysisColorVisionDeficiency(severity)
+                  : l10n.detailedAnalysisColorVisionNormal,
               LucideIcons.info,
               AppColors.medicalTeal,
             ),
@@ -365,71 +371,71 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
         const SizedBox(height: 24),
         if (hasProblem) ...[
           _buildSection(
-            title: 'Renk Körlüğü Çeşitleri',
+            title: l10n.detailedAnalysisColorBlindnessTypes,
             icon: LucideIcons.layers,
             color: AppColors.premiumGold,
             children: [
               _buildColorBlindnessTypeCard(
-                'Deuteranopia (Yeşil Renk Körlüğü)',
-                'Yeşil renkleri ayırt edememe durumu. En yaygın renk körlüğü türüdür.',
-                'Yeşil ve kırmızı tonlarını ayırt edememe',
+                l10n.detailedAnalysisDeuteranopia,
+                l10n.detailedAnalysisDeuteranopiaDesc,
+                l10n.detailedAnalysisDeuteranopiaSymptom,
                 AppColors.successGreen,
               ),
               const SizedBox(height: 12),
               _buildColorBlindnessTypeCard(
-                'Protanopia (Kırmızı Renk Körlüğü)',
-                'Kırmızı renkleri ayırt edememe durumu. İkinci en yaygın türdür.',
-                'Kırmızı ve yeşil tonlarını ayırt edememe',
+                l10n.detailedAnalysisProtanopia,
+                l10n.detailedAnalysisProtanopiaDesc,
+                l10n.detailedAnalysisProtanopiaSymptom,
                 AppColors.errorRed,
               ),
               const SizedBox(height: 12),
               _buildColorBlindnessTypeCard(
-                'Tritanopia (Mavi-Sarı Renk Körlüğü)',
-                'Mavi ve sarı renkleri ayırt edememe durumu. Daha nadir görülür.',
-                'Mavi ve sarı tonlarını ayırt edememe',
+                l10n.detailedAnalysisTritanopia,
+                l10n.detailedAnalysisTritanopiaDesc,
+                l10n.detailedAnalysisTritanopiaSymptom,
                 AppColors.medicalBlue,
               ),
               const SizedBox(height: 12),
               _buildColorBlindnessTypeCard(
-                'Achromatopsia (Tam Renk Körlüğü)',
-                'Tüm renkleri görememe durumu. Çok nadir görülür, sadece siyah-beyaz görüş vardır.',
-                'Sadece siyah, beyaz ve gri tonları görme',
+                l10n.detailedAnalysisAchromatopsia,
+                l10n.detailedAnalysisAchromatopsiaDesc,
+                l10n.detailedAnalysisAchromatopsiaSymptom,
                 AppColors.textSecondary,
               ),
             ],
           ),
           const SizedBox(height: 24),
           _buildSection(
-            title: 'Olası Sonuçlar ve Etkiler',
+            title: l10n.detailedAnalysisPossibleConsequences,
             icon: LucideIcons.alertTriangle,
             color: AppColors.warningYellow,
             children: [
               _buildConsequenceCard(
-                'Günlük Yaşam',
+                l10n.detailedAnalysisDailyLife,
                 [
-                  'Trafik ışıklarını ayırt etme zorluğu',
-                  'Renkli kıyafet seçiminde zorluk',
-                  'Yemek pişirme ve olgunluk kontrolü',
-                  'Doğa yürüyüşlerinde zorluk',
+                  l10n.detailedAnalysisColorDailyLife1,
+                  l10n.detailedAnalysisColorDailyLife2,
+                  l10n.detailedAnalysisColorDailyLife3,
+                  l10n.detailedAnalysisColorDailyLife4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildConsequenceCard(
-                'İş Hayatı',
+                l10n.detailedAnalysisWorkLife,
                 [
-                  'Grafik tasarım ve sanat alanlarında zorluk',
-                  'Elektrik ve elektronik işlerinde risk',
-                  'Tıp ve laboratuvar işlerinde sınırlamalar',
-                  'Havacılık ve denizcilik mesleklerinde kısıtlamalar',
+                  l10n.detailedAnalysisColorWorkLife1,
+                  l10n.detailedAnalysisColorWorkLife2,
+                  l10n.detailedAnalysisColorWorkLife3,
+                  l10n.detailedAnalysisColorWorkLife4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildConsequenceCard(
-                'Eğitim',
+                l10n.detailedAnalysisEducation,
                 [
-                  'Renkli materyalleri anlama zorluğu',
-                  'Görsel öğrenmede eksiklik',
-                  'Bazı derslerde zorluk',
+                  l10n.detailedAnalysisColorEducation1,
+                  l10n.detailedAnalysisColorEducation2,
+                  l10n.detailedAnalysisColorEducation3,
                 ],
               ),
             ],
@@ -437,59 +443,59 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
           const SizedBox(height: 24),
         ],
         _buildSection(
-          title: 'Yönetim ve Destek',
+          title: l10n.detailedAnalysisManagement,
           icon: LucideIcons.lifeBuoy,
           color: AppColors.successGreen,
           children: [
             _buildSolutionCard(
-              'Renk Tanımlama Uygulamaları',
-              'Akıllı telefon uygulamaları ile renkleri tanımlayabilirsiniz.',
+              l10n.detailedAnalysisColorSolutionApps,
+              l10n.detailedAnalysisColorSolutionAppsDesc,
               LucideIcons.smartphone,
             ),
             const SizedBox(height: 12),
             _buildSolutionCard(
-              'Özel Gözlükler',
-              'Bazı özel gözlükler renk algısını iyileştirebilir. Göz doktorunuza danışın.',
+              l10n.detailedAnalysisColorSolutionGlasses,
+              l10n.detailedAnalysisColorSolutionGlassesDesc,
               LucideIcons.eye,
             ),
             const SizedBox(height: 12),
             _buildSolutionCard(
-              'Mesleki Danışmanlık',
-              'Kariyer seçiminde renk körlüğünü göz önünde bulundurun.',
+              l10n.detailedAnalysisColorSolutionCareer,
+              l10n.detailedAnalysisColorSolutionCareerDesc,
               LucideIcons.briefcase,
             ),
           ],
         ),
         const SizedBox(height: 24),
         _buildInfoCard(
-          'Önemli Not',
-          'Renk körlüğü genellikle kalıtsaldır ve tam tedavisi yoktur. Ancak özel gözlükler ve uygulamalarla yaşam kalitesi artırılabilir.',
+          l10n.detailedAnalysisColorImportantNote,
+          l10n.detailedAnalysisColorImportantNoteText,
           LucideIcons.info,
           AppColors.medicalTeal,
         ),
         const SizedBox(height: 24),
-        _buildWarningCard(),
+        _buildWarningCard(l10n),
       ],
     );
   }
 
   // Astigmatism Analysis
-  Widget _buildAstigmatismAnalysis(int percentage) {
+  Widget _buildAstigmatismAnalysis(int percentage, AppLocalizations l10n) {
     final hasProblem = percentage < 80;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildSection(
-          title: 'Astigmat Değerlendirmesi',
+          title: l10n.detailedAnalysisAstigmatismAssessment,
           icon: LucideIcons.focus,
           color: AppColors.premiumGold,
           children: [
             _buildInfoCard(
-              'Mevcut Durum',
+              l10n.detailedAnalysisCurrentStatus,
               hasProblem
-                  ? 'Astigmat tespit edildi. Kornea veya lensin düzensiz şekli nedeniyle görüntü net değil.'
-                  : 'Astigmat bulgusu minimal seviyede. Normal görüş seviyesindesiniz.',
+                  ? l10n.detailedAnalysisAstigmatismDetected
+                  : l10n.detailedAnalysisAstigmatismNormal,
               LucideIcons.info,
               AppColors.premiumGold,
             ),
@@ -498,133 +504,138 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
         const SizedBox(height: 24),
         if (hasProblem) ...[
           _buildSection(
-            title: 'Astigmat Türleri',
+            title: l10n.detailedAnalysisAstigmatismTypes,
             icon: LucideIcons.layers,
             color: AppColors.medicalBlue,
             children: [
               _buildProblemCard(
-                'Korneal Astigmat',
-                'Korneanın düzensiz şeklinden kaynaklanır. En yaygın türdür.',
+                l10n.detailedAnalysisCornealAstigmatism,
+                l10n.detailedAnalysisCornealAstigmatismDesc,
                 [
-                  'Tüm mesafelerde bulanık görüş',
-                  'Çizgilerin eğri görünmesi',
-                  'Göz yorgunluğu',
+                  l10n.detailedAnalysisCornealAstigmatismSymptom1,
+                  l10n.detailedAnalysisCornealAstigmatismSymptom2,
+                  l10n.detailedAnalysisCornealAstigmatismSymptom3,
                 ],
               ),
               const SizedBox(height: 12),
               _buildProblemCard(
-                'Lentiküler Astigmat',
-                'Göz merceğinin düzensiz şeklinden kaynaklanır.',
+                l10n.detailedAnalysisLenticularAstigmatism,
+                l10n.detailedAnalysisLenticularAstigmatismDesc,
                 [
-                  'Yakın ve uzak görüş problemleri',
-                  'Baş ağrısı',
-                  'Göz yorgunluğu',
+                  l10n.detailedAnalysisLenticularAstigmatismSymptom1,
+                  l10n.detailedAnalysisLenticularAstigmatismSymptom2,
+                  l10n.detailedAnalysisLenticularAstigmatismSymptom3,
                 ],
               ),
             ],
           ),
           const SizedBox(height: 24),
           _buildSection(
-            title: 'Olası Sonuçlar',
+            title: l10n.detailedAnalysisAstigmatismConsequences,
             icon: LucideIcons.alertCircle,
             color: AppColors.warningYellow,
             children: [
               _buildConsequenceCard(
-                'Görüş Kalitesi',
+                l10n.detailedAnalysisAstigmatismVisionQuality,
                 [
-                  'Tüm mesafelerde bulanık görüş',
-                  'Çizgilerin eğri görünmesi',
-                  'Işık halkaları görme',
-                  'Gece görüşünde zorluk',
+                  l10n.detailedAnalysisAstigmatismVisionQuality1,
+                  l10n.detailedAnalysisAstigmatismVisionQuality2,
+                  l10n.detailedAnalysisAstigmatismVisionQuality3,
+                  l10n.detailedAnalysisAstigmatismVisionQuality4,
                 ],
               ),
               const SizedBox(height: 12),
               _buildConsequenceCard(
-                'Günlük Yaşam',
+                l10n.detailedAnalysisDailyLife,
                 [
-                  'Okuma zorluğu',
-                  'Bilgisayar kullanımında yorgunluk',
-                  'Araç kullanımında zorluk',
-                  'Baş ağrıları',
+                  l10n.detailedAnalysisAstigmatismDailyLife1,
+                  l10n.detailedAnalysisAstigmatismDailyLife2,
+                  l10n.detailedAnalysisAstigmatismDailyLife3,
+                  l10n.detailedAnalysisAstigmatismDailyLife4,
                 ],
               ),
             ],
           ),
           const SizedBox(height: 24),
           _buildSection(
-            title: 'Tedavi Seçenekleri',
+            title: l10n.detailedAnalysisTreatmentOptions,
             icon: LucideIcons.heart,
             color: AppColors.successGreen,
             children: [
               _buildSolutionCard(
-                'Silindirik Gözlük',
-                'Astigmat için özel olarak tasarlanmış gözlükler.',
+                l10n.detailedAnalysisAstigmatismSolutionCylindrical,
+                l10n.detailedAnalysisAstigmatismSolutionCylindricalDesc,
                 LucideIcons.eye,
               ),
               const SizedBox(height: 12),
               _buildSolutionCard(
-                'Torik Kontakt Lens',
-                'Astigmat için özel kontakt lensler.',
+                l10n.detailedAnalysisAstigmatismSolutionToric,
+                l10n.detailedAnalysisAstigmatismSolutionToricDesc,
                 LucideIcons.circle,
               ),
               const SizedBox(height: 12),
               _buildSolutionCard(
-                'Lazer Cerrahisi',
-                'Uygun adaylar için kalıcı çözüm.',
+                l10n.detailedAnalysisAstigmatismSolutionLaser,
+                l10n.detailedAnalysisAstigmatismSolutionLaserDesc,
                 LucideIcons.zap,
               ),
             ],
           ),
           const SizedBox(height: 24),
         ],
-        _buildWarningCard(),
+        _buildWarningCard(l10n),
       ],
     );
   }
 
   // Other test analyses (simplified versions)
-  Widget _buildStereopsisAnalysis(int percentage) {
+  Widget _buildStereopsisAnalysis(int percentage, AppLocalizations l10n) {
     return _buildGenericTestAnalysis(
-      'Vergence Testi',
+      l10n.detailedAnalysisVergenceTest,
       percentage,
-      'Yakınsama (convergence) ve uzaklaşma (divergence) yeteneğiniz değerlendirilmektedir. Bu test, çift görme (diplopia) ve göz kas koordinasyonu problemlerini tespit eder.',
-      'Vergence problemleri göz yorgunluğu, baş ağrısı, okuma zorluğu ve çift görme gibi sorunlara neden olabilir.',
+      l10n.detailedAnalysisVergenceTestDesc,
+      l10n.detailedAnalysisVergenceTestConsequence,
+      l10n,
     );
   }
 
-  Widget _buildNearVisionAnalysis(int percentage) {
+  Widget _buildNearVisionAnalysis(int percentage, AppLocalizations l10n) {
     return _buildGenericTestAnalysis(
-      'Yakın Görme',
+      l10n.detailedAnalysisNearVisionTest,
       percentage,
-      'Yakın mesafedeki görüş yeteneğiniz değerlendirilmektedir.',
-      'Yakın görme problemleri okuma, yazma ve detaylı işlerde zorluk yaratabilir.',
+      l10n.detailedAnalysisNearVisionTestDesc,
+      l10n.detailedAnalysisNearVisionTestConsequence,
+      l10n,
     );
   }
 
-  Widget _buildMacularAnalysis(int percentage) {
+  Widget _buildMacularAnalysis(int percentage, AppLocalizations l10n) {
     return _buildGenericTestAnalysis(
-      'Makula Testi',
+      l10n.detailedAnalysisMacularTest,
       percentage,
-      'Makula (sarı nokta) sağlığınız değerlendirilmektedir.',
-      'Makula problemleri merkezi görüş kaybına neden olabilir.',
+      l10n.detailedAnalysisMacularTestDesc,
+      l10n.detailedAnalysisMacularTestConsequence,
+      l10n,
     );
   }
 
-  Widget _buildPeripheralVisionAnalysis(int percentage) {
+  Widget _buildPeripheralVisionAnalysis(int percentage, AppLocalizations l10n) {
     return _buildGenericTestAnalysis(
-      'Periferik Görüş',
+      l10n.detailedAnalysisPeripheralVisionTest,
       percentage,
-      'Yan görüş yeteneğiniz değerlendirilmektedir.',
-      'Periferik görüş problemleri çevresel farkındalıkta azalmaya neden olabilir.',
+      l10n.detailedAnalysisPeripheralVisionTestDesc,
+      l10n.detailedAnalysisPeripheralVisionTestConsequence,
+      l10n,
     );
   }
 
-  Widget _buildEyeMovementAnalysis(int percentage) {
+  Widget _buildEyeMovementAnalysis(int percentage, AppLocalizations l10n) {
     return _buildGenericTestAnalysis(
-      'Göz Hareketi',
+      l10n.detailedAnalysisEyeMovementTest,
       percentage,
-      'Göz hareket koordinasyonunuz değerlendirilmektedir.',
-      'Göz hareket problemleri takip ve odaklanma zorluklarına neden olabilir.',
+      l10n.detailedAnalysisEyeMovementTestDesc,
+      l10n.detailedAnalysisEyeMovementTestConsequence,
+      l10n,
     );
   }
 
@@ -633,6 +644,7 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
     int percentage,
     String description,
     String consequence,
+    AppLocalizations l10n,
   ) {
     final hasProblem = percentage < 80;
 
@@ -640,13 +652,13 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildSection(
-          title: '$testName Değerlendirmesi',
+          title: l10n.detailedAnalysisGenericTestAssessment(testName),
           icon: LucideIcons.activity,
           color: AppColors.medicalTeal,
           children: [
             _buildInfoCard(
-              'Mevcut Durum',
-              '$description Sonuç: %$percentage',
+              l10n.detailedAnalysisCurrentStatus,
+              l10n.detailedAnalysisGenericTestResult(description, percentage),
               LucideIcons.info,
               AppColors.medicalTeal,
             ),
@@ -655,12 +667,12 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
         const SizedBox(height: 24),
         if (hasProblem) ...[
           _buildSection(
-            title: 'Olası Sonuçlar',
+            title: l10n.detailedAnalysisGenericConsequences,
             icon: LucideIcons.alertCircle,
             color: AppColors.warningYellow,
             children: [
               _buildInfoCard(
-                'Etkiler',
+                l10n.detailedAnalysisGenericEffects,
                 consequence,
                 LucideIcons.info,
                 AppColors.warningYellow,
@@ -670,41 +682,41 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
           const SizedBox(height: 24),
         ],
         _buildSection(
-          title: 'Öneriler',
+          title: l10n.detailedAnalysisRecommendations,
           icon: LucideIcons.heart,
           color: AppColors.successGreen,
           children: [
             _buildSolutionCard(
-              'Göz Doktoru Muayenesi',
-              'Detaylı muayene için mutlaka bir göz doktoruna başvurun.',
+              l10n.detailedAnalysisGenericSolutionDoctor,
+              l10n.detailedAnalysisGenericSolutionDoctorDesc,
               LucideIcons.stethoscope,
             ),
             const SizedBox(height: 12),
             _buildSolutionCard(
-              'Düzenli Kontroller',
-              'Göz sağlığınız için düzenli kontroller yaptırın.',
+              l10n.detailedAnalysisGenericSolutionCheckups,
+              l10n.detailedAnalysisGenericSolutionCheckupsDesc,
               LucideIcons.calendar,
             ),
           ],
         ),
         const SizedBox(height: 24),
-        _buildWarningCard(),
+        _buildWarningCard(l10n),
       ],
     );
   }
 
-  Widget _buildGenericAnalysis(int percentage) {
+  Widget _buildGenericAnalysis(int percentage, AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildInfoCard(
-          'Test Sonucu',
-          'Test sonucunuz: %$percentage',
+          l10n.detailedAnalysisGenericTestResultTitle,
+          l10n.detailedAnalysisGenericTestResultText(percentage),
           LucideIcons.info,
           AppColors.medicalBlue,
         ),
         const SizedBox(height: 24),
-        _buildWarningCard(),
+        _buildWarningCard(l10n),
       ],
     );
   }
@@ -721,14 +733,18 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
       children: [
         Row(
           children: [
-            Icon(icon, color: color, size: 24),
-            const SizedBox(width: 12),
-            Text(
-              title,
-              style: GoogleFonts.inter(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
+            Icon(icon, color: color, size: 22),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                title,
+                style: GoogleFonts.inter(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -763,6 +779,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -772,6 +790,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
                     color: AppColors.textSecondary,
                     height: 1.5,
                   ),
+                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -799,6 +819,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
               fontWeight: FontWeight.w700,
               color: AppColors.errorRed,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
           Text(
@@ -808,6 +830,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
               color: AppColors.textSecondary,
               height: 1.5,
             ),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 12),
           ...symptoms.map((symptom) => Padding(
@@ -856,6 +880,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
               fontWeight: FontWeight.w700,
               color: AppColors.warningYellow,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 12),
           ...consequences.map((consequence) => Padding(
@@ -910,6 +936,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -919,6 +947,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
                     color: AppColors.textSecondary,
                     height: 1.5,
                   ),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -951,6 +981,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
               fontWeight: FontWeight.w700,
               color: color,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
           Text(
@@ -960,6 +992,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
               color: AppColors.textSecondary,
               height: 1.5,
             ),
+            maxLines: 4,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 8),
           Row(
@@ -982,7 +1016,7 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
     );
   }
 
-  Widget _buildWarningCard() {
+  Widget _buildWarningCard(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -999,16 +1033,19 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
           ),
           const SizedBox(height: 12),
           Text(
-            'Önemli Uyarı',
+            l10n.detailedAnalysisWarning,
             style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
           Text(
-            'Bu sonuçlar bilgilendirme amaçlıdır ve kesin tanı yerine geçmez. Herhangi bir görme problemi yaşıyorsanız mutlaka bir göz doktoruna başvurun.',
+            l10n.detailedAnalysisWarningText,
             style: GoogleFonts.inter(
               fontSize: 14,
               color: AppColors.textSecondary,
@@ -1021,27 +1058,27 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
     );
   }
 
-  String _getTestName() {
+  String _getTestName(AppLocalizations l10n) {
     switch (widget.testType) {
       case 'visual_acuity':
-        return 'Görme Keskinliği';
+        return l10n.visualAcuityTitle;
       case 'color_vision':
-        return 'Renk Körlüğü';
+        return l10n.colorVisionTitle;
       case 'astigmatism':
-        return 'Astigmat Testi';
+        return l10n.astigmatismTitle;
       case 'stereopsis':
       case 'binocular_vision':
-        return 'Vergence Testi';
+        return l10n.stereopsisTitle;
       case 'near_vision':
-        return 'Yakın Görme';
+        return l10n.nearVisionTitle;
       case 'macular':
-        return 'Makula Testi';
+        return l10n.macularTitle;
       case 'peripheral_vision':
-        return 'Periferik Görüş';
+        return l10n.peripheralVisionTitle;
       case 'eye_movement':
-        return 'Göz Hareketi';
+        return l10n.eyeMovementTitle;
       default:
-        return 'Test Sonucu';
+        return l10n.detailedAnalysisGenericTestResultTitle;
     }
   }
 
