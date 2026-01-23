@@ -182,7 +182,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 color: AppColors.textSecondary,
               ),
               onTap: () {
-                _showAboutDialog();
+                context.push(AppRoutes.about);
               },
             ),
             const SizedBox(height: 8),
@@ -448,67 +448,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
-  void _showAboutDialog() {
-    final l10n = AppLocalizations.of(context)!;
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: Text(
-          l10n.appName,
-          style: GoogleFonts.inter(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.appTagline,
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              '${l10n.version}: 1.0.0',
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.informationalPurposeDesc,
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              l10n.okay,
-              style: GoogleFonts.inter(
-                color: AppColors.medicalBlue,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Future<void> _selectNotificationTime() async {
     final l10n = AppLocalizations.of(context)!;

@@ -597,6 +597,20 @@ class AppLocalizationsTr extends AppLocalizations {
   String get termsOfService => 'Kullanım Şartları';
 
   @override
+  String get aboutApp => 'Uygulama Hakkında';
+
+  @override
+  String get aboutAppDescription =>
+      'Göz Testi / Eye Test, profesyonel görme testleri ve günlük göz egzersizleri sunan kapsamlı bir göz sağlığı uygulamasıdır. Uygulama, görme keskinliği, renk görüşü, astigmatizma ve daha fazlası dahil olmak üzere 8 farklı göz testi içerir. Tüm test sonuçları gizliliğiniz için cihazınızda yerel olarak saklanır.';
+
+  @override
+  String get developer => 'Geliştirici';
+
+  @override
+  String get developerDescription =>
+      'Bu uygulama, göz sağlığınızı takip etmenize yardımcı olmak için özenle geliştirilmiştir. Sorular, geri bildirim veya destek için lütfen bizimle iletişime geçin.';
+
+  @override
   String get errorGeneric => 'Bir hata oluştu';
 
   @override
@@ -1793,7 +1807,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get exerciseStarting => 'Başlıyor';
 
   @override
-  String get exerciseNext => 'Sıradaki';
+  String get exerciseNext => 'Sonraki Egzersiz';
 
   @override
   String get exerciseFinish => 'Bitir';
@@ -2213,6 +2227,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get resultRecommendation => 'Öneri';
+
+  @override
+  String get resultMedicalDisclaimer =>
+      'Bu sonuçlar yalnızca bilgilendirme amaçlıdır ve tıbbi teşhis niteliği taşımaz. Kapsamlı bir muayene için lütfen nitelikli bir göz bakım uzmanına danışın.';
 
   @override
   String get resultDetailedAnalysis => 'Detaylı Analiz';

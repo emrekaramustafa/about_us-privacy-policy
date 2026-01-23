@@ -1210,6 +1210,30 @@ abstract class AppLocalizations {
   /// **'Terms of Service'**
   String get termsOfService;
 
+  /// No description provided for @aboutApp.
+  ///
+  /// In en, this message translates to:
+  /// **'About the App'**
+  String get aboutApp;
+
+  /// No description provided for @aboutAppDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Göz Testi / Eye Test is a comprehensive eye health application that offers professional vision tests and daily eye exercises. The app includes 8 different eye tests including visual acuity, color vision, astigmatism, and more. All test results are stored locally on your device for your privacy.'**
+  String get aboutAppDescription;
+
+  /// No description provided for @developer.
+  ///
+  /// In en, this message translates to:
+  /// **'Developer'**
+  String get developer;
+
+  /// No description provided for @developerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This app is developed with care to help you monitor your eye health. For questions, feedback, or support, please contact us.'**
+  String get developerDescription;
+
   /// No description provided for @errorGeneric.
   ///
   /// In en, this message translates to:
@@ -3319,7 +3343,7 @@ abstract class AppLocalizations {
   /// No description provided for @exerciseNext.
   ///
   /// In en, this message translates to:
-  /// **'Next'**
+  /// **'Next Exercise'**
   String get exerciseNext;
 
   /// No description provided for @exerciseFinish.
@@ -4053,6 +4077,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Recommendation'**
   String get resultRecommendation;
+
+  /// No description provided for @resultMedicalDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'These results are for informational purposes only and do not constitute a medical diagnosis. Please consult a qualified eye care professional for a comprehensive examination.'**
+  String get resultMedicalDisclaimer;
 
   /// No description provided for @resultDetailedAnalysis.
   ///

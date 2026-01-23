@@ -251,7 +251,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
 
   Widget _buildExercisesView() {
     return FutureBuilder<List<DateTime>>(
-      future: _storageService.getExerciseHistory(_selectedProfile),
+      future: _getAllExerciseHistory(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -271,6 +271,11 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
       },
     );
   }
+  
+  Future<List<DateTime>> _getAllExerciseHistory() async {
+    return await _storageService.getAllExerciseHistory();
+  }
+  
 
   Widget _buildExerciseCalendar(List<DateTime> exerciseDates) {
     final now = DateTime.now();
@@ -283,10 +288,15 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
     // Adjust to start from Monday (1 = Monday, 7 = Sunday)
     int startOffset = firstDayWeekday - 1;
     
-    // Create a set of exercise dates for quick lookup
+    // Create a set of exercise dates as strings for reliable lookup
     final exerciseDateSet = exerciseDates.map((date) {
-      return DateTime(date.year, date.month, date.day);
+      return '${date.year}-${date.month}-${date.day}';
     }).toSet();
+    
+    // Helper function to check if a date has exercise
+    bool hasExerciseOnDate(int year, int month, int day) {
+      return exerciseDateSet.contains('$year-$month-$day');
+    }
     
     return Container(
       padding: const EdgeInsets.all(20),
@@ -370,17 +380,15 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
                     return const Expanded(child: SizedBox());
                   }
                   
-                  final currentDate = DateTime(
+                  final isToday = currentMonth.year == now.year &&
+                      currentMonth.month == now.month &&
+                      dayNumber == now.day;
+                  
+                  final hasExercise = hasExerciseOnDate(
                     currentMonth.year,
                     currentMonth.month,
                     dayNumber,
                   );
-                  
-                  final isToday = currentDate.year == now.year &&
-                      currentDate.month == now.month &&
-                      currentDate.day == now.day;
-                  
-                  final hasExercise = exerciseDateSet.contains(currentDate);
                   
                   return Expanded(
                     child: Container(

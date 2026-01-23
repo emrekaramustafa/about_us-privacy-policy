@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb, debugPrint, defaultTargetPlatform;
 import 'package:flutter/material.dart' show TargetPlatform;
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,12 +16,8 @@ class PurchaseService {
   StreamSubscription<List<PurchaseDetails>>? _subscription;
   bool _isAvailable = false;
 
-  // Product IDs (replace with real IDs in production)
+  // Product ID for premium lifetime purchase
   static const String _premiumProductId = 'premium_lifetime';
-  
-  // For testing, use these IDs:
-  // Android: android.test.purchased
-  // iOS: com.example.premium
 
   /// Initialize purchase service
   Future<void> initialize() async {
@@ -135,7 +130,7 @@ class PurchaseService {
 
   /// Verify and grant premium access
   void _verifyPurchase(PurchaseDetails purchaseDetails) {
-    // In production, verify purchase with backend server
+    // Verify purchase - in production, verify with backend server for security
     // For now, grant premium if product ID matches
     if (purchaseDetails.productID == _premiumProductId) {
       // Premium granted - save to SharedPreferences
@@ -147,9 +142,6 @@ class PurchaseService {
 
   /// Save premium status to SharedPreferences
   Future<void> _savePremiumStatus(bool isPremium) async {
-    // This will be accessed by the provider
-    // For now, we'll use a simple approach
-    // In production, use a proper storage service
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('is_premium', isPremium);
   }
@@ -165,12 +157,16 @@ class PurchaseService {
     if (!_isAvailable) return false;
 
     // Query past purchases
-    final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
-        _inAppPurchase.getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
-    
-    if (iosPlatformAddition != null) {
-      // iOS: Check restore purchases
-      await restorePurchases();
+    try {
+      final InAppPurchaseStoreKitPlatformAddition? iosPlatformAddition =
+          _inAppPurchase.getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+      
+      if (iosPlatformAddition != null) {
+        // iOS: Check restore purchases
+        await restorePurchases();
+      }
+    } catch (e) {
+      debugPrint('Error checking iOS platform addition: $e');
     }
 
     // Check again after restore

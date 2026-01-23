@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
-import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/core/widgets/scroll_indicator.dart';
 import 'package:goz_testi/core/services/storage_service.dart';
 import 'package:goz_testi/core/services/ad_service.dart';
 import 'package:goz_testi/core/services/rating_service.dart';
@@ -34,11 +34,13 @@ class ResultPage extends ConsumerStatefulWidget {
 class _ResultPageState extends ConsumerState<ResultPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  final ScrollController _scrollController = ScrollController();
   final StorageService _storageService = StorageService();
   final AdService _adService = AdService();
   final RatingService _ratingService = RatingService();
   bool _isSaving = false;
   bool _hasUnlockedDetailedAnalysis = false;
+  bool _hasNavigatedToDetailedAnalysis = false;
 
   @override
   void initState() {
@@ -49,6 +51,17 @@ class _ResultPageState extends ConsumerState<ResultPage>
     );
     _animationController.forward();
     _saveTestResult();
+    
+    // Check if user is already premium and navigate to detailed analysis
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final isPremium = ref.read(isPremiumProvider);
+        if (isPremium) {
+          _hasUnlockedDetailedAnalysis = true;
+          _checkAndNavigateToDetailedAnalysis();
+        }
+      }
+    });
   }
 
   Future<void> _saveTestResult() async {
@@ -121,6 +134,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
   @override
   void dispose() {
     _animationController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -187,6 +201,30 @@ class _ResultPageState extends ConsumerState<ResultPage>
     return null;
   }
 
+  void _checkAndNavigateToDetailedAnalysis() {
+    final isPremium = ref.read(isPremiumProvider);
+    final canViewDetailed = isPremium || _hasUnlockedDetailedAnalysis;
+    
+    // If user can view detailed analysis and hasn't navigated yet, navigate
+    if (canViewDetailed && !_hasNavigatedToDetailedAnalysis && mounted) {
+      _hasNavigatedToDetailedAnalysis = true;
+      // Small delay to ensure UI is ready
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          context.push(
+            AppRoutes.detailedAnalysis,
+            extra: {
+              'testType': widget.testType,
+              'score': widget.score,
+              'totalQuestions': widget.totalQuestions,
+              'details': widget.details,
+            },
+          );
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -196,13 +234,19 @@ class _ResultPageState extends ConsumerState<ResultPage>
     final percentage = widget.details != null && widget.details!['percentage'] != null
         ? widget.details!['percentage'] as int
         : ((widget.score / widget.totalQuestions) * 100).round();
+    
+    // Watch premium status - will trigger navigation if user becomes premium
+    ref.watch(isPremiumProvider);
 
     return Scaffold(
       backgroundColor: AppColors.cleanWhite,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(24),
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 20),
@@ -485,6 +529,13 @@ class _ResultPageState extends ConsumerState<ResultPage>
               const SizedBox(height: 24),
             ],
           ),
+            ),
+            ScrollIndicator(
+              scrollController: _scrollController,
+              text: l10n.scrollDown,
+              indicatorColor: AppColors.medicalBlue,
+            ),
+          ],
         ),
       ),
     );
@@ -886,7 +937,18 @@ class _ResultPageState extends ConsumerState<ResultPage>
                         const SizedBox(width: 12),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () => context.push(AppRoutes.paywall),
+                            onTap: () async {
+                              // Navigate to paywall
+                              await context.push(AppRoutes.paywall);
+                              // Check if user became premium after returning from paywall
+                              if (mounted) {
+                                // Wait a bit for provider to update
+                                await Future.delayed(const Duration(milliseconds: 100));
+                                if (mounted) {
+                                  _checkAndNavigateToDetailedAnalysis();
+                                }
+                              }
+                            },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               decoration: BoxDecoration(
@@ -1140,6 +1202,7 @@ class _ResultPageState extends ConsumerState<ResultPage>
         });
         if (mounted) {
           // Navigate to detailed analysis page
+          _hasNavigatedToDetailedAnalysis = true;
           context.push(
             AppRoutes.detailedAnalysis,
             extra: {

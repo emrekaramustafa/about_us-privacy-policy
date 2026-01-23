@@ -246,6 +246,10 @@
   
   "privacyPolicy": "Politique de Confidentialité",
   "termsOfService": "Conditions d'Utilisation",
+  "aboutApp": "À Propos de l'App",
+  "aboutAppDescription": "Göz Testi / Eye Test est une application complète de santé oculaire qui offre des tests de vision professionnels et des exercices oculaires quotidiens. L'application comprend 8 tests oculaires différents, notamment l'acuité visuelle, la vision des couleurs, l'astigmatisme et plus encore. Tous les résultats des tests sont stockés localement sur votre appareil pour votre confidentialité.",
+  "developer": "Développeur",
+  "developerDescription": "Cette application est développée avec soin pour vous aider à surveiller votre santé oculaire. Pour les questions, commentaires ou support, veuillez nous contacter.",
   
   "errorGeneric": "Une erreur s'est produite",
   "tryAgain": "Réessayer",
@@ -642,7 +646,7 @@
   "exerciseReady": "Prêt",
   "exerciseStarting": "Démarrage",
   "exerciseCompleted": "Terminé",
-  "exerciseNext": "Suivant",
+  "exerciseNext": "Exercice Suivant",
   "exerciseFinish": "Terminer",
   "exerciseExit": "Quitter",
   

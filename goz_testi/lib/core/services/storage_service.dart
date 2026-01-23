@@ -144,10 +144,13 @@ class StorageService {
     );
   }
 
-  /// Save exercise completion
+  /// Save exercise completion (unified storage, no profile distinction)
   Future<void> saveExerciseCompletion(String profile, DateTime dateTime) async {
     final prefs = await SharedPreferences.getInstance();
-    final history = await getExerciseHistory(profile);
+    
+    // Use unified key for all profiles
+    final dateStrings = prefs.getStringList(_exerciseHistoryKey) ?? [];
+    final history = dateStrings.map((s) => DateTime.parse(s)).toList();
     
     // Check if already completed today
     final today = DateTime.now();
@@ -166,14 +169,22 @@ class StorageService {
       }
       
       final jsonList = history.map((d) => d.toIso8601String()).toList();
-      await prefs.setStringList('${_exerciseHistoryKey}_$profile', jsonList);
+      await prefs.setStringList(_exerciseHistoryKey, jsonList);
     }
   }
 
-  /// Get exercise history for a profile
+  /// Get all exercise history (unified)
   Future<List<DateTime>> getExerciseHistory(String profile) async {
     final prefs = await SharedPreferences.getInstance();
-    final dateStrings = prefs.getStringList('${_exerciseHistoryKey}_$profile') ?? [];
+    final dateStrings = prefs.getStringList(_exerciseHistoryKey) ?? [];
+    
+    return dateStrings.map((s) => DateTime.parse(s)).toList();
+  }
+  
+  /// Get all exercise history (for calendar)
+  Future<List<DateTime>> getAllExerciseHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final dateStrings = prefs.getStringList(_exerciseHistoryKey) ?? [];
     
     return dateStrings.map((s) => DateTime.parse(s)).toList();
   }

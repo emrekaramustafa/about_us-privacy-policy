@@ -212,7 +212,7 @@ class _ExerciseInfoPageState extends State<ExerciseInfoPage>
               const SizedBox(height: 24),
               // Start Button
               AppButton(
-                text: l10n.exerciseStart,
+                text: l10n.exerciseStartExercises,
                 icon: LucideIcons.arrowRight,
                 onPressed: () => context.push(AppRoutes.exerciseProfile),
                 backgroundColor: AppColors.medicalBlue,

@@ -221,6 +221,10 @@
   
   "privacyPolicy": "Gizlilik Politikası",
   "termsOfService": "Kullanım Şartları",
+  "aboutApp": "Uygulama Hakkında",
+  "aboutAppDescription": "Göz Testi / Eye Test, profesyonel görme testleri ve günlük göz egzersizleri sunan kapsamlı bir göz sağlığı uygulamasıdır. Uygulama, görme keskinliği, renk görüşü, astigmatizma ve daha fazlası dahil olmak üzere 8 farklı göz testi içerir. Tüm test sonuçları gizliliğiniz için cihazınızda yerel olarak saklanır.",
+  "developer": "Geliştirici",
+  "developerDescription": "Bu uygulama, göz sağlığınızı takip etmenize yardımcı olmak için özenle geliştirilmiştir. Sorular, geri bildirim veya destek için lütfen bizimle iletişime geçin.",
   
   "errorGeneric": "Bir hata oluştu",
   "tryAgain": "Tekrar Dene",
@@ -691,7 +695,7 @@
   "exerciseReady": "Hazır",
   "exerciseStarting": "Başlıyor",
   "exerciseCompleted": "Tamamlandı",
-  "exerciseNext": "Sıradaki",
+  "exerciseNext": "Sonraki Egzersiz",
   "exerciseFinish": "Bitir",
   "exerciseExit": "Çık",
   

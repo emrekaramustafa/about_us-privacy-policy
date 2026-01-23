@@ -604,6 +604,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get termsOfService => 'Términos de Servicio';
 
   @override
+  String get aboutApp => 'Acerca de la App';
+
+  @override
+  String get aboutAppDescription =>
+      'Göz Testi / Eye Test es una aplicación integral de salud ocular que ofrece pruebas de visión profesionales y ejercicios oculares diarios. La aplicación incluye 8 pruebas oculares diferentes, incluyendo agudeza visual, visión del color, astigmatismo y más. Todos los resultados de las pruebas se almacenan localmente en su dispositivo para su privacidad.';
+
+  @override
+  String get developer => 'Desarrollador';
+
+  @override
+  String get developerDescription =>
+      'Esta aplicación está desarrollada con cuidado para ayudarle a monitorear su salud ocular. Para preguntas, comentarios o soporte, por favor contáctenos.';
+
+  @override
   String get errorGeneric => 'Ocurrió un error';
 
   @override
@@ -1813,7 +1827,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exerciseStarting => 'Comenzando';
 
   @override
-  String get exerciseNext => 'Siguiente';
+  String get exerciseNext => 'Siguiente Ejercicio';
 
   @override
   String get exerciseFinish => 'Finalizar';
@@ -2232,6 +2246,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get resultRecommendation => 'Recomendación';
+
+  @override
+  String get resultMedicalDisclaimer =>
+      'Estos resultados son solo para fines informativos y no constituyen un diagnóstico médico. Por favor, consulte a un profesional de atención ocular calificado para un examen completo.';
 
   @override
   String get resultDetailedAnalysis => 'Análisis Detallado';

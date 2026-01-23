@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
-import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/services/purchase_service.dart';
-import 'package:goz_testi/core/widgets/app_button.dart';
 import 'package:goz_testi/features/tests/common/presentation/providers/test_provider.dart';
 import 'package:goz_testi/l10n/app_localizations.dart';
 
@@ -97,7 +95,6 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
     setState(() => _isLoading = true);
     
     try {
-      // TEST MODE: Directly grant premium without payment
       final success = await _purchaseService.purchasePremium();
       
       if (!success) {
@@ -115,21 +112,49 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
         return;
       }
       
-      // TEST MODE: Set premium status in provider (NOT persisted - resets on app restart)
-      await ref.read(isPremiumProvider.notifier).setPremium(true);
+      // Premium status will be set by PurchaseService when purchase is verified via purchase stream
+      // Wait for purchase stream to process (purchase verification happens asynchronously)
+      // Poll for premium status update (max 5 seconds)
+      bool premiumActivated = false;
+      for (int i = 0; i < 10; i++) {
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (mounted) {
+          await ref.read(isPremiumProvider.notifier).refresh();
+          final isPremium = ref.read(isPremiumProvider);
+          if (isPremium) {
+            premiumActivated = true;
+            break;
+          }
+        } else {
+          return;
+        }
+      }
       
       if (mounted) {
         setState(() => _isLoading = false);
         
-        // Show premium success banner first
-        _showPremiumSuccessBanner(context);
-        
-        // Close paywall after a short delay
-        Future.delayed(const Duration(milliseconds: 500), () {
-          if (mounted) {
-            context.pop();
-          }
-        });
+        if (premiumActivated) {
+          // Show premium success banner
+          _showPremiumSuccessBanner(context);
+          
+          // Close paywall after a short delay
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) {
+              context.pop();
+            }
+          });
+        } else {
+          // Premium not activated - purchase may still be processing
+          // Keep paywall open, user can check purchase status
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.premiumActivationFailed),
+              backgroundColor: AppColors.errorRed,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
       }
     } catch (e) {
       if (mounted) {

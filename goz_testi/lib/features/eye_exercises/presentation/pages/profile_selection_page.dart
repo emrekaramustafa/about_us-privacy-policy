@@ -30,39 +30,47 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
     await _notificationService.initialize();
   }
 
-  Future<void> _handleProfileSelection(String profile) async {
-    // Save selected profile
-    await _notificationService.setSelectedProfile(profile);
-    
-    // Check if notification permission was already asked
-    final prefs = await SharedPreferences.getInstance();
-    final notificationPermissionAsked = prefs.getBool('notification_permission_asked') ?? false;
-    
-    if (!notificationPermissionAsked) {
-      // Show notification permission dialog
-      final shouldAsk = await _showNotificationPermissionDialog(context);
-      if (shouldAsk == true) {
-        final hasPermission = await _notificationService.requestPermissions();
-        if (hasPermission) {
-          // Set default notification time based on profile
-          final defaultTime = profile == 'child' 
-              ? const TimeOfDay(hour: 19, minute: 30)
-              : const TimeOfDay(hour: 20, minute: 30);
-          
-          await _notificationService.setNotificationTime(defaultTime);
-          await _notificationService.setNotificationsEnabled(true);
-          await _notificationService.scheduleDailyReminder();
-        }
-      }
-      await prefs.setBool('notification_permission_asked', true);
-    }
+  void _handleProfileSelection(String profile) {
+    // Save selected profile immediately (sync, before navigation)
+    _notificationService.setSelectedProfile(profile);
     
     // Navigate to exercise list
-    if (mounted) {
-      context.push(
-        AppRoutes.exerciseList,
-        extra: {'profile': profile},
-      );
+    context.push(
+      AppRoutes.exerciseList,
+      extra: {'profile': profile},
+    );
+    
+    // Handle notification permission in background (don't block navigation)
+    _handleNotificationPermission(profile);
+  }
+  
+  Future<void> _handleNotificationPermission(String profile) async {
+    try {
+      // Check if notification permission was already asked
+      final prefs = await SharedPreferences.getInstance();
+      final notificationPermissionAsked = prefs.getBool('notification_permission_asked') ?? false;
+      
+      if (!notificationPermissionAsked && mounted) {
+        // Show notification permission dialog
+        final shouldAsk = await _showNotificationPermissionDialog(context);
+        
+        if (shouldAsk == true) {
+          final hasPermission = await _notificationService.requestPermissions();
+          if (hasPermission) {
+            // Set default notification time based on profile
+            final defaultTime = profile == 'child' 
+                ? const TimeOfDay(hour: 19, minute: 30)
+                : const TimeOfDay(hour: 20, minute: 30);
+            
+            await _notificationService.setNotificationTime(defaultTime);
+            await _notificationService.setNotificationsEnabled(true);
+            await _notificationService.scheduleDailyReminder();
+          }
+        }
+        await prefs.setBool('notification_permission_asked', true);
+      }
+    } catch (e) {
+      debugPrint('Notification permission error: $e');
     }
   }
 
@@ -177,56 +185,58 @@ class _ProfileSelectionPageState extends State<ProfileSelectionPage> {
               ),
               const SizedBox(height: 40),
               Expanded(
-                child: Column(
-                  children: [
-                    _ProfileCard(
-                      title: l10n.exerciseProfileChild,
-                      subtitle: l10n.exerciseProfileChildSubtitle,
-                      icon: LucideIcons.heart,
-                      color: AppColors.medicalTeal,
-                      onTap: () => _handleProfileSelection('child'),
-                    ),
-                    const SizedBox(height: 20),
-                    _ProfileCard(
-                      title: l10n.exerciseProfileAdult,
-                      subtitle: l10n.exerciseProfileAdultSubtitle,
-                      icon: LucideIcons.user,
-                      color: AppColors.medicalBlue,
-                      onTap: () => _handleProfileSelection('adult'),
-                    ),
-                    const SizedBox(height: 32),
-                    // Info Card
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.medicalBluePale,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.medicalBlue.withOpacity(0.2),
-                        ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _ProfileCard(
+                        title: l10n.exerciseProfileChild,
+                        subtitle: l10n.exerciseProfileChildSubtitle,
+                        icon: LucideIcons.heart,
+                        color: AppColors.medicalTeal,
+                        onTap: () => _handleProfileSelection('child'),
                       ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            LucideIcons.info,
-                            color: AppColors.medicalBlue,
-                            size: 20,
+                      const SizedBox(height: 20),
+                      _ProfileCard(
+                        title: l10n.exerciseProfileAdult,
+                        subtitle: l10n.exerciseProfileAdultSubtitle,
+                        icon: LucideIcons.user,
+                        color: AppColors.medicalBlue,
+                        onTap: () => _handleProfileSelection('adult'),
+                      ),
+                      const SizedBox(height: 32),
+                      // Info Card
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.medicalBluePale,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: AppColors.medicalBlue.withOpacity(0.2),
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              l10n.exerciseProfileInfo,
-                              style: GoogleFonts.inter(
-                                fontSize: 13,
-                                color: AppColors.medicalBlue,
-                                height: 1.4,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              LucideIcons.info,
+                              color: AppColors.medicalBlue,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                l10n.exerciseProfileInfo,
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  color: AppColors.medicalBlue,
+                                  height: 1.4,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -254,30 +264,25 @@ class _ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        splashColor: color.withOpacity(0.1),
-        highlightColor: color.withOpacity(0.05),
-        child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: AppColors.borderLight,
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 20,
-                offset: const Offset(0, 4),
-              ),
-            ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppColors.borderLight,
+            width: 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
           child: Row(
             children: [
               Container(
@@ -343,7 +348,6 @@ class _ProfileCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }
