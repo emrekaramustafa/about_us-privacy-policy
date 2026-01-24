@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Göz Testi / Eye Test - Privacy Policy & Contact</title>
+    <meta name="description" content="Göz Testi - Professional eye health testing app. Test your visual acuity, color blindness, peripheral vision, and more. Available on iOS and Android.">
+    <title>Göz Testi / Eye Test - Professional Eye Health Testing App</title>
     <style>
         * {
             margin: 0;
@@ -14,93 +15,238 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 60px 40px;
             text-align: center;
-            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 40px 0;
+        }
+        .logo {
+            font-size: 4em;
+            margin-bottom: 20px;
         }
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #667eea;
+            font-weight: 700;
         }
         .subtitle {
+            font-size: 1.5em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .tagline {
             font-size: 1.2em;
-            opacity: 0.9;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .feature-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .feature-desc {
+            color: #666;
+            font-size: 0.95em;
+        }
+        .cta-section {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 40px 0;
+            text-align: center;
+        }
+        .cta-title {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .cta-text {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .app-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        .app-badge {
+            background: #000;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
         }
         .nav {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 40px 0;
+            text-align: center;
+        }
+        .nav-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         .nav a {
             display: inline-block;
-            margin: 10px 15px;
             padding: 12px 24px;
             background: #667eea;
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 8px;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: 500;
         }
         .nav a:hover {
             background: #5568d3;
-        }
-        .content {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-        p {
-            margin-bottom: 15px;
+            transform: translateY(-2px);
         }
         .footer {
             text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 0.9em;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95em;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            .subtitle {
+                font-size: 1.2em;
+            }
+            .features {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                flex-direction: column;
+            }
+            .nav a {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>👁️ Göz Testi</h1>
-        <p class="subtitle">Eye Test - Privacy Policy & Contact</p>
-    </header>
-    
     <div class="container">
+        <header>
+            <div class="logo">👁️</div>
+            <h1>Göz Testi</h1>
+            <p class="subtitle">Eye Test</p>
+            <p class="tagline">Professional Eye Health Testing at Your Fingertips</p>
+        </header>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <div class="feature-title">Visual Acuity Test</div>
+                <div class="feature-desc">Test your distance vision with professional Snellen charts</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <div class="feature-title">Color Blindness Test</div>
+                <div class="feature-desc">Comprehensive color vision testing with Ishihara plates</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👁️</div>
+                <div class="feature-title">Peripheral Vision</div>
+                <div class="feature-desc">Test your side vision and reaction time with light detection</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📏</div>
+                <div class="feature-title">Near Vision Test</div>
+                <div class="feature-desc">Check your reading vision and close-up clarity</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <div class="feature-title">Amsler Grid</div>
+                <div class="feature-desc">Detect macular degeneration and vision distortions</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Astigmatism Test</div>
+                <div class="feature-desc">Identify astigmatism with radial line patterns</div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="cta-title">Start Testing Your Vision Today</h2>
+            <p class="cta-text">Available on iOS and Android</p>
+            <div class="app-badges">
+                <div class="app-badge">📱 iOS</div>
+                <div class="app-badge">🤖 Android</div>
+            </div>
+            <p style="margin-top: 30px; color: #666;">
+                Track your test history, perform eye exercises, and monitor your vision health over time.
+            </p>
+        </div>
+
         <div class="nav">
-            <a href="privacy-policy.html">Privacy Policy</a>
-            <a href="contact.html">Contact Us</a>
-            <a href="terms-of-service.html">Terms of Service</a>
+            <div class="nav-title">Legal & Support</div>
+            <div class="nav-links">
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+                <a href="contact.html">Contact Us</a>
+            </div>
         </div>
-        
-        <div class="content">
-            <h2>Welcome</h2>
-            <p>Welcome to the official web pages for <strong>Göz Testi / Eye Test</strong> mobile application.</p>
-            <p>Please use the navigation above to access our Privacy Policy, Terms of Service, or to contact us.</p>
-        </div>
-        
+
         <div class="footer">
             <p>&copy; 2025 Göz Testi / Eye Test. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="mailto:mehmetemrekaramustafa@gmail.com">mehmetemrekaramustafa@gmail.com</a>
+            </p>
         </div>
     </div>
 </body>
