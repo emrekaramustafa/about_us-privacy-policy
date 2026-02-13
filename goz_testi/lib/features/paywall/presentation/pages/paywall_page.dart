@@ -473,21 +473,11 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                                     
                                     return productAsync.when(
                                       data: (product) {
-                                        final price = product?.price ?? '₺79.99';
+                                        // Price comes from App Store/Play Store with correct currency
+                                        // e.g., "$0.99", "€0.99", "₺49.99" based on user's country
+                                        final price = product?.price ?? '';
                                         
-                                        // Try to parse currency symbol and amount
-                                        // This is a simple parser, might need adjustment based on format
-                                        String symbol = '₺';
-                                        String amount = '79';
-                                        String decimals = '.99';
-                                        
-                                        if (product != null) {
-                                          // Simple logic: if it contains a currency symbol like $ or €, use it
-                                          // Otherwise default to local format
-                                          // For now, just display the full price string nicely formatted if possible
-                                          // or fall back to the simple display
-                                          
-                                          // Return the full price string for now to be safe with different currencies
+                                        if (price.isNotEmpty) {
                                           return Text(
                                             price,
                                             style: GoogleFonts.inter(
@@ -499,35 +489,15 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                                           );
                                         }
                                         
-                                        return Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              symbol,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white.withOpacity(0.8),
-                                              ),
-                                            ),
-                                            Text(
-                                              amount,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 64,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white,
-                                                height: 1,
-                                              ),
-                                            ),
-                                            Text(
-                                              decimals,
-                                              style: GoogleFonts.inter(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white.withOpacity(0.8),
-                                              ),
-                                            ),
-                                          ],
+                                        // Product not available (e.g. timeout, sandbox issue) – show label, not endless spinner
+                                        return Text(
+                                          AppLocalizations.of(context)!.premiumLabel,
+                                          style: GoogleFonts.inter(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
+                                            height: 1,
+                                          ),
                                         );
                                       },
                                       loading: () => const SizedBox(
@@ -538,35 +508,14 @@ class _PaywallPageState extends ConsumerState<PaywallPage>
                                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                         ),
                                       ),
-                                      error: (_, __) => Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '₺',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white.withOpacity(0.8),
-                                            ),
-                                          ),
-                                          Text(
-                                            '79',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 64,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                              height: 1,
-                                            ),
-                                          ),
-                                          Text(
-                                            '.99',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white.withOpacity(0.8),
-                                            ),
-                                          ),
-                                        ],
+                                      error: (_, __) => Text(
+                                        'Premium',
+                                        style: GoogleFonts.inter(
+                                          fontSize: 48,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white,
+                                          height: 1,
+                                        ),
                                       ),
                                     );
                                   },

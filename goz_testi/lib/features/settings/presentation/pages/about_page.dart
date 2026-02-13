@@ -312,6 +312,12 @@ class AboutPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildLinkTile(
+          icon: LucideIcons.bookOpen,
+          title: l10n.medicalSourcesTitle,
+          onTap: () => context.push(AppRoutes.medicalSources),
+        ),
+        const SizedBox(height: 8),
+        _buildLinkTile(
           icon: LucideIcons.shield,
           title: l10n.privacyPolicy,
           onTap: () => context.push(AppRoutes.privacyPolicy),

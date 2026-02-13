@@ -26,6 +26,7 @@ import '../../features/eye_exercises/presentation/pages/exercise_completion_page
 import '../../features/eye_exercises/domain/models/exercise_model.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/settings/presentation/pages/about_page.dart';
+import '../../features/settings/presentation/pages/medical_sources_page.dart';
 import '../../features/settings/presentation/pages/privacy_policy_page.dart';
 import '../../features/settings/presentation/pages/terms_of_service_page.dart';
 import '../../features/history/presentation/pages/test_history_page.dart';
@@ -57,6 +58,7 @@ class AppRoutes {
   static const String exerciseCompletion = '/exercises/completion';
   static const String settings = '/settings';
   static const String about = '/about';
+  static const String medicalSources = '/medical-sources';
   static const String privacyPolicy = '/privacy-policy';
   static const String termsOfService = '/terms-of-service';
   static const String testHistory = '/history';
@@ -193,6 +195,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.about,
         builder: (context, state) => const AboutPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.medicalSources,
+        builder: (context, state) => const MedicalSourcesPage(),
       ),
       GoRoute(
         path: AppRoutes.privacyPolicy,

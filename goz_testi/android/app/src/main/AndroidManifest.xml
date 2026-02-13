@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     
     <application
-        android:label="Göz Testi"
+        android:label="Eye Test – Vision &amp; Exercises"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

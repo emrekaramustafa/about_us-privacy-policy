@@ -52,7 +52,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get scrollDown => 'Nach unten scrollen';
 
   @override
-  String get homeTitle => 'Augengesundheit';
+  String get homeTitle => 'Augentest – Sehen & Übungen';
 
   @override
   String get homeSubtitle =>
@@ -607,6 +607,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get termsOfService => 'Nutzungsbedingungen';
 
   @override
+  String get medicalSourcesTitle => 'Medizinische Quellen & Referenzen';
+
+  @override
+  String get medicalSourcesIntro =>
+      'Die Gesundheits- und Sehinformationen in dieser App stammen aus den folgenden autoritativen Quellen. Tippen Sie auf einen Link für weitere Informationen.';
+
+  @override
+  String get viewSources => 'Quellen anzeigen';
+
+  @override
+  String get sourceAao => 'American Academy of Ophthalmology';
+
+  @override
+  String get sourceNei => 'NIH National Eye Institute';
+
+  @override
+  String get sourceMayo => 'Mayo Clinic – Augengesundheit';
+
+  @override
+  String get sourceWho => 'WHO – Blindheit und Sehbehinderung';
+
+  @override
   String get aboutApp => 'Über die App';
 
   @override
@@ -813,6 +835,258 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notificationTime => 'Benachrichtigungszeit';
+
+  @override
+  String get notifDefaultTitle => 'Augenübung';
+
+  @override
+  String get notifDefaultBody => 'Vergiss deine täglichen Augenübungen nicht';
+
+  @override
+  String get notifDaily1Title => 'Augenübung';
+
+  @override
+  String get notifDaily1Body =>
+      '👁️ Deine Augen brauchen heute eine kurze Pause';
+
+  @override
+  String get notifDaily2Title => 'Tägliche Pause';
+
+  @override
+  String get notifDaily2Body =>
+      '👀 Möchtest du eine kurze Pause vom Bildschirm?';
+
+  @override
+  String get notifDaily3Title => 'Kurze Übung';
+
+  @override
+  String get notifDaily3Body => '✨ Entspann mit einer 1-minütigen Augenübung';
+
+  @override
+  String get notifDaily4Title => 'Ruhezeit';
+
+  @override
+  String get notifDaily4Body => '🌿 Zeit, deine Augen auszuruhen';
+
+  @override
+  String get notifDaily5Title => 'Augenübung';
+
+  @override
+  String get notifDaily5Body => '💆‍♂️ Deine tägliche Augenübung ist bereit';
+
+  @override
+  String get notifDaily6Title => 'Tägliche Pause';
+
+  @override
+  String get notifDaily6Body =>
+      '🧘‍♀️ Eine kurze Pause für einen klareren Blick';
+
+  @override
+  String get notifDaily7Title => 'Erinnerung';
+
+  @override
+  String get notifDaily7Body =>
+      '👁️ Möchtest du deine tägliche Augenübung machen?';
+
+  @override
+  String get notifDaily8Title => 'Augenübung';
+
+  @override
+  String get notifDaily8Body => '🔄 Ein guter Moment, deinen Fokus zu erneuern';
+
+  @override
+  String get notifDaily9Title => 'Ruhezeit';
+
+  @override
+  String get notifDaily9Body =>
+      '🌙 Lass uns die Müdigkeit aus deinen Augen nehmen';
+
+  @override
+  String get notifDaily10Title => 'Tägliche Pause';
+
+  @override
+  String get notifDaily10Body =>
+      '💡 1 Minute reicht, um deine Augen zu entspannen';
+
+  @override
+  String get notifDaily11Title => 'Erinnerung';
+
+  @override
+  String get notifDaily11Body =>
+      '👀 Ein kleiner Schritt für deine Augengesundheit';
+
+  @override
+  String get notifDaily12Title => 'Augenübung';
+
+  @override
+  String get notifDaily12Body => '🌱 Kümmere dich heute auch um deine Augen';
+
+  @override
+  String get notifDaily13Title => 'Tägliche Pause';
+
+  @override
+  String get notifDaily13Body => '⏱️ Hast du 1–2 Minuten?';
+
+  @override
+  String get notifDaily14Title => 'Erinnerung';
+
+  @override
+  String get notifDaily14Body => '😊 Deine Augen werden dir danken';
+
+  @override
+  String get notifMissed1Title => 'Erinnerung';
+
+  @override
+  String get notifMissed1Body =>
+      '🌱 Kein Problem, wir sind da, wenn du bereit bist';
+
+  @override
+  String get notifMissed2Title => 'Augenübung';
+
+  @override
+  String get notifMissed2Body =>
+      '😊 Du kannst heute auch für deine Augen sorgen';
+
+  @override
+  String get notifMissed3Title => 'Erinnerung';
+
+  @override
+  String get notifMissed3Body => '👁️ Die Übungen warten auf dich';
+
+  @override
+  String get notifMissed4Title => 'Tägliche Pause';
+
+  @override
+  String get notifMissed4Body => '🌿 Eine kurze Pause ist noch möglich';
+
+  @override
+  String get notifMissed5Title => 'Erinnerung';
+
+  @override
+  String get notifMissed5Body => '🧘‍♂️ Starte, wann immer du möchtest';
+
+  @override
+  String get notifMissed6Title => 'Augenübung';
+
+  @override
+  String get notifMissed6Body =>
+      '👀 Es ist nicht zu spät, deine Augen auszuruhen';
+
+  @override
+  String get notifMissed7Title => 'Tägliche Pause';
+
+  @override
+  String get notifMissed7Body =>
+      '🌙 Öffne die App, wenn du einen ruhigen Moment hast';
+
+  @override
+  String get notifMissed8Title => 'Erinnerung';
+
+  @override
+  String get notifMissed8Body => '💚 Ein kurzer Moment für dich';
+
+  @override
+  String get notifMissed9Title => 'Augenübung';
+
+  @override
+  String get notifMissed9Body =>
+      '👁️ Wenn du heute ausgelassen hast, kannst du morgen weitermachen';
+
+  @override
+  String get notifMissed10Title => 'Erinnerung';
+
+  @override
+  String get notifMissed10Body => '🌱 Augenübungen sind immer hier';
+
+  @override
+  String get notifMissed11Title => 'Tägliche Pause';
+
+  @override
+  String get notifMissed11Body => '😊 Wir sind da, wenn du bereit bist';
+
+  @override
+  String get notifMissed12Title => 'Erinnerung';
+
+  @override
+  String get notifMissed12Body => '✨ Kleine Schritte zählen auch';
+
+  @override
+  String get notifMotivation1Title => 'Glückwunsch';
+
+  @override
+  String get notifMotivation1Body =>
+      '👏 Diese Woche hast du gut auf deine Augen geachtet';
+
+  @override
+  String get notifMotivation2Title => 'Super';
+
+  @override
+  String get notifMotivation2Body => '🌟 Möchtest du so weitermachen?';
+
+  @override
+  String get notifMotivation3Title => 'Glückwunsch';
+
+  @override
+  String get notifMotivation3Body =>
+      '👁️ Du hast eine schöne Augenübungs-Routine aufgebaut';
+
+  @override
+  String get notifMotivation4Title => 'Motivation';
+
+  @override
+  String get notifMotivation4Body => '💚 Diese Zeit für dich ist wertvoll';
+
+  @override
+  String get notifMotivation5Title => 'Glückwunsch';
+
+  @override
+  String get notifMotivation5Body =>
+      '🧘‍♀️ Regelmäßige Pausen machen den Unterschied';
+
+  @override
+  String get notifMotivation6Title => 'Super';
+
+  @override
+  String get notifMotivation6Body =>
+      '🌿 Gratulation zur Fürsorge für deine Augen';
+
+  @override
+  String get notifMotivation7Title => 'Motivation';
+
+  @override
+  String get notifMotivation7Body =>
+      '😊 Kleine Gewohnheiten bringen große Erleichterung';
+
+  @override
+  String get notifMotivation8Title => 'Glückwunsch';
+
+  @override
+  String get notifMotivation8Body => '👀 Ein guter Schritt für deinen Fokus';
+
+  @override
+  String get notifMotivation9Title => 'Super';
+
+  @override
+  String get notifMotivation9Body => '✨ Du bleibst dran';
+
+  @override
+  String get notifMotivation10Title => 'Motivation';
+
+  @override
+  String get notifMotivation10Body =>
+      '💡 Du investierst in deine Augengesundheit';
+
+  @override
+  String get notifMotivation11Title => 'Glückwunsch';
+
+  @override
+  String get notifMotivation11Body => '🌱 Du machst bisher toll weiter';
+
+  @override
+  String get notifMotivation12Title => 'Erinnerung';
+
+  @override
+  String get notifMotivation12Body => '👏 Möchtest du weitermachen?';
 
   @override
   String get brightnessWarning => 'Helligkeitswarnung';
@@ -1433,30 +1707,43 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get peripheralVisionInfoDesc =>
-      'Peripheres Sehen ist die Fähigkeit, außerhalb des zentralen Gesichtsfelds zu sehen. Dieser Test hilft bei der Erkennung von Zuständen wie Glaukom und Netzhautproblemen.';
+      'Peripheres Sehen ist die Fähigkeit, außerhalb des zentralen Gesichtsfelds zu sehen. Dieser Test misst Ihre Fähigkeit, Lichter in Ihrem seitlichen Sichtfeld zu erkennen.';
 
   @override
   String get peripheralVisionInfoTip =>
-      'Fokussieren Sie auf den Mittelpunkt und versuchen Sie, die hohle Form an den Rändern zu sehen. Bewegen Sie nicht Ihren Kopf oder Ihre Augen.';
+      'Halten Sie Ihre Augen auf den roten Mittelpunkt gerichtet und tippen Sie auf die gelben Lichter, wenn sie an den Rändern erscheinen.';
 
   @override
   String get peripheralVisionInstruction1 =>
-      'Konzentrieren Sie sich auf den zentralen Punkt';
+      'Fixieren Sie Ihre Augen auf den roten Mittelpunkt';
 
   @override
   String get peripheralVisionInstruction2 =>
-      'Bewegen Sie den Kopf oder die Augen nicht';
+      'Gelbe Lichter erscheinen an den Rändern';
 
   @override
   String get peripheralVisionInstruction3 =>
-      'Geben Sie an, ob Sie die Formen an den Seiten sehen';
+      'Tippen Sie auf das Licht, sobald Sie es sehen';
 
   @override
-  String get peripheralVisionInstruction4 => 'Wählen Sie die leere Form';
+  String get peripheralVisionInstruction4 => 'Ihre Reaktionszeit wird gemessen';
 
   @override
   String get peripheralVisionQuestion =>
-      'Schauen Sie auf die Mitte und wählen Sie die leere Form';
+      'Tippen Sie auf das Licht, wenn Sie es sehen';
+
+  @override
+  String get peripheralVisionDemoText =>
+      'Beispiel: Tippen Sie auf das gelbe Licht';
+
+  @override
+  String get peripheralVisionFocusHere => 'Hier fokussieren';
+
+  @override
+  String get peripheralVisionTapLight => 'Tippen Sie auf das Licht!';
+
+  @override
+  String get peripheralVisionWaiting => 'Schauen Sie weiter auf die Mitte...';
 
   @override
   String get eyeMovementInfoTitle => 'Was ist der Augenbewegungstest?';

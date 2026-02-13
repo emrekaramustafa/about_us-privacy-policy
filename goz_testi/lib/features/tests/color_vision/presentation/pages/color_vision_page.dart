@@ -7,6 +7,7 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/core/services/sound_service.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
 import 'package:goz_testi/l10n/app_localizations.dart';
 
@@ -22,15 +23,27 @@ class ColorVisionPage extends StatefulWidget {
 }
 
 class _ColorVisionPageState extends State<ColorVisionPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   
   ColorVisionPhase _currentPhase = ColorVisionPhase.info;
   int _currentPlateIndex = 0;
   int _correctAnswers = 0;
   
+  // Answer feedback state
+  String? _selectedAnswer;
+  bool? _isAnswerCorrect;
+  bool _showFeedback = false;
+  bool _isProcessingAnswer = false;
+  
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  
+  // Shake animation for wrong answers
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+  
+  final SoundService _soundService = SoundService();
 
   // Enhanced Ishihara Data - Sayılar önce, sonra halkalar
   final List<IshiharaPlateData> _plates = [
@@ -106,12 +119,23 @@ class _ColorVisionPageState extends State<ColorVisionPage>
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
     
+    // Shake animation controller
+    _shakeController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    
+    _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _shakeController, curve: Curves.elasticIn),
+    );
+    
     _animationController.forward();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _shakeController.dispose();
     super.dispose();
   }
 
@@ -142,7 +166,9 @@ class _ColorVisionPageState extends State<ColorVisionPage>
     _animationController.forward(from: 0);
   }
 
-  void _onOptionSelected(String selectedOption) {
+  void _onOptionSelected(String selectedOption) async {
+    if (_isProcessingAnswer) return; // Prevent double tap
+    
     final currentPlate = _plates[_currentPlateIndex];
     final l10n = AppLocalizations.of(context)!;
     
@@ -155,8 +181,34 @@ class _ColorVisionPageState extends State<ColorVisionPage>
     
     final isCorrect = selectedOption == correctAnswer;
     
+    setState(() {
+      _isProcessingAnswer = true;
+      _selectedAnswer = selectedOption;
+      _isAnswerCorrect = isCorrect;
+      _showFeedback = true;
+    });
+    
+    // Play sound
     if (isCorrect) {
+      _soundService.playSuccess();
       _correctAnswers++;
+    } else {
+      _soundService.playError();
+      // Start shake animation
+      _shakeController.forward(from: 0);
+    }
+    
+    // Wait for feedback to be visible
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    // Reset feedback state
+    if (mounted) {
+      setState(() {
+        _selectedAnswer = null;
+        _isAnswerCorrect = null;
+        _showFeedback = false;
+        _isProcessingAnswer = false;
+      });
     }
     
     _nextPlate();
@@ -685,13 +737,25 @@ class _ColorVisionPageState extends State<ColorVisionPage>
   }
 
   Widget _buildOptionButton(String text, {bool isSecondary = false}) {
-    return Material(
+    final isSelected = _selectedAnswer == text;
+    final isCorrect = _isAnswerCorrect == true && isSelected;
+    final isWrong = _isAnswerCorrect == false && isSelected;
+    
+    // Determine border color
+    Color borderColor = AppColors.borderLight;
+    double borderWidth = 1;
+    if (_showFeedback && isSelected) {
+      borderColor = isCorrect ? AppColors.successGreen : AppColors.errorRed;
+      borderWidth = 3;
+    }
+    
+    Widget buttonContent = Material(
       color: isSecondary ? AppColors.backgroundGrey : Colors.white,
       borderRadius: BorderRadius.circular(16),
       elevation: 2,
       shadowColor: Colors.black.withOpacity(0.05),
       child: InkWell(
-        onTap: () => _onOptionSelected(text),
+        onTap: _isProcessingAnswer ? null : () => _onOptionSelected(text),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           width: double.infinity,
@@ -699,8 +763,8 @@ class _ColorVisionPageState extends State<ColorVisionPage>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.borderLight,
-              width: 1,
+              color: borderColor,
+              width: borderWidth,
             ),
           ),
           alignment: Alignment.center,
@@ -715,6 +779,23 @@ class _ColorVisionPageState extends State<ColorVisionPage>
         ),
       ),
     );
+    
+    // Apply shake animation for wrong answers
+    if (_showFeedback && isWrong) {
+      return AnimatedBuilder(
+        animation: _shakeAnimation,
+        builder: (context, child) {
+          final shakeOffset = sin(_shakeAnimation.value * pi * 4) * 8;
+          return Transform.translate(
+            offset: Offset(shakeOffset, 0),
+            child: child,
+          );
+        },
+        child: buttonContent,
+      );
+    }
+    
+    return buttonContent;
   }
 }
 

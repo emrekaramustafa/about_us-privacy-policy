@@ -515,7 +515,7 @@ class _TestHistoryPageState extends ConsumerState<TestHistoryPage> {
             ),
             const SizedBox(height: 32),
             ElevatedButton.icon(
-              onPressed: () => context.go(AppRoutes.home),
+              onPressed: () => context.push(AppRoutes.visualAcuity),
               icon: const Icon(LucideIcons.eye),
               label: Text(AppLocalizations.of(context)!.startTest),
               style: ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +7,7 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/core/services/sound_service.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
 import 'package:goz_testi/l10n/app_localizations.dart';
 import '../widgets/astigmatism_dial.dart';
@@ -23,7 +25,8 @@ class AstigmatismPage extends StatefulWidget {
   State<AstigmatismPage> createState() => _AstigmatismPageState();
 }
 
-class _AstigmatismPageState extends State<AstigmatismPage> {
+class _AstigmatismPageState extends State<AstigmatismPage>
+    with TickerProviderStateMixin {
   AstigmatismPhase _currentPhase = AstigmatismPhase.info;
   int _currentStep = 0; // 0: Right eye, 1: Left eye, 2: Third question
   
@@ -37,6 +40,37 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
   
   // Selected darker lines (if any)
   final Set<int> _selectedLines = {};
+  
+  // Answer feedback state
+  bool _showIssueFeedback = false;
+  bool _isProcessingAnswer = false;
+  
+  // Shake animation for issue selection
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+  
+  final SoundService _soundService = SoundService();
+  
+  @override
+  void initState() {
+    super.initState();
+    
+    // Shake animation controller
+    _shakeController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    
+    _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _shakeController, curve: Curves.elasticIn),
+    );
+  }
+  
+  @override
+  void dispose() {
+    _shakeController.dispose();
+    super.dispose();
+  }
 
   void _onInfoContinue() async {
     // Check if user can start test
@@ -82,7 +116,11 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
     });
   }
 
-  void _onAllLinesEqual() {
+  void _onAllLinesEqual() async {
+    if (_isProcessingAnswer) return;
+    
+    _soundService.playSuccess();
+    
     if (_currentStep == 0) {
       setState(() {
         _rightEyeResult = 'normal';
@@ -114,7 +152,9 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
     }
   }
 
-  void _onSomeLinesdarker() {
+  void _onSomeLinesdarker() async {
+    if (_isProcessingAnswer) return;
+    
     if (_selectedLines.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -125,6 +165,25 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
       );
       return;
     }
+    
+    setState(() {
+      _isProcessingAnswer = true;
+      _showIssueFeedback = true;
+    });
+    
+    // Play error sound and shake
+    _soundService.playError();
+    _shakeController.forward(from: 0);
+    
+    // Wait for feedback
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    if (!mounted) return;
+    
+    setState(() {
+      _showIssueFeedback = false;
+      _isProcessingAnswer = false;
+    });
     
     if (_currentStep == 0) {
       setState(() {
@@ -647,22 +706,14 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
                     AppButton(
                       text: l10n.astigmatismAllLinesEqual,
                       icon: LucideIcons.check,
-                      onPressed: _onAllLinesEqual,
+                      onPressed: _isProcessingAnswer ? null : _onAllLinesEqual,
                       width: double.infinity,
                       backgroundColor: AppColors.successGreen,
                     ),
                     
                     const SizedBox(height: 12),
                     
-                    AppButton(
-                      text: l10n.astigmatismSomeLinesDarker,
-                      icon: LucideIcons.alertTriangle,
-                      onPressed: _onSomeLinesdarker,
-                      width: double.infinity,
-                      isOutlined: true,
-                      backgroundColor: AppColors.warningYellow,
-                      textColor: AppColors.warningYellow,
-                    ),
+                    _buildDarkerLinesButton(l10n),
                   ],
                 ),
               ),
@@ -670,6 +721,60 @@ class _AstigmatismPageState extends State<AstigmatismPage> {
           ],
         ),
       ),
+    );
+  }
+  
+  Widget _buildDarkerLinesButton(AppLocalizations l10n) {
+    Widget buttonContent = Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: _showIssueFeedback ? AppColors.errorRed : AppColors.warningYellow,
+          width: _showIssueFeedback ? 3 : 2,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            LucideIcons.alertTriangle,
+            color: _showIssueFeedback ? AppColors.errorRed : AppColors.warningYellow,
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            l10n.astigmatismSomeLinesDarker,
+            style: GoogleFonts.inter(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: _showIssueFeedback ? AppColors.errorRed : AppColors.warningYellow,
+            ),
+          ),
+        ],
+      ),
+    );
+    
+    // Apply shake animation
+    if (_showIssueFeedback) {
+      buttonContent = AnimatedBuilder(
+        animation: _shakeAnimation,
+        builder: (context, child) {
+          final shakeOffset = sin(_shakeAnimation.value * pi * 4) * 8;
+          return Transform.translate(
+            offset: Offset(shakeOffset, 0),
+            child: child,
+          );
+        },
+        child: buttonContent,
+      );
+    }
+    
+    return GestureDetector(
+      onTap: _isProcessingAnswer ? null : _onSomeLinesdarker,
+      child: buttonContent,
     );
   }
 }

@@ -8,6 +8,7 @@ This directory contains the web pages for the Göz Testi / Eye Test mobile appli
 - **privacy-policy.html** - Privacy Policy
 - **contact.html** - Contact Us page
 - **terms-of-service.html** - Terms of Service
+- **app-ads.txt** - AdMob publisher verification (Eye Test iOS); live at `/app-ads.txt`
 
 ## GitHub Pages Setup
 

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:goz_testi/core/theme/app_colors.dart';
+import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/scroll_indicator.dart';
 import 'package:goz_testi/l10n/app_localizations.dart';
 
@@ -96,6 +97,8 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
                   _buildTestHeader(percentage),
                   const SizedBox(height: 32),
                   _buildAnalysisContent(percentage),
+                  const SizedBox(height: 32),
+                  _buildSourcesSection(context),
                 ],
               ),
             ),
@@ -1054,6 +1057,54 @@ class _DetailedAnalysisPageState extends ConsumerState<DetailedAnalysisPage>
             textAlign: TextAlign.center,
           ),
         ],
+      ),
+    );
+  }
+
+  /// Medical sources citation (Guideline 1.4.1 – Physical Harm)
+  Widget _buildSourcesSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return InkWell(
+      onTap: () => context.push(AppRoutes.medicalSources),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.medicalBlue.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.medicalBlue.withOpacity(0.3)),
+        ),
+        child: Row(
+          children: [
+            Icon(LucideIcons.bookOpen, size: 24, color: AppColors.medicalBlue),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.medicalSourcesTitle,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.viewSources,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: AppColors.medicalBlue,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(LucideIcons.chevronRight, size: 20, color: AppColors.medicalBlue),
+          ],
+        ),
       ),
     );
   }

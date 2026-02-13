@@ -31,6 +31,12 @@ final remainingTestCreditsProvider = FutureProvider<int>((ref) async {
   return await storageService.getRemainingTestCredits();
 });
 
+/// Can watch ad for extra credit provider
+final canWatchAdForExtraCreditProvider = FutureProvider<bool>((ref) async {
+  final storageService = StorageService();
+  return await storageService.canWatchAdForExtraCredit();
+});
+
 /// Premium product details provider
 final premiumProductProvider = FutureProvider<ProductDetails?>((ref) async {
   final purchaseService = PurchaseService();

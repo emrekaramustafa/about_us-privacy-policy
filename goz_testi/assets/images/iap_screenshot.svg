@@ -1,0 +1,121 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f7d794"/>
+      <stop offset="50%" style="stop-color:#f5cd79"/>
+      <stop offset="100%" style="stop-color:#e58e26"/>
+    </linearGradient>
+    <linearGradient id="crownGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffeaa7"/>
+      <stop offset="100%" style="stop-color:#fdcb6e"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="150" cy="150" r="200" fill="#e58e26" opacity="0.05"/>
+  <circle cx="874" cy="874" r="250" fill="#00d2d3" opacity="0.05"/>
+  <circle cx="900" cy="200" r="150" fill="#f5cd79" opacity="0.03"/>
+  
+  <!-- Crown Icon -->
+  <g transform="translate(512, 280)" filter="url(#glow)">
+    <path d="M-80 40 L-60 -40 L-20 0 L0 -60 L20 0 L60 -40 L80 40 Z" 
+          fill="url(#crownGradient)" stroke="#e58e26" stroke-width="3"/>
+    <rect x="-80" y="40" width="160" height="25" rx="5" fill="url(#crownGradient)" stroke="#e58e26" stroke-width="3"/>
+    <circle cx="-60" cy="-40" r="12" fill="#ff6b6b"/>
+    <circle cx="0" cy="-60" r="15" fill="#4ecdc4"/>
+    <circle cx="60" cy="-40" r="12" fill="#45b7d1"/>
+  </g>
+  
+  <!-- PREMIUM Text -->
+  <text x="512" y="420" font-family="Arial Black, sans-serif" font-size="72" font-weight="900" 
+        fill="url(#goldGradient)" text-anchor="middle" filter="url(#shadow)">PREMIUM</text>
+  
+  <!-- Subtitle -->
+  <text x="512" y="480" font-family="Arial, sans-serif" font-size="28" font-weight="500" 
+        fill="#a0a0a0" text-anchor="middle">Lifetime Access</text>
+  
+  <!-- Feature Cards -->
+  <!-- Card 1: Unlimited Tests -->
+  <g transform="translate(120, 540)">
+    <rect width="250" height="140" rx="20" fill="#1e3a5f" opacity="0.8" filter="url(#shadow)"/>
+    <circle cx="125" cy="45" r="28" fill="#4ecdc4" opacity="0.2"/>
+    <text x="125" y="55" font-size="32" text-anchor="middle">∞</text>
+    <text x="125" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="600" 
+          fill="#ffffff" text-anchor="middle">Unlimited Tests</text>
+    <text x="125" y="125" font-family="Arial, sans-serif" font-size="14" 
+          fill="#a0a0a0" text-anchor="middle">Sınırsız Test</text>
+  </g>
+  
+  <!-- Card 2: Detailed Analysis -->
+  <g transform="translate(387, 540)">
+    <rect width="250" height="140" rx="20" fill="#1e3a5f" opacity="0.8" filter="url(#shadow)"/>
+    <circle cx="125" cy="45" r="28" fill="#f5cd79" opacity="0.2"/>
+    <text x="125" y="55" font-size="28" text-anchor="middle">📊</text>
+    <text x="125" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="600" 
+          fill="#ffffff" text-anchor="middle">Detailed Analysis</text>
+    <text x="125" y="125" font-family="Arial, sans-serif" font-size="14" 
+          fill="#a0a0a0" text-anchor="middle">Detaylı Analiz</text>
+  </g>
+  
+  <!-- Card 3: Ad-Free -->
+  <g transform="translate(654, 540)">
+    <rect width="250" height="140" rx="20" fill="#1e3a5f" opacity="0.8" filter="url(#shadow)"/>
+    <circle cx="125" cy="45" r="28" fill="#ff6b6b" opacity="0.2"/>
+    <text x="125" y="55" font-size="28" text-anchor="middle">🚫</text>
+    <text x="125" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="600" 
+          fill="#ffffff" text-anchor="middle">Ad-Free</text>
+    <text x="125" y="125" font-family="Arial, sans-serif" font-size="14" 
+          fill="#a0a0a0" text-anchor="middle">Reklamsız</text>
+  </g>
+  
+  <!-- Card 4: All Eye Tests -->
+  <g transform="translate(200, 700)">
+    <rect width="280" height="140" rx="20" fill="#1e3a5f" opacity="0.8" filter="url(#shadow)"/>
+    <circle cx="140" cy="45" r="28" fill="#45b7d1" opacity="0.2"/>
+    <text x="140" y="55" font-size="28" text-anchor="middle">👁️</text>
+    <text x="140" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="600" 
+          fill="#ffffff" text-anchor="middle">6 Eye Tests</text>
+    <text x="140" y="125" font-family="Arial, sans-serif" font-size="14" 
+          fill="#a0a0a0" text-anchor="middle">6 Göz Testi</text>
+  </g>
+  
+  <!-- Card 5: Eye Exercises -->
+  <g transform="translate(544, 700)">
+    <rect width="280" height="140" rx="20" fill="#1e3a5f" opacity="0.8" filter="url(#shadow)"/>
+    <circle cx="140" cy="45" r="28" fill="#a29bfe" opacity="0.2"/>
+    <text x="140" y="55" font-size="28" text-anchor="middle">🏋️</text>
+    <text x="140" y="100" font-family="Arial, sans-serif" font-size="18" font-weight="600" 
+          fill="#ffffff" text-anchor="middle">Eye Exercises</text>
+    <text x="140" y="125" font-family="Arial, sans-serif" font-size="14" 
+          fill="#a0a0a0" text-anchor="middle">Göz Egzersizleri</text>
+  </g>
+  
+  <!-- Lifetime Badge -->
+  <g transform="translate(512, 920)">
+    <rect x="-120" y="-30" width="240" height="50" rx="25" fill="url(#goldGradient)" filter="url(#shadow)"/>
+    <text x="0" y="8" font-family="Arial Black, sans-serif" font-size="22" font-weight="900" 
+          fill="#1a1a2e" text-anchor="middle">LIFETIME ACCESS</text>
+  </g>
+  
+  <!-- App Name -->
+  <text x="512" y="980" font-family="Arial, sans-serif" font-size="20" 
+        fill="#606060" text-anchor="middle">Eye Test - Göz Testi</text>
+</svg>

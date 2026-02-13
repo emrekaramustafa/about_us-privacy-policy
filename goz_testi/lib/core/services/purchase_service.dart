@@ -17,45 +17,67 @@ class PurchaseService {
   bool _isAvailable = false;
 
   // Product ID for premium lifetime purchase
-  static const String _premiumProductId = 'premium_lifetime';
+  static const String _premiumProductId = 'com.mekmobiletech.eyetest.premium';
 
-  /// Initialize purchase service
+  /// Initialize purchase service.
+  /// Açılışta sadece StoreKit kullanılabilir mi kontrol edilir; stream'e abone olunmaz.
+  /// Bağlantı koptuktan sonra stream aboneliği iOS'ta çökme yapabildiği için
+  /// stream ilk satın alma/restore/paywall kullanımında abone edilir.
   Future<void> initialize() async {
-    // In-App Purchase doesn't work on web
     if (kIsWeb) {
       debugPrint('In-App Purchase is not supported on web platform');
       _isAvailable = false;
       return;
     }
-    
+
     try {
-      _isAvailable = await _inAppPurchase.isAvailable();
-      
-      if (_isAvailable) {
-        // Listen to purchase updates
-        _subscription = _inAppPurchase.purchaseStream.listen(
-          _onPurchaseUpdate,
-          onDone: () => _subscription?.cancel(),
-          onError: (error) => debugPrint('Purchase stream error: $error'),
-        );
-      }
-    } catch (e) {
+      _isAvailable = await _inAppPurchase.isAvailable().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          debugPrint('Purchase isAvailable timed out');
+          return false;
+        },
+      );
+    } catch (e, st) {
       debugPrint('Purchase service initialization failed: $e');
+      debugPrint('$st');
       _isAvailable = false;
     }
   }
 
-  /// Get premium product details
+  /// Purchase stream'e sadece satın alma/restore kullanılacağında abone ol; açılışta yapma (iOS crash riski).
+  void _ensurePurchaseListener() {
+    if (!_isAvailable || _subscription != null) return;
+    try {
+      _subscription = _inAppPurchase.purchaseStream.listen(
+        _onPurchaseUpdate,
+        onDone: () => _subscription?.cancel(),
+        onError: (error) => debugPrint('Purchase stream error: $error'),
+      );
+    } catch (e, st) {
+      debugPrint('Purchase stream subscribe failed: $e');
+      debugPrint('$st');
+    }
+  }
+
+  /// Get premium product details (with timeout to avoid indefinite spinner in review/sandbox)
   Future<ProductDetails?> getPremiumProduct() async {
     if (!_isAvailable) {
       await initialize();
       if (!_isAvailable) return null;
     }
+    _ensurePurchaseListener();
 
     try {
+      const timeoutDuration = Duration(seconds: 15);
       final Set<String> productIds = {_premiumProductId};
-      final ProductDetailsResponse response =
-          await _inAppPurchase.queryProductDetails(productIds);
+
+      final ProductDetailsResponse response = await _inAppPurchase
+          .queryProductDetails(productIds)
+          .timeout(timeoutDuration, onTimeout: () {
+        debugPrint('Product details query timed out after $timeoutDuration');
+        throw TimeoutException('Product details query timed out', timeoutDuration);
+      });
 
       if (response.error != null) {
         debugPrint('Error querying products: ${response.error}');
@@ -77,6 +99,7 @@ class PurchaseService {
   /// Purchase premium
   Future<bool> purchasePremium() async {
     if (!_isAvailable) return false;
+    _ensurePurchaseListener();
 
     final products = await getPremiumProduct();
     if (products == null) {
@@ -102,6 +125,7 @@ class PurchaseService {
   /// Restore purchases
   Future<void> restorePurchases() async {
     if (!_isAvailable) return;
+    _ensurePurchaseListener();
     await _inAppPurchase.restorePurchases();
   }
 

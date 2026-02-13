@@ -187,7 +187,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeTitle.
   ///
   /// In en, this message translates to:
-  /// **'Eye Health'**
+  /// **'Eye Test – Vision & Exercises'**
   String get homeTitle;
 
   /// No description provided for @homeSubtitle.
@@ -1210,6 +1210,48 @@ abstract class AppLocalizations {
   /// **'Terms of Service'**
   String get termsOfService;
 
+  /// No description provided for @medicalSourcesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Sources & References'**
+  String get medicalSourcesTitle;
+
+  /// No description provided for @medicalSourcesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'The health and vision information in this app is drawn from the following authoritative sources. Tap a link to learn more.'**
+  String get medicalSourcesIntro;
+
+  /// No description provided for @viewSources.
+  ///
+  /// In en, this message translates to:
+  /// **'View Sources'**
+  String get viewSources;
+
+  /// No description provided for @sourceAao.
+  ///
+  /// In en, this message translates to:
+  /// **'American Academy of Ophthalmology'**
+  String get sourceAao;
+
+  /// No description provided for @sourceNei.
+  ///
+  /// In en, this message translates to:
+  /// **'NIH National Eye Institute'**
+  String get sourceNei;
+
+  /// No description provided for @sourceMayo.
+  ///
+  /// In en, this message translates to:
+  /// **'Mayo Clinic – Eye health'**
+  String get sourceMayo;
+
+  /// No description provided for @sourceWho.
+  ///
+  /// In en, this message translates to:
+  /// **'WHO – Blindness and visual impairment'**
+  String get sourceWho;
+
   /// No description provided for @aboutApp.
   ///
   /// In en, this message translates to:
@@ -1611,6 +1653,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notification Time'**
   String get notificationTime;
+
+  /// No description provided for @notifDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifDefaultTitle;
+
+  /// No description provided for @notifDefaultBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t forget your daily eye exercises'**
+  String get notifDefaultBody;
+
+  /// No description provided for @notifDaily1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifDaily1Title;
+
+  /// No description provided for @notifDaily1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👁️ Your eyes need a short break today'**
+  String get notifDaily1Body;
+
+  /// No description provided for @notifDaily2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifDaily2Title;
+
+  /// No description provided for @notifDaily2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👀 Want to take a short break from the screen?'**
+  String get notifDaily2Body;
+
+  /// No description provided for @notifDaily3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Exercise'**
+  String get notifDaily3Title;
+
+  /// No description provided for @notifDaily3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'✨ Relax with a 1-minute eye exercise'**
+  String get notifDaily3Body;
+
+  /// No description provided for @notifDaily4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest Time'**
+  String get notifDaily4Title;
+
+  /// No description provided for @notifDaily4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌿 Time to rest your eyes'**
+  String get notifDaily4Body;
+
+  /// No description provided for @notifDaily5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifDaily5Title;
+
+  /// No description provided for @notifDaily5Body.
+  ///
+  /// In en, this message translates to:
+  /// **'💆‍♂️ Your daily eye exercise is ready'**
+  String get notifDaily5Body;
+
+  /// No description provided for @notifDaily6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifDaily6Title;
+
+  /// No description provided for @notifDaily6Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🧘‍♀️ A short break for a clearer view'**
+  String get notifDaily6Body;
+
+  /// No description provided for @notifDaily7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifDaily7Title;
+
+  /// No description provided for @notifDaily7Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👁️ Want to do your daily eye exercise?'**
+  String get notifDaily7Body;
+
+  /// No description provided for @notifDaily8Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifDaily8Title;
+
+  /// No description provided for @notifDaily8Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🔄 A good moment to refresh your focus'**
+  String get notifDaily8Body;
+
+  /// No description provided for @notifDaily9Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest Time'**
+  String get notifDaily9Title;
+
+  /// No description provided for @notifDaily9Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌙 Let\'s ease the tiredness from your eyes'**
+  String get notifDaily9Body;
+
+  /// No description provided for @notifDaily10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifDaily10Title;
+
+  /// No description provided for @notifDaily10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'💡 1 minute is enough to relax your eyes'**
+  String get notifDaily10Body;
+
+  /// No description provided for @notifDaily11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifDaily11Title;
+
+  /// No description provided for @notifDaily11Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👀 A small step for your eye health'**
+  String get notifDaily11Body;
+
+  /// No description provided for @notifDaily12Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifDaily12Title;
+
+  /// No description provided for @notifDaily12Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌱 Take care of your eyes today too'**
+  String get notifDaily12Body;
+
+  /// No description provided for @notifDaily13Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifDaily13Title;
+
+  /// No description provided for @notifDaily13Body.
+  ///
+  /// In en, this message translates to:
+  /// **'⏱️ Do you have 1–2 minutes?'**
+  String get notifDaily13Body;
+
+  /// No description provided for @notifDaily14Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifDaily14Title;
+
+  /// No description provided for @notifDaily14Body.
+  ///
+  /// In en, this message translates to:
+  /// **'😊 Your eyes will thank you'**
+  String get notifDaily14Body;
+
+  /// No description provided for @notifMissed1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMissed1Title;
+
+  /// No description provided for @notifMissed1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌱 No problem, we\'re here when you\'re ready'**
+  String get notifMissed1Body;
+
+  /// No description provided for @notifMissed2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifMissed2Title;
+
+  /// No description provided for @notifMissed2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'😊 You can take care of your eyes today too'**
+  String get notifMissed2Body;
+
+  /// No description provided for @notifMissed3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMissed3Title;
+
+  /// No description provided for @notifMissed3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👁️ Exercises are waiting for you'**
+  String get notifMissed3Body;
+
+  /// No description provided for @notifMissed4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifMissed4Title;
+
+  /// No description provided for @notifMissed4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌿 A short break is still possible'**
+  String get notifMissed4Body;
+
+  /// No description provided for @notifMissed5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMissed5Title;
+
+  /// No description provided for @notifMissed5Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🧘‍♂️ Start whenever you\'re ready'**
+  String get notifMissed5Body;
+
+  /// No description provided for @notifMissed6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifMissed6Title;
+
+  /// No description provided for @notifMissed6Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👀 It\'s not too late to rest your eyes'**
+  String get notifMissed6Body;
+
+  /// No description provided for @notifMissed7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifMissed7Title;
+
+  /// No description provided for @notifMissed7Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌙 Open the app when you have a quiet moment'**
+  String get notifMissed7Body;
+
+  /// No description provided for @notifMissed8Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMissed8Title;
+
+  /// No description provided for @notifMissed8Body.
+  ///
+  /// In en, this message translates to:
+  /// **'💚 A short moment for yourself'**
+  String get notifMissed8Body;
+
+  /// No description provided for @notifMissed9Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Exercise'**
+  String get notifMissed9Title;
+
+  /// No description provided for @notifMissed9Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👁️ If you skipped today, you can continue tomorrow'**
+  String get notifMissed9Body;
+
+  /// No description provided for @notifMissed10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMissed10Title;
+
+  /// No description provided for @notifMissed10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌱 Eye exercises are always here'**
+  String get notifMissed10Body;
+
+  /// No description provided for @notifMissed11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Break'**
+  String get notifMissed11Title;
+
+  /// No description provided for @notifMissed11Body.
+  ///
+  /// In en, this message translates to:
+  /// **'😊 We\'re here when you\'re ready'**
+  String get notifMissed11Body;
+
+  /// No description provided for @notifMissed12Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMissed12Title;
+
+  /// No description provided for @notifMissed12Body.
+  ///
+  /// In en, this message translates to:
+  /// **'✨ Small steps count too'**
+  String get notifMissed12Body;
+
+  /// No description provided for @notifMotivation1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations'**
+  String get notifMotivation1Title;
+
+  /// No description provided for @notifMotivation1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👏 You took good care of your eyes this week'**
+  String get notifMotivation1Body;
+
+  /// No description provided for @notifMotivation2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Great Job'**
+  String get notifMotivation2Title;
+
+  /// No description provided for @notifMotivation2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌟 Want to keep it up?'**
+  String get notifMotivation2Body;
+
+  /// No description provided for @notifMotivation3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations'**
+  String get notifMotivation3Title;
+
+  /// No description provided for @notifMotivation3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👁️ You\'ve built a nice eye exercise routine'**
+  String get notifMotivation3Body;
+
+  /// No description provided for @notifMotivation4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Motivation'**
+  String get notifMotivation4Title;
+
+  /// No description provided for @notifMotivation4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'💚 This time for yourself is precious'**
+  String get notifMotivation4Body;
+
+  /// No description provided for @notifMotivation5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations'**
+  String get notifMotivation5Title;
+
+  /// No description provided for @notifMotivation5Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🧘‍♀️ Regular breaks make a difference'**
+  String get notifMotivation5Body;
+
+  /// No description provided for @notifMotivation6Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Great Job'**
+  String get notifMotivation6Title;
+
+  /// No description provided for @notifMotivation6Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌿 Congrats on caring for your eyes'**
+  String get notifMotivation6Body;
+
+  /// No description provided for @notifMotivation7Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Motivation'**
+  String get notifMotivation7Title;
+
+  /// No description provided for @notifMotivation7Body.
+  ///
+  /// In en, this message translates to:
+  /// **'😊 Small habits bring big relief'**
+  String get notifMotivation7Body;
+
+  /// No description provided for @notifMotivation8Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations'**
+  String get notifMotivation8Title;
+
+  /// No description provided for @notifMotivation8Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👀 A good step to keep your focus'**
+  String get notifMotivation8Body;
+
+  /// No description provided for @notifMotivation9Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Great Job'**
+  String get notifMotivation9Title;
+
+  /// No description provided for @notifMotivation9Body.
+  ///
+  /// In en, this message translates to:
+  /// **'✨ You\'re staying consistent'**
+  String get notifMotivation9Body;
+
+  /// No description provided for @notifMotivation10Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Motivation'**
+  String get notifMotivation10Title;
+
+  /// No description provided for @notifMotivation10Body.
+  ///
+  /// In en, this message translates to:
+  /// **'💡 You\'re investing in your eye health'**
+  String get notifMotivation10Body;
+
+  /// No description provided for @notifMotivation11Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations'**
+  String get notifMotivation11Title;
+
+  /// No description provided for @notifMotivation11Body.
+  ///
+  /// In en, this message translates to:
+  /// **'🌱 You\'ve been doing great so far'**
+  String get notifMotivation11Body;
+
+  /// No description provided for @notifMotivation12Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder'**
+  String get notifMotivation12Title;
+
+  /// No description provided for @notifMotivation12Body.
+  ///
+  /// In en, this message translates to:
+  /// **'👏 Want to keep going?'**
+  String get notifMotivation12Body;
 
   /// No description provided for @brightnessWarning.
   ///
@@ -2677,44 +3187,68 @@ abstract class AppLocalizations {
   /// No description provided for @peripheralVisionInfoDesc.
   ///
   /// In en, this message translates to:
-  /// **'Peripheral vision is the ability to see outside the central field of vision. This test helps detect conditions such as glaucoma and retinal problems.'**
+  /// **'Peripheral vision is the ability to see outside the central field of vision. This test measures your ability to detect lights appearing in your side vision.'**
   String get peripheralVisionInfoDesc;
 
   /// No description provided for @peripheralVisionInfoTip.
   ///
   /// In en, this message translates to:
-  /// **'Focus on the center point and try to see the hollow shape at the edges. Do not move your head or eyes.'**
+  /// **'Keep your eyes on the red center point and tap the yellow lights when they appear at the edges.'**
   String get peripheralVisionInfoTip;
 
   /// No description provided for @peripheralVisionInstruction1.
   ///
   /// In en, this message translates to:
-  /// **'Focus on the center point'**
+  /// **'Keep your eyes fixed on the red center point'**
   String get peripheralVisionInstruction1;
 
   /// No description provided for @peripheralVisionInstruction2.
   ///
   /// In en, this message translates to:
-  /// **'Do not move your head or eyes'**
+  /// **'Yellow lights will appear around the edges'**
   String get peripheralVisionInstruction2;
 
   /// No description provided for @peripheralVisionInstruction3.
   ///
   /// In en, this message translates to:
-  /// **'Indicate whether you see the shapes on the sides'**
+  /// **'Tap the light as soon as you see it'**
   String get peripheralVisionInstruction3;
 
   /// No description provided for @peripheralVisionInstruction4.
   ///
   /// In en, this message translates to:
-  /// **'Select the empty shape'**
+  /// **'Your reaction time will be measured'**
   String get peripheralVisionInstruction4;
 
   /// No description provided for @peripheralVisionQuestion.
   ///
   /// In en, this message translates to:
-  /// **'Look at the center and select the empty shape'**
+  /// **'Tap the light when you see it'**
   String get peripheralVisionQuestion;
+
+  /// No description provided for @peripheralVisionDemoText.
+  ///
+  /// In en, this message translates to:
+  /// **'Example: Tap the yellow light'**
+  String get peripheralVisionDemoText;
+
+  /// No description provided for @peripheralVisionFocusHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus here'**
+  String get peripheralVisionFocusHere;
+
+  /// No description provided for @peripheralVisionTapLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the light!'**
+  String get peripheralVisionTapLight;
+
+  /// No description provided for @peripheralVisionWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep watching the center...'**
+  String get peripheralVisionWaiting;
 
   /// No description provided for @eyeMovementInfoTitle.
   ///

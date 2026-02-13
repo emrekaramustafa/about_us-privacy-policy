@@ -51,7 +51,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scrollDown => 'Aşağı kaydır';
 
   @override
-  String get homeTitle => 'Göz Sağlığı';
+  String get homeTitle => 'Göz Testi – Görme ve Egzersizler';
 
   @override
   String get homeSubtitle =>
@@ -597,6 +597,28 @@ class AppLocalizationsTr extends AppLocalizations {
   String get termsOfService => 'Kullanım Şartları';
 
   @override
+  String get medicalSourcesTitle => 'Tıbbi Kaynaklar ve Referanslar';
+
+  @override
+  String get medicalSourcesIntro =>
+      'Bu uygulamadaki sağlık ve görme bilgileri aşağıdaki güvenilir kaynaklardan derlenmiştir. Daha fazla bilgi için bir bağlantıya dokunun.';
+
+  @override
+  String get viewSources => 'Kaynakları Görüntüle';
+
+  @override
+  String get sourceAao => 'American Academy of Ophthalmology';
+
+  @override
+  String get sourceNei => 'NIH National Eye Institute';
+
+  @override
+  String get sourceMayo => 'Mayo Clinic – Göz sağlığı';
+
+  @override
+  String get sourceWho => 'WHO – Görme engeli ve körlük';
+
+  @override
   String get aboutApp => 'Uygulama Hakkında';
 
   @override
@@ -803,6 +825,246 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notificationTime => 'Bildirim Saati';
+
+  @override
+  String get notifDefaultTitle => 'Göz Egzersizi';
+
+  @override
+  String get notifDefaultBody =>
+      'Günlük göz egzersizlerinizi yapmayı unutmayın';
+
+  @override
+  String get notifDaily1Title => 'Göz Egzersizi';
+
+  @override
+  String get notifDaily1Body => '👁️ Gözlerin bugün küçük bir mola istiyor';
+
+  @override
+  String get notifDaily2Title => 'Günlük Mola';
+
+  @override
+  String get notifDaily2Body => '👀 Ekrandan kısa bir ara vermek ister misin?';
+
+  @override
+  String get notifDaily3Title => 'Kısa Egzersiz';
+
+  @override
+  String get notifDaily3Body => '✨ 1 dakikalık göz egzersiziyle rahatla';
+
+  @override
+  String get notifDaily4Title => 'Dinlenme Zamanı';
+
+  @override
+  String get notifDaily4Body => '🌿 Gözlerini dinlendirme zamanı';
+
+  @override
+  String get notifDaily5Title => 'Göz Egzersizi';
+
+  @override
+  String get notifDaily5Body => '💆‍♂️ Bugünkü göz egzersizin hazır';
+
+  @override
+  String get notifDaily6Title => 'Günlük Mola';
+
+  @override
+  String get notifDaily6Body => '🧘‍♀️ Kısa bir mola, daha net bir bakış';
+
+  @override
+  String get notifDaily7Title => 'Hatırlatıcı';
+
+  @override
+  String get notifDaily7Body =>
+      '👁️ Günlük göz egzersizini yapmak ister misin?';
+
+  @override
+  String get notifDaily8Title => 'Göz Egzersizi';
+
+  @override
+  String get notifDaily8Body => '🔄 Odağını yenilemek için iyi bir an';
+
+  @override
+  String get notifDaily9Title => 'Dinlenme Zamanı';
+
+  @override
+  String get notifDaily9Body => '🌙 Günün yorgunluğunu gözlerinden atalım';
+
+  @override
+  String get notifDaily10Title => 'Günlük Mola';
+
+  @override
+  String get notifDaily10Body => '💡 Gözlerini rahatlatmak için 1 dakika yeter';
+
+  @override
+  String get notifDaily11Title => 'Hatırlatıcı';
+
+  @override
+  String get notifDaily11Body => '👀 Göz sağlığın için küçük bir adım';
+
+  @override
+  String get notifDaily12Title => 'Göz Egzersizi';
+
+  @override
+  String get notifDaily12Body => '🌱 Bugün de gözlerine iyi bak';
+
+  @override
+  String get notifDaily13Title => 'Günlük Mola';
+
+  @override
+  String get notifDaily13Body => '⏱️ Sadece 1–2 dakikan var mı?';
+
+  @override
+  String get notifDaily14Title => 'Hatırlatıcı';
+
+  @override
+  String get notifDaily14Body => '😊 Gözlerin sana teşekkür edecek';
+
+  @override
+  String get notifMissed1Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMissed1Body => '🌱 Sorun değil, hazır olduğunda buradayız';
+
+  @override
+  String get notifMissed2Title => 'Göz Egzersizi';
+
+  @override
+  String get notifMissed2Body => '😊 Bugün de gözlerine bakabilirsin';
+
+  @override
+  String get notifMissed3Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMissed3Body => '👁️ Egzersizler seni bekliyor';
+
+  @override
+  String get notifMissed4Title => 'Günlük Mola';
+
+  @override
+  String get notifMissed4Body => '🌿 Küçük bir mola hâlâ mümkün';
+
+  @override
+  String get notifMissed5Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMissed5Body => '🧘‍♂️ Ne zaman istersen başla';
+
+  @override
+  String get notifMissed6Title => 'Göz Egzersizi';
+
+  @override
+  String get notifMissed6Body => '👀 Gözlerini dinlendirmek için geç değil';
+
+  @override
+  String get notifMissed7Title => 'Günlük Mola';
+
+  @override
+  String get notifMissed7Body => '🌙 Sakin bir an yakaladığında açabilirsin';
+
+  @override
+  String get notifMissed8Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMissed8Body => '💚 Kendine ayıracağın kısa bir an';
+
+  @override
+  String get notifMissed9Title => 'Göz Egzersizi';
+
+  @override
+  String get notifMissed9Body => '👁️ Bugün atladıysan yarın devam edebilirsin';
+
+  @override
+  String get notifMissed10Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMissed10Body => '🌱 Göz egzersizleri her zaman burada';
+
+  @override
+  String get notifMissed11Title => 'Günlük Mola';
+
+  @override
+  String get notifMissed11Body => '😊 Hazır olduğunda seni bekliyoruz';
+
+  @override
+  String get notifMissed12Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMissed12Body => '✨ Küçük adımlar da yeterli';
+
+  @override
+  String get notifMotivation1Title => 'Tebrikler';
+
+  @override
+  String get notifMotivation1Body => '👏 Bu hafta gözlerine iyi baktın';
+
+  @override
+  String get notifMotivation2Title => 'Harika Gidiyorsun';
+
+  @override
+  String get notifMotivation2Body => '🌟 Devam etmek ister misin?';
+
+  @override
+  String get notifMotivation3Title => 'Tebrikler';
+
+  @override
+  String get notifMotivation3Body =>
+      '👁️ Göz egzersizlerinde güzel bir rutin oluşturdun';
+
+  @override
+  String get notifMotivation4Title => 'Motivasyon';
+
+  @override
+  String get notifMotivation4Body =>
+      '💚 Kendine ayırdığın bu zaman çok değerli';
+
+  @override
+  String get notifMotivation5Title => 'Tebrikler';
+
+  @override
+  String get notifMotivation5Body => '🧘‍♀️ Düzenli molalar fark yaratır';
+
+  @override
+  String get notifMotivation6Title => 'Harika Gidiyorsun';
+
+  @override
+  String get notifMotivation6Body =>
+      '🌿 Gözlerine gösterdiğin özen için tebrikler';
+
+  @override
+  String get notifMotivation7Title => 'Motivasyon';
+
+  @override
+  String get notifMotivation7Body =>
+      '😊 Küçük alışkanlıklar büyük rahatlama sağlar';
+
+  @override
+  String get notifMotivation8Title => 'Tebrikler';
+
+  @override
+  String get notifMotivation8Body => '👀 Odağını korumak için güzel bir adım';
+
+  @override
+  String get notifMotivation9Title => 'Harika Gidiyorsun';
+
+  @override
+  String get notifMotivation9Body => '✨ İstikrarlı devam ediyorsun';
+
+  @override
+  String get notifMotivation10Title => 'Motivasyon';
+
+  @override
+  String get notifMotivation10Body => '💡 Göz sağlığına yatırım yapıyorsun';
+
+  @override
+  String get notifMotivation11Title => 'Tebrikler';
+
+  @override
+  String get notifMotivation11Body => '🌱 Bugüne kadar çok iyi geldin';
+
+  @override
+  String get notifMotivation12Title => 'Hatırlatıcı';
+
+  @override
+  String get notifMotivation12Body => '👏 Devam etmek ister misin?';
 
   @override
   String get brightnessWarning => 'Parlaklık Uyarısı';
@@ -1418,29 +1680,40 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get peripheralVisionInfoDesc =>
-      'Periferik görüş, merkezi görüş alanının dışındaki görme yeteneğidir. Bu test, glokom ve retina sorunları gibi durumları tespit etmeye yardımcı olur.';
+      'Periferik görüş, merkezi görüş alanının dışındaki görme yeteneğidir. Bu test, yan görüşünüzde beliren ışıkları algılama yeteneğinizi ölçer.';
 
   @override
   String get peripheralVisionInfoTip =>
-      'Merkez noktaya odaklanın ve kenarlardaki içi boş şekli görmeye çalışın. Başınızı veya gözlerinizi hareket ettirmeyin.';
+      'Gözlerinizi kırmızı merkez noktasında tutun ve kenarlarda beliren sarı ışıklara dokunun.';
 
   @override
-  String get peripheralVisionInstruction1 => 'Merkez noktaya odaklanın';
+  String get peripheralVisionInstruction1 =>
+      'Gözlerinizi kırmızı merkez noktasına sabitleyin';
 
   @override
   String get peripheralVisionInstruction2 =>
-      'Başınızı veya gözlerinizi hareket ettirmeyin';
+      'Sarı ışıklar ekranın kenarlarında belirecek';
 
   @override
-  String get peripheralVisionInstruction3 =>
-      'Kenarlardaki şekilleri görüp görmediğinizi belirtin';
+  String get peripheralVisionInstruction3 => 'Işığı gördüğünüz anda dokunun';
 
   @override
-  String get peripheralVisionInstruction4 => 'İçi boş olan şekli seçin';
+  String get peripheralVisionInstruction4 => 'Tepki süreniz ölçülecek';
 
   @override
-  String get peripheralVisionQuestion =>
-      'Merkeze bakın ve içi boş olan şekli seçin';
+  String get peripheralVisionQuestion => 'Işığı gördüğünüzde dokunun';
+
+  @override
+  String get peripheralVisionDemoText => 'Örnek: Sarı ışığa dokunun';
+
+  @override
+  String get peripheralVisionFocusHere => 'Buraya odaklanın';
+
+  @override
+  String get peripheralVisionTapLight => 'Işığa dokunun!';
+
+  @override
+  String get peripheralVisionWaiting => 'Merkeze bakmaya devam edin...';
 
   @override
   String get eyeMovementInfoTitle => 'Hareket Takip Testi Nedir?';

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +7,7 @@ import 'package:goz_testi/core/theme/app_colors.dart';
 import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/core/services/sound_service.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
 import 'package:goz_testi/l10n/app_localizations.dart';
 
@@ -20,14 +22,26 @@ class NearVisionPage extends StatefulWidget {
 }
 
 class _NearVisionPageState extends State<NearVisionPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   NearVisionPhase _currentPhase = NearVisionPhase.info;
   int _currentQuestion = 0;
   int _correctAnswers = 0;
   bool _showDistanceDialog = false;
   
+  // Answer feedback state
+  int? _selectedAnswerIndex;
+  bool? _isAnswerCorrect;
+  bool _showFeedback = false;
+  bool _isProcessingAnswer = false;
+  
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
+  
+  // Shake animation for wrong answers
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+  
+  final SoundService _soundService = SoundService();
 
   // Font sizes for near vision test (decreasing)
   // Starting from question 2 (20) with same difficulty progression
@@ -65,12 +79,24 @@ class _NearVisionPageState extends State<NearVisionPage>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
+    
+    // Shake animation controller
+    _shakeController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    
+    _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _shakeController, curve: Curves.elasticIn),
+    );
+    
     _animationController.forward();
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _shakeController.dispose();
     super.dispose();
   }
 
@@ -136,29 +162,45 @@ class _NearVisionPageState extends State<NearVisionPage>
     _selectedAnswer = null;
   }
 
-  void _onAnswerSelected(int index) {
+  void _onAnswerSelected(int index) async {
+    if (_isProcessingAnswer) return; // Prevent double tap
+    
+    final isCorrect = _options[index] == _currentWord;
+    
     setState(() {
+      _isProcessingAnswer = true;
+      _selectedAnswerIndex = index;
       _selectedAnswer = index;
+      _isAnswerCorrect = isCorrect;
+      _showFeedback = true;
     });
     
-    // Automatically move to next question after a short delay
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        _onNextQuestion();
-      }
-    });
+    // Play sound
+    if (isCorrect) {
+      _soundService.playSuccess();
+      _correctAnswers++;
+    } else {
+      _soundService.playError();
+      // Start shake animation
+      _shakeController.forward(from: 0);
+    }
+    
+    // Wait for feedback to be visible
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    // Reset feedback state and move to next question
+    if (mounted) {
+      setState(() {
+        _selectedAnswerIndex = null;
+        _isAnswerCorrect = null;
+        _showFeedback = false;
+        _isProcessingAnswer = false;
+      });
+      _onNextQuestion();
+    }
   }
 
   void _onNextQuestion() {
-    if (_selectedAnswer == null) {
-      return; // Don't show error if called automatically
-    }
-
-    // Check if correct
-    if (_options[_selectedAnswer!] == _currentWord) {
-      _correctAnswers++;
-    }
-
     if (_currentQuestion < _fontSizes.length - 1) {
       setState(() {
         _currentQuestion++;
@@ -537,42 +579,8 @@ class _NearVisionPageState extends State<NearVisionPage>
                       children: _options.asMap().entries.map((entry) {
                         final index = entry.key;
                         final word = entry.value;
-                        final isSelected = _selectedAnswer == index;
                         
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: GestureDetector(
-                            onTap: () => _onAnswerSelected(index),
-                            child: Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              decoration: BoxDecoration(
-                                color: isSelected 
-                                    ? AppColors.medicalTeal 
-                                    : Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: isSelected 
-                                      ? AppColors.medicalTeal 
-                                      : AppColors.borderLight,
-                                  width: isSelected ? 3 : 1,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  word,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: isSelected 
-                                        ? Colors.white 
-                                        : AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
+                        return _buildOptionButton(index, word);
                       }).toList(),
                     ),
                   ),
@@ -585,6 +593,66 @@ class _NearVisionPageState extends State<NearVisionPage>
         ),
       ),
     );
+  }
+  
+  Widget _buildOptionButton(int index, String word) {
+    final isSelected = _selectedAnswerIndex == index;
+    final isCorrect = _isAnswerCorrect == true && isSelected;
+    final isWrong = _isAnswerCorrect == false && isSelected;
+    
+    // Determine border color
+    Color borderColor = AppColors.borderLight;
+    double borderWidth = 1;
+    if (_showFeedback && isSelected) {
+      borderColor = isCorrect ? AppColors.successGreen : AppColors.errorRed;
+      borderWidth = 3;
+    }
+    
+    Widget buttonContent = Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: GestureDetector(
+        onTap: _isProcessingAnswer ? null : () => _onAnswerSelected(index),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: borderColor,
+              width: borderWidth,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              word,
+              style: GoogleFonts.inter(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    
+    // Apply shake animation for wrong answers
+    if (_showFeedback && isWrong) {
+      return AnimatedBuilder(
+        animation: _shakeAnimation,
+        builder: (context, child) {
+          final shakeOffset = sin(_shakeAnimation.value * pi * 4) * 8;
+          return Transform.translate(
+            offset: Offset(shakeOffset, 0),
+            child: child,
+          );
+        },
+        child: buttonContent,
+      );
+    }
+    
+    return buttonContent;
   }
 }
 

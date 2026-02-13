@@ -51,7 +51,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get scrollDown => 'Deslizar hacia abajo';
 
   @override
-  String get homeTitle => 'Salud Ocular';
+  String get homeTitle => 'Test de Vista – Visión y Ejercicios';
 
   @override
   String get homeSubtitle =>
@@ -604,6 +604,28 @@ class AppLocalizationsEs extends AppLocalizations {
   String get termsOfService => 'Términos de Servicio';
 
   @override
+  String get medicalSourcesTitle => 'Fuentes Médicas y Referencias';
+
+  @override
+  String get medicalSourcesIntro =>
+      'La información de salud y visión de esta aplicación proviene de las siguientes fuentes autorizadas. Toque un enlace para más información.';
+
+  @override
+  String get viewSources => 'Ver Fuentes';
+
+  @override
+  String get sourceAao => 'American Academy of Ophthalmology';
+
+  @override
+  String get sourceNei => 'NIH National Eye Institute';
+
+  @override
+  String get sourceMayo => 'Mayo Clinic – Salud ocular';
+
+  @override
+  String get sourceWho => 'OMS – Ceguera y discapacidad visual';
+
+  @override
   String get aboutApp => 'Acerca de la App';
 
   @override
@@ -810,6 +832,249 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get notificationTime => 'Hora de Notificación';
+
+  @override
+  String get notifDefaultTitle => 'Ejercicio ocular';
+
+  @override
+  String get notifDefaultBody => 'No olvides tus ejercicios oculares diarios';
+
+  @override
+  String get notifDaily1Title => 'Ejercicio ocular';
+
+  @override
+  String get notifDaily1Body => '👁️ Tus ojos necesitan un breve descanso hoy';
+
+  @override
+  String get notifDaily2Title => 'Pausa diaria';
+
+  @override
+  String get notifDaily2Body =>
+      '👀 ¿Quieres tomar un breve descanso de la pantalla?';
+
+  @override
+  String get notifDaily3Title => 'Ejercicio rápido';
+
+  @override
+  String get notifDaily3Body => '✨ Relájate con 1 minuto de ejercicio ocular';
+
+  @override
+  String get notifDaily4Title => 'Tiempo de descanso';
+
+  @override
+  String get notifDaily4Body => '🌿 Hora de descansar la vista';
+
+  @override
+  String get notifDaily5Title => 'Ejercicio ocular';
+
+  @override
+  String get notifDaily5Body => '💆‍♂️ Tu ejercicio ocular diario está listo';
+
+  @override
+  String get notifDaily6Title => 'Pausa diaria';
+
+  @override
+  String get notifDaily6Body =>
+      '🧘‍♀️ Un breve descanso para una visión más clara';
+
+  @override
+  String get notifDaily7Title => 'Recordatorio';
+
+  @override
+  String get notifDaily7Body =>
+      '👁️ ¿Quieres hacer tu ejercicio ocular diario?';
+
+  @override
+  String get notifDaily8Title => 'Ejercicio ocular';
+
+  @override
+  String get notifDaily8Body => '🔄 Un buen momento para refrescar tu enfoque';
+
+  @override
+  String get notifDaily9Title => 'Tiempo de descanso';
+
+  @override
+  String get notifDaily9Body => '🌙 Aliviemos el cansancio de tus ojos';
+
+  @override
+  String get notifDaily10Title => 'Pausa diaria';
+
+  @override
+  String get notifDaily10Body => '💡 1 minuto basta para relajar tus ojos';
+
+  @override
+  String get notifDaily11Title => 'Recordatorio';
+
+  @override
+  String get notifDaily11Body => '👀 Un pequeño paso por tu salud visual';
+
+  @override
+  String get notifDaily12Title => 'Ejercicio ocular';
+
+  @override
+  String get notifDaily12Body => '🌱 Cuida también hoy de tus ojos';
+
+  @override
+  String get notifDaily13Title => 'Pausa diaria';
+
+  @override
+  String get notifDaily13Body => '⏱️ ¿Tienes 1–2 minutos?';
+
+  @override
+  String get notifDaily14Title => 'Recordatorio';
+
+  @override
+  String get notifDaily14Body => '😊 Tus ojos te lo agradecerán';
+
+  @override
+  String get notifMissed1Title => 'Recordatorio';
+
+  @override
+  String get notifMissed1Body => '🌱 No pasa nada, estamos aquí cuando quieras';
+
+  @override
+  String get notifMissed2Title => 'Ejercicio ocular';
+
+  @override
+  String get notifMissed2Body => '😊 Hoy también puedes cuidar tus ojos';
+
+  @override
+  String get notifMissed3Title => 'Recordatorio';
+
+  @override
+  String get notifMissed3Body => '👁️ Los ejercicios te esperan';
+
+  @override
+  String get notifMissed4Title => 'Pausa diaria';
+
+  @override
+  String get notifMissed4Body => '🌿 Todavía puedes hacer una breve pausa';
+
+  @override
+  String get notifMissed5Title => 'Recordatorio';
+
+  @override
+  String get notifMissed5Body => '🧘‍♂️ Empieza cuando quieras';
+
+  @override
+  String get notifMissed6Title => 'Ejercicio ocular';
+
+  @override
+  String get notifMissed6Body => '👀 No es tarde para descansar la vista';
+
+  @override
+  String get notifMissed7Title => 'Pausa diaria';
+
+  @override
+  String get notifMissed7Body =>
+      '🌙 Abre la app cuando tengas un momento tranquilo';
+
+  @override
+  String get notifMissed8Title => 'Recordatorio';
+
+  @override
+  String get notifMissed8Body => '💚 Un breve momento para ti';
+
+  @override
+  String get notifMissed9Title => 'Ejercicio ocular';
+
+  @override
+  String get notifMissed9Body =>
+      '👁️ Si lo dejaste hoy, puedes continuar mañana';
+
+  @override
+  String get notifMissed10Title => 'Recordatorio';
+
+  @override
+  String get notifMissed10Body =>
+      '🌱 Los ejercicios oculares siempre están aquí';
+
+  @override
+  String get notifMissed11Title => 'Pausa diaria';
+
+  @override
+  String get notifMissed11Body => '😊 Te esperamos cuando quieras';
+
+  @override
+  String get notifMissed12Title => 'Recordatorio';
+
+  @override
+  String get notifMissed12Body => '✨ Los pequeños pasos también cuentan';
+
+  @override
+  String get notifMotivation1Title => 'Enhorabuena';
+
+  @override
+  String get notifMotivation1Body => '👏 Esta semana has cuidado bien tus ojos';
+
+  @override
+  String get notifMotivation2Title => 'Muy bien';
+
+  @override
+  String get notifMotivation2Body => '🌟 ¿Quieres seguir así?';
+
+  @override
+  String get notifMotivation3Title => 'Enhorabuena';
+
+  @override
+  String get notifMotivation3Body =>
+      '👁️ Has creado una buena rutina de ejercicios oculares';
+
+  @override
+  String get notifMotivation4Title => 'Motivación';
+
+  @override
+  String get notifMotivation4Body => '💚 Este tiempo para ti es muy valioso';
+
+  @override
+  String get notifMotivation5Title => 'Enhorabuena';
+
+  @override
+  String get notifMotivation5Body =>
+      '🧘‍♀️ Las pausas regulares marcan la diferencia';
+
+  @override
+  String get notifMotivation6Title => 'Muy bien';
+
+  @override
+  String get notifMotivation6Body => '🌿 Enhorabuena por cuidar tus ojos';
+
+  @override
+  String get notifMotivation7Title => 'Motivación';
+
+  @override
+  String get notifMotivation7Body => '😊 Pequeños hábitos, gran alivio';
+
+  @override
+  String get notifMotivation8Title => 'Enhorabuena';
+
+  @override
+  String get notifMotivation8Body => '👀 Un buen paso para mantener el enfoque';
+
+  @override
+  String get notifMotivation9Title => 'Muy bien';
+
+  @override
+  String get notifMotivation9Body => '✨ Estás siendo constante';
+
+  @override
+  String get notifMotivation10Title => 'Motivación';
+
+  @override
+  String get notifMotivation10Body => '💡 Estás invirtiendo en tu salud visual';
+
+  @override
+  String get notifMotivation11Title => 'Enhorabuena';
+
+  @override
+  String get notifMotivation11Body =>
+      '🌱 Lo estás haciendo muy bien hasta ahora';
+
+  @override
+  String get notifMotivation12Title => 'Recordatorio';
+
+  @override
+  String get notifMotivation12Body => '👏 ¿Quieres seguir?';
 
   @override
   String get brightnessWarning => 'Advertencia de Brillo';
@@ -1432,28 +1697,41 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get peripheralVisionInfoDesc =>
-      'La visión periférica es la capacidad de ver fuera del campo visual central. Esta prueba ayuda a detectar condiciones como el glaucoma y problemas de retina.';
+      'La visión periférica es la capacidad de ver fuera del campo visual central. Esta prueba mide su capacidad para detectar luces que aparecen en su visión lateral.';
 
   @override
   String get peripheralVisionInfoTip =>
-      'Enfóquese en el punto central e intente ver la forma hueca en los bordes. No mueva la cabeza ni los ojos.';
+      'Mantenga los ojos fijos en el punto rojo central y toque las luces amarillas cuando aparezcan en los bordes.';
 
   @override
-  String get peripheralVisionInstruction1 => 'Enfóquese en el punto central';
+  String get peripheralVisionInstruction1 =>
+      'Fije sus ojos en el punto rojo central';
 
   @override
-  String get peripheralVisionInstruction2 => 'No mueva la cabeza ni los ojos';
+  String get peripheralVisionInstruction2 =>
+      'Las luces amarillas aparecerán en los bordes';
 
   @override
   String get peripheralVisionInstruction3 =>
-      'Indique si ve las formas en los lados';
+      'Toque la luz tan pronto como la vea';
 
   @override
-  String get peripheralVisionInstruction4 => 'Seleccione la forma vacía';
+  String get peripheralVisionInstruction4 => 'Se medirá su tiempo de reacción';
 
   @override
-  String get peripheralVisionQuestion =>
-      'Mire al centro y seleccione la forma vacía';
+  String get peripheralVisionQuestion => 'Toque la luz cuando la vea';
+
+  @override
+  String get peripheralVisionDemoText => 'Ejemplo: Toque la luz amarilla';
+
+  @override
+  String get peripheralVisionFocusHere => 'Enfoque aquí';
+
+  @override
+  String get peripheralVisionTapLight => '¡Toque la luz!';
+
+  @override
+  String get peripheralVisionWaiting => 'Siga mirando al centro...';
 
   @override
   String get eyeMovementInfoTitle => '¿Qué es la Prueba de Movimiento Ocular?';

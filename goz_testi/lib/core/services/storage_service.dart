@@ -320,4 +320,17 @@ class StorageService {
     
     return remaining;
   }
+
+  /// Check if user can watch ad to get extra test credit
+  /// Returns true if: testCount < 21 AND extraCredits < 18
+  Future<bool> canWatchAdForExtraCredit() async {
+    await resetDailyCountsIfNeeded();
+    final prefs = await SharedPreferences.getInstance();
+    final testCount = prefs.getInt(_dailyTestCountKey) ?? 0;
+    final extraCredits = prefs.getInt(_extraTestCreditsKey) ?? 0;
+    
+    // Maximum 21 tests per day (3 free + 18 ads)
+    // User can watch ad if: total tests < 21 AND ads watched < 18
+    return testCount < 21 && extraCredits < 18;
+  }
 }

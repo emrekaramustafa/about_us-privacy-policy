@@ -49,9 +49,9 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
   }
 
   Future<void> _watchAd() async {
-    // Check if user has remaining credits
-    final remaining = await _storageService.getRemainingTestCredits();
-    if (remaining <= 0) {
+    // Check if user can watch ad for extra credit
+    final canWatch = await _storageService.canWatchAdForExtraCredit();
+    if (!canWatch) {
       if (mounted) {
         final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
@@ -68,7 +68,33 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
 
     // Try to load ad if not ready
     if (!_adService.isRewardedAdReady) {
-      await _adService.loadRewardedAd();
+      bool adLoaded = false;
+      await _adService.loadRewardedAd(
+        onAdLoaded: () {
+          adLoaded = true;
+        },
+        onAdFailedToLoad: () {
+          adLoaded = false;
+        },
+      );
+      
+      // Wait a bit for ad to load
+      await Future.delayed(const Duration(milliseconds: 1000));
+      
+      if (!adLoaded && !_adService.isRewardedAdReady) {
+        if (mounted) {
+          setState(() => _isLoading = false);
+          final l10n = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.adLoadFailed),
+              backgroundColor: AppColors.errorRed,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+        return;
+      }
     }
 
     final success = await _adService.showRewardedAd(
@@ -80,6 +106,7 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
         // Refresh daily count and remaining credits
         ref.invalidate(dailyTestCountProvider);
         ref.invalidate(remainingTestCreditsProvider);
+        ref.invalidate(canWatchAdForExtraCreditProvider);
         
         if (mounted) {
           setState(() => _isLoading = false);
@@ -230,68 +257,74 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                 Consumer(
                   builder: (context, ref, child) {
                     final remainingAsync = ref.watch(remainingTestCreditsProvider);
+                    final canWatchAsync = ref.watch(canWatchAdForExtraCreditProvider);
                     
                     return remainingAsync.when(
                       data: (remaining) {
-                        final canWatchAd = remaining > 0;
-                        return InkWell(
-                          onTap: canWatchAd ? _watchAd : null,
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.medicalBlue.withOpacity(0.1),
+                        return canWatchAsync.when(
+                          data: (canWatchAd) {
+                            return InkWell(
+                              onTap: canWatchAd ? _watchAd : null,
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: AppColors.medicalBlue.withOpacity(0.3),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.medicalBlue.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: AppColors.medicalBlue.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: Column(
                                   children: [
-                                    Flexible(
-                                      child: Text(
-                                        l10n.watchAdForExtraTest,
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.inter(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            l10n.watchAdForExtraTest,
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.inter(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              color: AppColors.medicalBlue,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        const Icon(
+                                          LucideIcons.playCircle,
+                                          size: 20,
                                           color: AppColors.medicalBlue,
                                         ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 8),
-                                    const Icon(
-                                      LucideIcons.playCircle,
-                                      size: 20,
-                                      color: AppColors.medicalBlue,
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      canWatchAd 
+                                        ? l10n.testCreditsRemaining(remaining)
+                                        : l10n.dailyTestQuotaReached,
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: canWatchAd 
+                                          ? AppColors.medicalBlue.withOpacity(0.8)
+                                          : AppColors.errorRed,
+                                      ),
                                     ),
                                   ],
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  canWatchAd 
-                                    ? l10n.testCreditsRemaining(remaining)
-                                    : l10n.dailyTestQuotaReached,
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.inter(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: canWatchAd 
-                                      ? AppColors.medicalBlue.withOpacity(0.8)
-                                      : AppColors.errorRed,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
+                          loading: () => const SizedBox.shrink(),
+                          error: (_, __) => const SizedBox.shrink(),
                         );
                       },
                       loading: () => const SizedBox.shrink(),
@@ -395,17 +428,29 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                         ),
                         child: productAsync.when(
                           data: (product) {
-                            final price = product?.price ?? '₺79.99';
+                            // Price comes from App Store/Play Store with correct currency
+                            final price = product?.price ?? '';
+                            if (price.isNotEmpty) {
+                              return Text(
+                                l10n.premiumLifetimePrice(price),
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.inter(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              );
+                            }
                             return Text(
-                              l10n.premiumLifetimePrice(price),
+                              l10n.goPremium,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.inter(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
                               ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
                             );
                           },
                           loading: () => const SizedBox(
@@ -417,15 +462,13 @@ class _DailyTestInfoPageState extends ConsumerState<DailyTestInfoPage>
                             ),
                           ),
                           error: (_, __) => Text(
-                            l10n.premiumLifetimePrice('₺79.99'),
+                            l10n.goPremium,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.inter(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       );

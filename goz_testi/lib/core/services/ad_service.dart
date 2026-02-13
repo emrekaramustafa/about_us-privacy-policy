@@ -13,10 +13,10 @@ class AdService {
   RewardedAd? _rewardedAd;
   bool _isRewardedAdReady = false;
 
-  // Test Ad Unit IDs (replace with real IDs in production)
-  // Android Test ID: ca-app-pub-3940256099942544/5224354917
-  // iOS Test ID: ca-app-pub-3940256099942544/1712485313
-  
+  // Test Ad Unit IDs (development only)
+  // Android Test: ca-app-pub-3940256099942544/5224354917
+  // iOS Test: ca-app-pub-3940256099942544/1712485313
+
   String get _rewardedAdUnitId {
     if (kDebugMode) {
       if (defaultTargetPlatform == TargetPlatform.iOS) {
@@ -24,12 +24,11 @@ class AdService {
       }
       return 'ca-app-pub-3940256099942544/5224354917';
     }
-
-    // Production IDs
+    // Production
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return 'ca-app-pub-6401639781794250/4036226500'; // iOS ID
+      return 'ca-app-pub-6401639781794250/4036226500';
     }
-    return 'ca-app-pub-6401639781794250/5699009570'; // Android ID
+    return 'ca-app-pub-6401639781794250/5699009570';
   }
 
   /// Initialize AdMob
@@ -61,6 +60,7 @@ class AdService {
     }
     
     try {
+      debugPrint('Loading rewarded ad with ID: $_rewardedAdUnitId');
       await RewardedAd.load(
         adUnitId: _rewardedAdUnitId,
         request: const AdRequest(),
@@ -69,18 +69,20 @@ class AdService {
             _rewardedAd = ad;
             _isRewardedAdReady = true;
             _setFullScreenContentCallback();
+            debugPrint('Rewarded ad loaded successfully');
             onAdLoaded?.call();
-            debugPrint('Rewarded ad loaded');
           },
           onAdFailedToLoad: (error) {
             _isRewardedAdReady = false;
-            debugPrint('Rewarded ad failed to load: $error');
+            debugPrint('Rewarded ad failed to load: ${error.code} - ${error.message}');
+            debugPrint('Domain: ${error.domain}');
             onAdFailedToLoad?.call();
           },
         ),
       );
     } catch (e) {
-      debugPrint('Error loading rewarded ad: $e');
+      _isRewardedAdReady = false;
+      debugPrint('Exception loading rewarded ad: $e');
       onAdFailedToLoad?.call();
     }
   }
@@ -121,8 +123,12 @@ class AdService {
     
     // Mobil için gerçek AdMob
     if (!_isRewardedAdReady || _rewardedAd == null) {
+      debugPrint('Rewarded ad not ready, loading...');
       await loadRewardedAd();
+      // Wait a bit for ad to load
+      await Future.delayed(const Duration(milliseconds: 500));
       if (!_isRewardedAdReady || _rewardedAd == null) {
+        debugPrint('Rewarded ad still not ready after loading attempt');
         onAdDismissed?.call();
         return false;
       }
@@ -130,13 +136,22 @@ class AdService {
 
     bool rewardGranted = false;
 
-    _rewardedAd?.setImmersiveMode(true);
-    await _rewardedAd?.show(
-      onUserEarnedReward: (ad, reward) {
-        rewardGranted = true;
-        onRewarded();
-      },
-    );
+    try {
+      _rewardedAd?.setImmersiveMode(true);
+      await _rewardedAd?.show(
+        onUserEarnedReward: (ad, reward) {
+          rewardGranted = true;
+          onRewarded();
+        },
+      );
+    } catch (e) {
+      debugPrint('Error showing rewarded ad: $e');
+      _isRewardedAdReady = false;
+      _rewardedAd?.dispose();
+      _rewardedAd = null;
+      onAdDismissed?.call();
+      return false;
+    }
 
     if (_rewardedAd != null) {
       _rewardedAd!.fullScreenContentCallback = FullScreenContentCallback(

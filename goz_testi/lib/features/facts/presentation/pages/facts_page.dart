@@ -339,6 +339,37 @@ class _FactsPageState extends State<FactsPage> {
                     
                     const Spacer(),
                     
+                    // Medical sources citation (Guideline 1.4.1)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: InkWell(
+                        onTap: () => context.push(AppRoutes.medicalSources),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.medicalBlue.withOpacity(0.5)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(LucideIcons.bookOpen, size: 18, color: AppColors.medicalBlue),
+                              const SizedBox(width: 8),
+                              Text(
+                                l10n.viewSources,
+                                style: GoogleFonts.inter(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.medicalBlue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    
                     // Navigation buttons
                     Row(
                       children: [

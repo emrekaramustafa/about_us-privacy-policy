@@ -525,6 +525,29 @@ class _ResultPageState extends ConsumerState<ResultPage>
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+              InkWell(
+                onTap: () => context.push(AppRoutes.medicalSources),
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(LucideIcons.bookOpen, size: 16, color: AppColors.medicalBlue),
+                      const SizedBox(width: 6),
+                      Text(
+                        l10n.viewSources,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.medicalBlue,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               
               const SizedBox(height: 24),
             ],

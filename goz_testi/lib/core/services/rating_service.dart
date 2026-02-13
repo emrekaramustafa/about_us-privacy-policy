@@ -36,57 +36,42 @@ class RatingService {
     }
   }
 
-  /// Show rating dialog and handle rating
-  /// Returns true if user rated 4-5 stars and store was opened
+  /// Show rating dialog and handle rating.
+  /// All users who submit a rating (1–5 stars) are sent to the store to leave a review.
+  /// Per App Store Guideline: do not filter or direct only 4–5 star intenders to the store.
   Future<bool> showRatingDialog(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
-    
-    // Check if already rated
+
     final hasRated = await hasRatedApp();
     if (hasRated) {
       return false;
     }
 
-    // Show rating dialog
     final rating = await showDialog<int>(
       context: context,
       barrierDismissible: true,
       builder: (context) => _RatingDialog(l10n: l10n),
     );
 
-    // If user dismissed or gave 1-3 stars
-    if (rating == null || rating < 4) {
-      // Mark as rated even if they gave low rating (so we don't ask again)
-      if (rating != null) {
-        await markAsRated();
-      }
-      // Show thank you message for 1-3 stars
-      if (rating != null && mounted(context)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.thankYouForFeedback),
-            backgroundColor: AppColors.medicalTeal,
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
+    // User dismissed without submitting
+    if (rating == null) {
       return false;
     }
 
-    // User gave 4 or 5 stars, open store
+    // User submitted a rating (1–5): mark as rated and open store for everyone
     await markAsRated();
     final opened = await _openStore(context);
-    
-    if (opened && mounted(context)) {
+
+    if (mounted(context)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(l10n.thankYouForFeedback),
-          backgroundColor: AppColors.successGreen,
+          backgroundColor: AppColors.medicalTeal,
           duration: const Duration(seconds: 2),
         ),
       );
     }
-    
+
     return opened;
   }
 

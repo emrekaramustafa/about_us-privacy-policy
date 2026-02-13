@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/material.dart' show Locale, TimeOfDay;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:goz_testi/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -14,55 +16,61 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
   bool _initialized = false;
 
-  /// Initialize notification service
+  /// Initialize notification service.
+  /// Açılışta çağrılmıyor; kullanıcı bildirime "Hayır" dediyse iOS'ta çökme olmaması için
+  /// sadece bildirim ayarları / hatırlatıcı açıldığında lazy-initialize edilir.
+  /// İzin reddedilmiş olsa bile hata fırlatmaz, _initialized sadece başarıda true olur.
   Future<void> initialize() async {
     if (_initialized) return;
 
-    // Initialize timezone
-    tz.initializeTimeZones();
     try {
-      tz.setLocalLocation(tz.getLocation('Europe/Istanbul'));
-    } catch (e) {
-      // Fallback to UTC if timezone not found
-      tz.setLocalLocation(tz.UTC);
+      // Initialize timezone
+      tz.initializeTimeZones();
+      try {
+        tz.setLocalLocation(tz.getLocation('Europe/Istanbul'));
+      } catch (e) {
+        tz.setLocalLocation(tz.UTC);
+      }
+
+      // Create Android notification channel
+      const androidChannel = AndroidNotificationChannel(
+        'eye_exercises',
+        'Göz Egzersizleri',
+        description: 'Günlük göz egzersizi hatırlatıcıları',
+        importance: Importance.defaultImportance,
+      );
+
+      const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+
+      const iosSettings = DarwinInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+      );
+
+      const initSettings = InitializationSettings(
+        android: androidSettings,
+        iOS: iosSettings,
+      );
+
+      await _notifications.initialize(
+        initSettings,
+        onDidReceiveNotificationResponse: _onNotificationTapped,
+      );
+
+      final android = _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      if (android != null) {
+        await android.createNotificationChannel(androidChannel);
+      }
+
+      _initialized = true;
+    } catch (e, st) {
+      // İzin reddedildi veya plugin hatası: uygulama kapanmasın, sadece logla
+      debugPrint('NotificationService.initialize error: $e');
+      debugPrint('$st');
+      _initialized = false;
     }
-
-    // Create Android notification channel
-    const androidChannel = AndroidNotificationChannel(
-      'eye_exercises',
-      'Göz Egzersizleri',
-      description: 'Günlük göz egzersizi hatırlatıcıları',
-      importance: Importance.defaultImportance,
-    );
-
-    // Android initialization settings
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    
-    // iOS initialization settings
-    const iosSettings = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
-
-    const initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: iosSettings,
-    );
-
-    await _notifications.initialize(
-      initSettings,
-      onDidReceiveNotificationResponse: _onNotificationTapped,
-    );
-
-    // Create notification channel for Android
-    final android = _notifications.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-    if (android != null) {
-      await android.createNotificationChannel(androidChannel);
-    }
-
-    _initialized = true;
   }
 
   /// Request notification permissions
@@ -351,11 +359,10 @@ class NotificationService {
 
   /// Schedule a single notification
   Future<void> _scheduleNotification(tz.TZDateTime scheduledDate, String profile, {String type = 'daily'}) async {
-    // Get notification content based on profile and type
-    final (title, body) = _getNotificationContent(profile, type: type);
+    // Get notification content (localized) based on profile and type
+    final (title, body) = await _getNotificationContent(profile, type: type);
 
     // Schedule notification
-    // Use title as body if body is empty (for single-line messages)
     final notificationBody = body.isEmpty ? title : body;
     final notificationId = type == 'motivation' ? 2 : (type == 'missed' ? 3 : 1);
     await _notifications.zonedSchedule(
@@ -382,86 +389,80 @@ class NotificationService {
     );
   }
 
-  /// Get notification content based on profile and type
-  (String, String) _getNotificationContent(String profile, {String type = 'daily'}) {
-    final messages = _getNotificationMessages(profile, type);
-    if (messages.isEmpty) {
-      return ('👁️ Göz Egzersizi', 'Günlük egzersizlerinizi yapmayı unutmayın');
+  static const String _localeKey = 'app_locale';
+
+  /// Get notification content (localized) based on profile and type
+  Future<(String, String)> _getNotificationContent(String profile, {String type = 'daily'}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final localeCode = prefs.getString(_localeKey) ?? 'en';
+    final locale = Locale(localeCode);
+    AppLocalizations l10n;
+    try {
+      l10n = await AppLocalizations.delegate.load(locale);
+    } catch (_) {
+      l10n = await AppLocalizations.delegate.load(const Locale('en'));
     }
-    
-    // Randomly select a message
-    final random = DateTime.now().millisecondsSinceEpoch % messages.length;
-    final selected = messages[random];
-    // If body is empty, use title as both
-    return (selected.$1, selected.$2.isEmpty ? selected.$1 : selected.$2);
+    final length = type == 'daily' ? 14 : 12;
+    final index = DateTime.now().millisecondsSinceEpoch % length;
+    return _getNotificationMessage(l10n, type, index);
   }
 
-  /// Get notification messages based on profile and type
-  List<(String, String)> _getNotificationMessages(String profile, String type) {
-    if (type == 'daily') {
-      return _getDailyReminderMessages();
-    } else if (type == 'missed') {
-      return _getMissedReminderMessages();
-    } else if (type == 'motivation') {
-      return _getMotivationMessages();
+  /// Map (type, index) to (title, body) from l10n
+  (String, String) _getNotificationMessage(AppLocalizations l10n, String type, int index) {
+    switch (type) {
+      case 'daily':
+        switch (index) {
+          case 0: return (l10n.notifDaily1Title, l10n.notifDaily1Body);
+          case 1: return (l10n.notifDaily2Title, l10n.notifDaily2Body);
+          case 2: return (l10n.notifDaily3Title, l10n.notifDaily3Body);
+          case 3: return (l10n.notifDaily4Title, l10n.notifDaily4Body);
+          case 4: return (l10n.notifDaily5Title, l10n.notifDaily5Body);
+          case 5: return (l10n.notifDaily6Title, l10n.notifDaily6Body);
+          case 6: return (l10n.notifDaily7Title, l10n.notifDaily7Body);
+          case 7: return (l10n.notifDaily8Title, l10n.notifDaily8Body);
+          case 8: return (l10n.notifDaily9Title, l10n.notifDaily9Body);
+          case 9: return (l10n.notifDaily10Title, l10n.notifDaily10Body);
+          case 10: return (l10n.notifDaily11Title, l10n.notifDaily11Body);
+          case 11: return (l10n.notifDaily12Title, l10n.notifDaily12Body);
+          case 12: return (l10n.notifDaily13Title, l10n.notifDaily13Body);
+          case 13: return (l10n.notifDaily14Title, l10n.notifDaily14Body);
+          default: return (l10n.notifDefaultTitle, l10n.notifDefaultBody);
+        }
+      case 'missed':
+        switch (index) {
+          case 0: return (l10n.notifMissed1Title, l10n.notifMissed1Body);
+          case 1: return (l10n.notifMissed2Title, l10n.notifMissed2Body);
+          case 2: return (l10n.notifMissed3Title, l10n.notifMissed3Body);
+          case 3: return (l10n.notifMissed4Title, l10n.notifMissed4Body);
+          case 4: return (l10n.notifMissed5Title, l10n.notifMissed5Body);
+          case 5: return (l10n.notifMissed6Title, l10n.notifMissed6Body);
+          case 6: return (l10n.notifMissed7Title, l10n.notifMissed7Body);
+          case 7: return (l10n.notifMissed8Title, l10n.notifMissed8Body);
+          case 8: return (l10n.notifMissed9Title, l10n.notifMissed9Body);
+          case 9: return (l10n.notifMissed10Title, l10n.notifMissed10Body);
+          case 10: return (l10n.notifMissed11Title, l10n.notifMissed11Body);
+          case 11: return (l10n.notifMissed12Title, l10n.notifMissed12Body);
+          default: return (l10n.notifDefaultTitle, l10n.notifDefaultBody);
+        }
+      case 'motivation':
+        switch (index) {
+          case 0: return (l10n.notifMotivation1Title, l10n.notifMotivation1Body);
+          case 1: return (l10n.notifMotivation2Title, l10n.notifMotivation2Body);
+          case 2: return (l10n.notifMotivation3Title, l10n.notifMotivation3Body);
+          case 3: return (l10n.notifMotivation4Title, l10n.notifMotivation4Body);
+          case 4: return (l10n.notifMotivation5Title, l10n.notifMotivation5Body);
+          case 5: return (l10n.notifMotivation6Title, l10n.notifMotivation6Body);
+          case 6: return (l10n.notifMotivation7Title, l10n.notifMotivation7Body);
+          case 7: return (l10n.notifMotivation8Title, l10n.notifMotivation8Body);
+          case 8: return (l10n.notifMotivation9Title, l10n.notifMotivation9Body);
+          case 9: return (l10n.notifMotivation10Title, l10n.notifMotivation10Body);
+          case 10: return (l10n.notifMotivation11Title, l10n.notifMotivation11Body);
+          case 11: return (l10n.notifMotivation12Title, l10n.notifMotivation12Body);
+          default: return (l10n.notifDefaultTitle, l10n.notifDefaultBody);
+        }
+      default:
+        return (l10n.notifDefaultTitle, l10n.notifDefaultBody);
     }
-    return _getDailyReminderMessages();
-  }
-
-  /// Daily reminder messages (14 adet)
-  List<(String, String)> _getDailyReminderMessages() {
-    return [
-      ('👁️ Gözlerin bugün küçük bir mola istiyor', ''),
-      ('👀 Ekrandan kısa bir ara vermek ister misin?', ''),
-      ('✨ 1 dakikalık göz egzersiziyle rahatla', ''),
-      ('🌿 Gözlerini dinlendirme zamanı', ''),
-      ('💆‍♂️ Bugünkü göz egzersizin hazır', ''),
-      ('🧘‍♀️ Kısa bir mola, daha net bir bakış', ''),
-      ('👁️ Günlük göz egzersizini yapmak ister misin?', ''),
-      ('🔄 Odağını yenilemek için iyi bir an', ''),
-      ('🌙 Günün yorgunluğunu gözlerinden atalım', ''),
-      ('💡 Gözlerini rahatlatmak için 1 dakika yeter', ''),
-      ('👀 Göz sağlığın için küçük bir adım', ''),
-      ('🌱 Bugün de gözlerine iyi bak', ''),
-      ('⏱️ Sadece 1–2 dakikan var mı?', ''),
-      ('😊 Gözlerin sana teşekkür edecek', ''),
-    ];
-  }
-
-  /// Missed/Soft reminder messages (12 adet)
-  List<(String, String)> _getMissedReminderMessages() {
-    return [
-      ('🌱 Sorun değil, hazır olduğunda buradayız', ''),
-      ('😊 Bugün de gözlerine bakabilirsin', ''),
-      ('👁️ Egzersizler seni bekliyor', ''),
-      ('🌿 Küçük bir mola hâlâ mümkün', ''),
-      ('🧘‍♂️ Ne zaman istersen başla', ''),
-      ('👀 Gözlerini dinlendirmek için geç değil', ''),
-      ('🌙 Sakin bir an yakaladığında açabilirsin', ''),
-      ('💚 Kendine ayıracağın kısa bir an', ''),
-      ('👁️ Bugün atladıysan yarın devam edebilirsin', ''),
-      ('🌱 Göz egzersizleri her zaman burada', ''),
-      ('😊 Hazır olduğunda seni bekliyoruz', ''),
-      ('✨ Küçük adımlar da yeterli', ''),
-    ];
-  }
-
-  /// Motivation/Appreciation messages (12 adet)
-  List<(String, String)> _getMotivationMessages() {
-    return [
-      ('👏 Bu hafta gözlerine iyi baktın', ''),
-      ('🌟 Harika gidiyorsun, devam etmek ister misin?', ''),
-      ('👁️ Göz egzersizlerinde güzel bir rutin oluşturdun', ''),
-      ('💚 Kendine ayırdığın bu zaman çok değerli', ''),
-      ('🧘‍♀️ Düzenli molalar fark yaratır', ''),
-      ('🌿 Gözlerine gösterdiğin özen için tebrikler', ''),
-      ('😊 Küçük alışkanlıklar büyük rahatlama sağlar', ''),
-      ('👀 Odağını korumak için güzel bir adım', ''),
-      ('✨ İstikrarlı devam ediyorsun', ''),
-      ('💡 Göz sağlığına yatırım yapıyorsun', ''),
-      ('🌱 Bugüne kadar çok iyi geldin', ''),
-      ('👏 Devam etmek ister misin?', ''),
-    ];
   }
 
   /// Calculate next instance of time

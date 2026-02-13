@@ -8,6 +8,7 @@ import 'package:goz_testi/core/constants/app_strings.dart';
 import 'package:goz_testi/core/router/app_router.dart';
 import 'package:goz_testi/core/utils/screen_calibration.dart';
 import 'package:goz_testi/core/widgets/app_button.dart';
+import 'package:goz_testi/core/services/sound_service.dart';
 import 'package:goz_testi/features/tests/common/utils/test_limit_checker.dart';
 import 'package:goz_testi/l10n/app_localizations.dart';
 
@@ -32,7 +33,7 @@ enum TestPhase {
 }
 
 class _VisualAcuityPageState extends State<VisualAcuityPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   
   TestPhase _currentPhase = TestPhase.info;
   bool _showDistanceDialog = false;
@@ -54,10 +55,22 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
   String _currentLetter = 'E';
   List<String> _answerOptions = [];
   
+  // Answer feedback state
+  String? _selectedAnswer;
+  bool? _isAnswerCorrect;
+  bool _showFeedback = false;
+  bool _isProcessingAnswer = false;
+  
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  
+  // Shake animation for wrong answers
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+  
   final Random _random = Random();
+  final SoundService _soundService = SoundService();
 
   @override
   void initState() {
@@ -74,11 +87,22 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
     );
+    
+    // Shake animation controller
+    _shakeController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    
+    _shakeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _shakeController, curve: Curves.elasticIn),
+    );
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _shakeController.dispose();
     super.dispose();
   }
 
@@ -123,13 +147,73 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
     _animationController.forward(from: 0);
   }
 
-  void _onOptionSelected(String selectedLetter) {
+  void _onOptionSelected(String selectedLetter) async {
+    if (_isProcessingAnswer) return; // Prevent double tap
+    
     final isCorrect = selectedLetter == _currentLetter;
+    
+    setState(() {
+      _isProcessingAnswer = true;
+      _selectedAnswer = selectedLetter;
+      _isAnswerCorrect = isCorrect;
+      _showFeedback = true;
+    });
+    
+    // Play sound
+    if (isCorrect) {
+      _soundService.playSuccess();
+    } else {
+      _soundService.playError();
+      // Start shake animation
+      _shakeController.forward(from: 0);
+    }
+    
+    // Wait for feedback to be visible
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    // Process the answer
     _processAnswer(isCorrect);
+    
+    // Reset feedback state
+    if (mounted) {
+      setState(() {
+        _selectedAnswer = null;
+        _isAnswerCorrect = null;
+        _showFeedback = false;
+        _isProcessingAnswer = false;
+      });
+    }
   }
 
-  void _onNotSure() {
+  void _onNotSure() async {
+    if (_isProcessingAnswer) return; // Prevent double tap
+    
+    setState(() {
+      _isProcessingAnswer = true;
+      _selectedAnswer = 'not_sure';
+      _isAnswerCorrect = false;
+      _showFeedback = true;
+    });
+    
+    // Play error sound and shake
+    _soundService.playError();
+    _shakeController.forward(from: 0);
+    
+    // Wait for feedback to be visible
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    // Process the answer
     _processAnswer(false);
+    
+    // Reset feedback state
+    if (mounted) {
+      setState(() {
+        _selectedAnswer = null;
+        _isAnswerCorrect = null;
+        _showFeedback = false;
+        _isProcessingAnswer = false;
+      });
+    }
   }
 
   void _processAnswer(bool isCorrect) {
@@ -671,30 +755,7 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
                         }).toList(),
                       ),
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton(
-                        onPressed: _onNotSure,
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: BorderSide(
-                            color: AppColors.borderLight,
-                            width: 1,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          l10n.notSure,
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ),
-                    ),
+                    _buildNotSureButton(l10n),
                   ],
                 ),
               ),
@@ -706,20 +767,32 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
   }
 
   Widget _buildOptionButton(String letter) {
-    return Material(
+    final isSelected = _selectedAnswer == letter;
+    final isCorrect = _isAnswerCorrect == true && isSelected;
+    final isWrong = _isAnswerCorrect == false && isSelected;
+    
+    // Determine border color
+    Color borderColor = AppColors.borderLight;
+    double borderWidth = 1;
+    if (_showFeedback && isSelected) {
+      borderColor = isCorrect ? AppColors.successGreen : AppColors.errorRed;
+      borderWidth = 3;
+    }
+    
+    Widget buttonContent = Material(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
       elevation: 2,
       shadowColor: Colors.black.withOpacity(0.1),
       child: InkWell(
-        onTap: () => _onOptionSelected(letter),
+        onTap: _isProcessingAnswer ? null : () => _onOptionSelected(letter),
         borderRadius: BorderRadius.circular(16),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.borderLight,
-              width: 1,
+              color: borderColor,
+              width: borderWidth,
             ),
           ),
           child: Center(
@@ -735,6 +808,78 @@ class _VisualAcuityPageState extends State<VisualAcuityPage>
         ),
       ),
     );
+    
+    // Apply shake animation for wrong answers
+    if (_showFeedback && isWrong) {
+      return AnimatedBuilder(
+        animation: _shakeAnimation,
+        builder: (context, child) {
+          final shakeOffset = sin(_shakeAnimation.value * pi * 4) * 8;
+          return Transform.translate(
+            offset: Offset(shakeOffset, 0),
+            child: child,
+          );
+        },
+        child: buttonContent,
+      );
+    }
+    
+    return buttonContent;
+  }
+  
+  Widget _buildNotSureButton(AppLocalizations l10n) {
+    final isNotSureSelected = _selectedAnswer == 'not_sure';
+    final isWrong = _showFeedback && isNotSureSelected;
+    
+    // Determine border color
+    Color borderColor = AppColors.borderLight;
+    double borderWidth = 1;
+    if (isWrong) {
+      borderColor = AppColors.errorRed;
+      borderWidth = 3;
+    }
+    
+    Widget buttonContent = SizedBox(
+      width: double.infinity,
+      child: OutlinedButton(
+        onPressed: _isProcessingAnswer ? null : _onNotSure,
+        style: OutlinedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          side: BorderSide(
+            color: borderColor,
+            width: borderWidth,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(
+          l10n.notSure,
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: isWrong ? AppColors.errorRed : AppColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+    
+    // Apply shake animation for wrong answers
+    if (isWrong) {
+      return AnimatedBuilder(
+        animation: _shakeAnimation,
+        builder: (context, child) {
+          final shakeOffset = sin(_shakeAnimation.value * pi * 4) * 8;
+          return Transform.translate(
+            offset: Offset(shakeOffset, 0),
+            child: child,
+          );
+        },
+        child: buttonContent,
+      );
+    }
+    
+    return buttonContent;
   }
 }
 
