@@ -1,5 +1,1 @@
-# AdMob app-ads.txt for Eye Test – Vision & Exercises (iOS)
-# Publisher ID from AdMob: ca-app-pub-6401639781794250~4095936258
-# Bu dosyayı geliştirici web sitenizin kök dizinine koyun (örn. https://yoursite.com/app-ads.txt)
-
 google.com, pub-6401639781794250, DIRECT, f08c47fec0942fa0
